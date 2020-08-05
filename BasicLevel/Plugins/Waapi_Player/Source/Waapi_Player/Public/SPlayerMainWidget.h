@@ -5,6 +5,8 @@
 #include "Misc/TextFilter.h"
 #include "Widgets/Views/STreeView.h"
 
+#include "Waapi_PlayerTreeItem.h"
+
 typedef TTextFilter< const FString& > StringFilter;
 
 class SPlayerMainWidget : public SCompoundWidget
@@ -51,18 +53,18 @@ public:
 
 	void ForceRefresh();
     
-    virtual void Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime ) override;
+    //virtual void Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime ) override;
 
 
 private:
 	/** The tree view widget */
-	TSharedPtr< STreeView< TSharedPtr<FWwiseTreeItem>> > TreeViewPtr;
+	TSharedPtr< STreeView< TSharedPtr<FWaapiPlayerTreeItem>> > TreeViewPtr;
 
 	/** Filter for the search box */
 	TSharedPtr<StringFilter> SearchBoxFilter;
 
 	/** Root items (only events for now). */
-	TArray< TSharedPtr<FWwiseTreeItem> > RootItems;
+	TArray< TSharedPtr<FWaapiPlayerTreeItem> > RootItems;
 
 	/** Bool to prevent the selection changed callback from running */
 	bool AllowTreeViewDelegates;
@@ -83,16 +85,16 @@ private:
 	//void UpdateDirectoryWatcher();
 
 	/** Generate a row in the tree view */
-	TSharedRef<ITableRow> GenerateRow( TSharedPtr<FWwiseTreeItem> TreeItem, const TSharedRef<STableViewBase>& OwnerTable );
+	TSharedRef<ITableRow> GenerateRow( TSharedPtr<FWaapiPlayerTreeItem> TreeItem, const TSharedRef<STableViewBase>& OwnerTable );
 
 	/** Get the children of a specific tree element */
-	void GetChildrenForTree( TSharedPtr< FWwiseTreeItem > TreeItem, TArray< TSharedPtr<FWwiseTreeItem> >& OutChildren );
+	void GetChildrenForTree( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, TArray< TSharedPtr<FWaapiPlayerTreeItem> >& OutChildren );
 
 	/** Handle Drag & Drop */
 	//FReply OnDragDetected(const FGeometry& Geometry, const FPointerEvent& MouseEvent);
 
 	void ExpandFirstLevel();
-	void ExpandParents(TSharedPtr<FWwiseTreeItem> Item);
+	void ExpandParents(TSharedPtr<FWaapiPlayerTreeItem> Item);
 
 	//FText GetProjectName() const;
 
@@ -101,15 +103,15 @@ private:
 	void OnSearchBoxChanged( const FText& InSearchText );
 	FText GetHighlightText() const;
 	void FilterUpdated();
-	void SetItemVisibility(TSharedPtr<FWwiseTreeItem> Item, bool IsVisible);
-	void ApplyFilter(TSharedPtr<FWwiseTreeItem> ItemToFilter);
-	void RestoreTreeExpansion(const TArray< TSharedPtr<FWwiseTreeItem> >& Items);
+	void SetItemVisibility(TSharedPtr<FWaapiPlayerTreeItem> Item, bool IsVisible);
+	void ApplyFilter(TSharedPtr<FWaapiPlayerTreeItem> ItemToFilter);
+	void RestoreTreeExpansion(const TArray< TSharedPtr<FWaapiPlayerTreeItem> >& Items);
 
 	/** Handler for tree view selection changes */
-	void TreeSelectionChanged( TSharedPtr< FWwiseTreeItem > TreeItem, ESelectInfo::Type SelectInfo );
+	void TreeSelectionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, ESelectInfo::Type SelectInfo );
 
 	/** Handler for tree view expansion changes */
-	void TreeExpansionChanged( TSharedPtr< FWwiseTreeItem > TreeItem, bool bIsExpanded );
+	void TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, bool bIsExpanded );
 
 	//void OnProjectDirectoryChanged(const TArray<struct FFileChangeData>& ChangedFiles);
 	//FDelegateHandle ProjectDirectoryModifiedDelegateHandle;
