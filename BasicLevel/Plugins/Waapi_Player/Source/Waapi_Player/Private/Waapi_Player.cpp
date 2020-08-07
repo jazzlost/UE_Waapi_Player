@@ -9,6 +9,8 @@
 #include "Widgets/Text/STextBlock.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 
+#include "SPlayerMainWidget.h"
+
 static const FName Waapi_PlayerTabName("Waapi_Player");
 
 #define LOCTEXT_NAMESPACE "FWaapi_PlayerModule"
@@ -73,13 +75,20 @@ TSharedRef<SDockTab> FWaapi_PlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& 
 		.TabRole(ETabRole::NomadTab)
 		[
 			// Put your tab content here!
-			SNew(SBox)
-			.HAlign(HAlign_Center)
-			.VAlign(VAlign_Center)
-			[
-				SNew(STextBlock)
-				.Text(WidgetText)
-			]
+			//SNew(SBox)
+			//.HAlign(HAlign_Center)
+			//.VAlign(VAlign_Center)
+			//[
+				/*SNew(STextBlock)
+				.Text(WidgetText)*/
+				SNew(SHorizontalBox)
+				+ SHorizontalBox::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Fill)
+				[
+					SNew(SPlayerMainWidget)
+				]
+			//]
 		];
 }
 

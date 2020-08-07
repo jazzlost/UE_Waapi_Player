@@ -42,6 +42,8 @@ public class Waapi_Player : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+                "EditorStyle",
+                "AkAudio"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

@@ -22,6 +22,10 @@ public:
 
 	static FName GetStyleSetName();
 
+	//static const FSlateBrush* GetBrush(EWwiseTreeItemType::Type ItemType);
+	//static const FSlateBrush* GetBrush(FName PropertyName, const ANSICHAR* Specifier = NULL);
+	//static const FSlateFontInfo GetFontStyle(FName PropertyName, const ANSICHAR* Specifier = NULL);
+
 private:
 
 	static TSharedRef< class FSlateStyleSet > Create();

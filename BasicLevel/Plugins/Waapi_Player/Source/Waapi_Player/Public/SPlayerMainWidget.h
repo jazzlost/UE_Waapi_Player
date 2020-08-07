@@ -40,7 +40,7 @@ public:
 		SLATE_ARGUMENT(bool, AllowContextMenu)
 
 		/** The selection mode for the tree view */
-		SLATE_ARGUMENT(ESelectionMode::Type, Single)
+		SLATE_ARGUMENT(ESelectionMode::Type, SelectionMode)
 	SLATE_END_ARGS();
 
 	void Construct(const FArguments& InArgs);

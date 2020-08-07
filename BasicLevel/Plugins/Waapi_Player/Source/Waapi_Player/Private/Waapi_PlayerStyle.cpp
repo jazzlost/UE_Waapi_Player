@@ -13,6 +13,34 @@ void FWaapi_PlayerStyle::Initialize()
 	if (!StyleInstance.IsValid())
 	{
 		StyleInstance = Create();
+
+		//auto ContentRoot = FPaths::EngineContentDir() / TEXT("Slate");
+		//StyleInstance->SetContentRoot(ContentRoot);
+		//StyleInstance->SetCoreContentRoot(ContentRoot);
+
+		//FSlateStyleSet& Style = *StyleInstance.Get();
+		//{
+		//	SetAkResourceBrushes(Style);
+
+		//	Style.Set("AudiokineticTools.GroupBorder", new ENGINE_BOX_BRUSH("Common/GroupBorder", FMargin(4.0f / 16.0f)));
+		//	Style.Set("AudiokineticTools.AssetDragDropTooltipBackground", new ENGINE_BOX_BRUSH("Old/Menu_Background", FMargin(8.0f / 64.0f)));
+
+		//	FButtonStyle HoverHintOnly = FButtonStyle()
+		//		.SetNormal(FSlateNoResource())
+		//		.SetHovered(ENGINE_BOX_BRUSH("Common/Button_Hovered", FMargin(4 / 16.0f), FLinearColor(1, 1, 1, 0.15f)))
+		//		.SetPressed(ENGINE_BOX_BRUSH("Common/Button_Pressed", FMargin(4 / 16.0f), FLinearColor(1, 1, 1, 0.25f)))
+		//		.SetNormalPadding(FMargin(0, 0, 0, 1))
+		//		.SetPressedPadding(FMargin(0, 1, 0, 0));
+		//	Style.Set("AudiokineticTools.HoverHintOnly", HoverHintOnly);
+
+		//	Style.Set("AudiokineticTools.SourceTitleFont", ENGINE_TTF_CORE_FONT("Fonts/Roboto-Regular", 12));
+		//	Style.Set("AudiokineticTools.SourceTreeItemFont", ENGINE_TTF_CORE_FONT("Fonts/Roboto-Regular", 10));
+		//	Style.Set("AudiokineticTools.SourceTreeRootItemFont", ENGINE_TTF_CORE_FONT("Fonts/Roboto-Regular", 12));
+
+		//	const FVector2D Icon12x12(12.0f, 12.0f);
+		//	Style.Set("AudiokineticTools.Button_EllipsisIcon", new ENGINE_IMAGE_BRUSH("Icons/ellipsis_12x", Icon12x12));
+		//}
+
 		FSlateStyleRegistry::RegisterSlateStyle(*StyleInstance);
 	}
 }

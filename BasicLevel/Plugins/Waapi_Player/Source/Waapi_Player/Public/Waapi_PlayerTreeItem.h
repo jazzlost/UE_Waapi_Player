@@ -18,6 +18,13 @@ namespace EWaapiPlayerTreeItemType
 		Folder
 	};
 
+	enum NumItems
+	{
+		NUM_DRAGGABLE_WWISE_ITEMS = 3,
+		NUM_DRAGGABLE_WAAPI_ITEMS = 4
+	};
+
+
 	static const FString ItemNames[NUM_DRAGGABLE_WAAPI_ITEMS] = { TEXT("Event"), TEXT("AuxBus"), TEXT("AcousticTexture"), TEXT("ActorMixer") };
 	static const FString DisplayNames[NUM_DRAGGABLE_WAAPI_ITEMS] = { TEXT("Events"), TEXT("Busses"), TEXT("VirtualAcoustics"), TEXT("ActorMixer") };
 	static const FString FolderNames[NUM_DRAGGABLE_WAAPI_ITEMS] = { TEXT("Events"), TEXT("Master-Mixer Hierarchy"), TEXT("Virtual Acoustics"), TEXT("Actor-Mixer Hierarchy") };

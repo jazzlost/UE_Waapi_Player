@@ -6,17 +6,17 @@
 
 #include "SPlayerMainWidget.h"
 #include "AkAudioDevice.h"
-#include "AkAudioBankGenerationHelpers.h"
+//#include "AkAudioBankGenerationHelpers.h"
 #include "AkAudioStyle.h"
-#include "WwisePicker/SWwisePicker.h"
-#include "WwisePicker/WwiseWwuParser.h"
-#include "DirectoryWatcherModule.h"
-#include "IDirectoryWatcher.h"
+//#include "WwisePicker/SWwisePicker.h"
+//#include "WwisePicker/WwiseWwuParser.h"
+//#include "DirectoryWatcherModule.h"
+//#include "IDirectoryWatcher.h"
 #include "Widgets/Input/SSearchBox.h"
 #include "Widgets/Layout/SSeparator.h"
 #include "Widgets/Layout/SSpacer.h"
 #include "Misc/ScopedSlowTask.h"
-#include "WwiseEventDragDropOp.h"
+//#include "WwiseEventDragDropOp.h"
 #include "Widgets/Input/SHyperlink.h"
 
 //#include "AkWaapiClient.h"
@@ -25,7 +25,7 @@
 
 #define LOCTEXT_NAMESPACE "AkAudio"
 
-const FName SPlayerMainWidget::WwisePickerTabName = FName("WwisePicker");
+//const FName SPlayerMainWidget::WwisePickerTabName = FName("WwisePicker");
 
 
 SPlayerMainWidget::SPlayerMainWidget()
@@ -331,7 +331,8 @@ void SPlayerMainWidget::ConstructTree()
 		EWwiseTreeItemType::Type CurrentType = EWwiseTreeItemType::Event;
 		while ((int)CurrentType < (int)EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS)
 		{
-			TSharedPtr<FWaapiPlayerTreeItem> NewRoot = FWwiseWwuParser::GetTree(SearchBoxFilter, RootItems.Num() > CurrentType ? RootItems[CurrentType] : nullptr, CurrentType);
+			//TSharedPtr<FWaapiPlayerTreeItem> NewRoot = FWwiseWwuParser::GetTree(SearchBoxFilter, RootItems.Num() > CurrentType ? RootItems[CurrentType] : nullptr, CurrentType);
+			TSharedPtr<FWaapiPlayerTreeItem> NewRoot = MakeShareable(new FWaapiPlayerTreeItem(TEXT("WaapiRoot"), TEXT("Path/Folder"), RootItems[0], EWaapiPlayerTreeItemType::Event));
 			RootItems.Add(NewRoot);
 			CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
 		}		
@@ -376,7 +377,8 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 			.VAlign(VAlign_Center)
 			[
 				SNew(SImage) 
-				.Image(FAkAudioStyle::GetBrush(TreeItem->ItemType))
+				//.Image(FAkAudioStyle::GetBrush(TreeItem->ItemType))
+				.Image(FAkAudioStyle::GetBrush(EWwiseTreeItemType::Event))
 			]
 
 			+ SHorizontalBox::Slot()
@@ -458,12 +460,12 @@ void SPlayerMainWidget::ApplyFilter(TSharedPtr<FWaapiPlayerTreeItem> ItemToFilte
 {
 
 	EWwiseTreeItemType::Type CurrentType = EWwiseTreeItemType::Event;
-	while ((int)CurrentType < (int)EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS)
-	{
-		TSharedPtr<FWaapiPlayerTreeItem> NewRoot = FWwiseWwuParser::GetTree(SearchBoxFilter, RootItems[CurrentType], CurrentType);
-		RootItems[CurrentType] = NewRoot;
-		CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
-	}
+	//while ((int)CurrentType < (int)EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS)
+	//{
+	//	TSharedPtr<FWaapiPlayerTreeItem> NewRoot = FWwiseWwuParser::GetTree(SearchBoxFilter, RootItems[CurrentType], CurrentType);
+	//	RootItems[CurrentType] = NewRoot;
+	//	CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
+	//}
 
 	AllowTreeViewDelegates = false;
 	RestoreTreeExpansion(RootItems);
