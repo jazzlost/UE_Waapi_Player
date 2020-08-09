@@ -8,6 +8,7 @@
 #include "AkAudioDevice.h"
 //#include "AkAudioBankGenerationHelpers.h"
 #include "AkAudioStyle.h"
+#include "Waapi_PlayerStyle.h"
 //#include "WwisePicker/SWwisePicker.h"
 //#include "WwisePicker/WwiseWwuParser.h"
 //#include "DirectoryWatcherModule.h"
@@ -18,6 +19,8 @@
 #include "Misc/ScopedSlowTask.h"
 //#include "WwiseEventDragDropOp.h"
 #include "Widgets/Input/SHyperlink.h"
+
+#include "WaapiPlayerAssetManager.h"
 
 //#include "AkWaapiClient.h"
 //#include "AkSettings.h"
@@ -276,6 +279,10 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 	//}
 
 	//OnPopulateClicked();
+	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	AssetManager.Init();
+
+	ForceRefresh();
 	TreeViewPtr->RequestTreeRefresh();
 	ExpandFirstLevel();
 }
@@ -308,6 +315,9 @@ void SPlayerMainWidget::ForceRefresh()
 {
 	//FWwiseWwuParser::ForcePopulate();
 	//UpdateDirectoryWatcher();
+	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	AssetManager.Init();
+
 	ConstructTree();
 }
 
@@ -327,15 +337,19 @@ void SPlayerMainWidget::ConstructTree()
 {
 	//if (!FAkWaapiClient::IsProjectLoaded())
 	//{
-		RootItems.Empty(EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS);
-		EWwiseTreeItemType::Type CurrentType = EWwiseTreeItemType::Event;
-		while ((int)CurrentType < (int)EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS)
-		{
+		//RootItems.Empty(EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS);
+		//EWwiseTreeItemType::Type CurrentType = EWwiseTreeItemType::Event;
+
+		//while ((int)CurrentType < (int)EWwiseTreeItemType::NUM_DRAGGABLE_WWISE_ITEMS)
+		//{
 			//TSharedPtr<FWaapiPlayerTreeItem> NewRoot = FWwiseWwuParser::GetTree(SearchBoxFilter, RootItems.Num() > CurrentType ? RootItems[CurrentType] : nullptr, CurrentType);
-			TSharedPtr<FWaapiPlayerTreeItem> NewRoot = MakeShareable(new FWaapiPlayerTreeItem(TEXT("WaapiRoot"), TEXT("Path/Folder"), RootItems[0], EWaapiPlayerTreeItemType::Event));
-			RootItems.Add(NewRoot);
-			CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
-		}		
+			//TSharedPtr<FWaapiPlayerTreeItem> NewRoot = MakeShareable(new FWaapiPlayerTreeItem(TEXT("WaapiRoot"), TEXT("Path/Root"), nullptr, EWaapiPlayerTreeItemType::Folder));
+			//NewRoot->Children.Add(MakeShareable(new FWaapiPlayerTreeItem(TEXT("WaapiChild"), TEXT("Path/Root/Children"), NewRoot, EWaapiPlayerTreeItemType::Event)));
+			//CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
+
+			WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+			RootItems.Add(AssetManager.RootItem);
+		//}		
 	//}
 	RestoreTreeExpansion(RootItems);
 	TreeViewPtr->RequestTreeRefresh();
@@ -377,8 +391,8 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 			.VAlign(VAlign_Center)
 			[
 				SNew(SImage) 
-				//.Image(FAkAudioStyle::GetBrush(TreeItem->ItemType))
-				.Image(FAkAudioStyle::GetBrush(EWwiseTreeItemType::Event))
+				//.Image(FAkAudioStyle::GetBrush(EWwiseTreeItemType::Event))
+				.Image(FWaapi_PlayerStyle::GetBrush(TreeItem->ItemType))
 			]
 
 			+ SHorizontalBox::Slot()

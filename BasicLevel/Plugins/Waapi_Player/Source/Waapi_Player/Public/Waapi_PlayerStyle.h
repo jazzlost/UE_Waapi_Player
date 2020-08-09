@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Styling/SlateStyle.h"
+#include "Waapi_PlayerTreeItem.h"
+
 
 /**  */
 class FWaapi_PlayerStyle
@@ -22,7 +24,7 @@ public:
 
 	static FName GetStyleSetName();
 
-	//static const FSlateBrush* GetBrush(EWwiseTreeItemType::Type ItemType);
+	static const FSlateBrush* GetBrush(EWaapiPlayerTreeItemType::Type ItemType);
 	//static const FSlateBrush* GetBrush(FName PropertyName, const ANSICHAR* Specifier = NULL);
 	//static const FSlateFontInfo GetFontStyle(FName PropertyName, const ANSICHAR* Specifier = NULL);
 

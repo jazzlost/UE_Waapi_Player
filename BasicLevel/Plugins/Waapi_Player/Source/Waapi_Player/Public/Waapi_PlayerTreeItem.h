@@ -15,7 +15,8 @@ namespace EWaapiPlayerTreeItemType
 	enum Type
 	{
 		Event,
-		Folder
+		Folder,
+		Project
 	};
 
 	enum NumItems
