@@ -1,5 +1,7 @@
+#pragma once
+
 #include "AkAudioEvent.h"
-#include "Waapi_PlayerTreeItem.h"
+#include "WaapiPlayerTreeItem.h"
 
 class FAssetRegistryModule;
 

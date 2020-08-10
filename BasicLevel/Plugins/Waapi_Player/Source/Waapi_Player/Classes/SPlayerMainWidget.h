@@ -5,7 +5,7 @@
 #include "Misc/TextFilter.h"
 #include "Widgets/Views/STreeView.h"
 
-#include "Waapi_PlayerTreeItem.h"
+#include "WaapiPlayerTreeItem.h"
 
 typedef TTextFilter< const FString& > StringFilter;
 

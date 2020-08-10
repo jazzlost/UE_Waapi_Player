@@ -8,7 +8,7 @@
 class FToolBarBuilder;
 class FMenuBuilder;
 
-class FWaapi_PlayerModule : public IModuleInterface
+class FWaapiPlayerModule : public IModuleInterface
 {
 public:
 

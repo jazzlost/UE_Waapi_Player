@@ -1,6 +1,6 @@
 // Copyright 1998-2019 Epic Games, Inc. All Rights Reserved.
 
-#include "Waapi_PlayerStyle.h"
+#include "WaapiPlayerStyle.h"
 #include "Styling/SlateStyleRegistry.h"
 #include "Framework/Application/SlateApplication.h"
 #include "Slate/SlateGameResources.h"
@@ -8,7 +8,7 @@
 #include "Engine/Texture2D.h"
 
 
-TSharedPtr< FSlateStyleSet > FWaapi_PlayerStyle::StyleInstance = NULL;
+TSharedPtr< FSlateStyleSet > FWaapiPlayerStyle::StyleInstance = NULL;
 
 #define IMAGE_BRUSH( RelativePath, ... ) FSlateImageBrush( Style->RootToContentDir( RelativePath, TEXT(".png") ), __VA_ARGS__ )
 #define BOX_BRUSH( RelativePath, ... ) FSlateBoxBrush( Style->RootToContentDir( RelativePath, TEXT(".png") ), __VA_ARGS__ )
@@ -53,15 +53,15 @@ void SetResourceBrushes(FSlateStyleSet& Style)
 	SetWaapiBrush(Style, "WaapiPlayer.RTPCIcon", "gameparameter_nor");
 }
 
-void FWaapi_PlayerStyle::Initialize()
+void FWaapiPlayerStyle::Initialize()
 {
 	if (!StyleInstance.IsValid())
 	{
 		StyleInstance = Create();
 
-		//auto ContentRoot = FPaths::EngineContentDir() / TEXT("Slate");
-		//StyleInstance->SetContentRoot(ContentRoot);
-		//StyleInstance->SetCoreContentRoot(ContentRoot);
+		auto ContentRoot = FPaths::EngineContentDir() / TEXT("Slate");
+		StyleInstance->SetContentRoot(ContentRoot);
+		StyleInstance->SetCoreContentRoot(ContentRoot);
 
 		FSlateStyleSet& Style = *StyleInstance.Get();
 		{
@@ -90,14 +90,14 @@ void FWaapi_PlayerStyle::Initialize()
 	}
 }
 
-void FWaapi_PlayerStyle::Shutdown()
+void FWaapiPlayerStyle::Shutdown()
 {
 	FSlateStyleRegistry::UnRegisterSlateStyle(*StyleInstance);
 	ensure(StyleInstance.IsUnique());
 	StyleInstance.Reset();
 }
 
-FName FWaapi_PlayerStyle::GetStyleSetName()
+FName FWaapiPlayerStyle::GetStyleSetName()
 {
 	static FName StyleSetName(TEXT("Waapi_PlayerStyle"));
 	return StyleSetName;
@@ -108,7 +108,7 @@ const FVector2D Icon16x16(16.0f, 16.0f);
 const FVector2D Icon20x20(20.0f, 20.0f);
 const FVector2D Icon40x40(40.0f, 40.0f);
 
-TSharedRef< FSlateStyleSet > FWaapi_PlayerStyle::Create()
+TSharedRef< FSlateStyleSet > FWaapiPlayerStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("Waapi_PlayerStyle"));
 	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Waapi_Player")->GetBaseDir() / TEXT("Resources"));
@@ -124,7 +124,7 @@ TSharedRef< FSlateStyleSet > FWaapi_PlayerStyle::Create()
 #undef TTF_FONT
 #undef OTF_FONT
 
-void FWaapi_PlayerStyle::ReloadTextures()
+void FWaapiPlayerStyle::ReloadTextures()
 {
 	if (FSlateApplication::IsInitialized())
 	{
@@ -132,7 +132,7 @@ void FWaapi_PlayerStyle::ReloadTextures()
 	}
 }
 
-const ISlateStyle& FWaapi_PlayerStyle::Get()
+const ISlateStyle& FWaapiPlayerStyle::Get()
 {
 	return *StyleInstance;
 }
@@ -140,7 +140,7 @@ const ISlateStyle& FWaapi_PlayerStyle::Get()
 
 
 
-const FSlateBrush* FWaapi_PlayerStyle::GetBrush(EWaapiPlayerTreeItemType::Type ItemType)
+const FSlateBrush* FWaapiPlayerStyle::GetBrush(EWaapiPlayerTreeItemType::Type ItemType)
 {
 	auto& Style = Get();
 	switch (ItemType)

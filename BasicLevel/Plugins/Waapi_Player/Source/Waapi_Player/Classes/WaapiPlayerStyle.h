@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Styling/SlateStyle.h"
-#include "Waapi_PlayerTreeItem.h"
+#include "WaapiPlayerTreeItem.h"
 
 
 /**  */
-class FWaapi_PlayerStyle
+class FWaapiPlayerStyle
 {
 public:
 

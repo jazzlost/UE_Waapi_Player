@@ -8,7 +8,7 @@
 #include "AkAudioDevice.h"
 //#include "AkAudioBankGenerationHelpers.h"
 #include "AkAudioStyle.h"
-#include "Waapi_PlayerStyle.h"
+#include "WaapiPlayerStyle.h"
 //#include "WwisePicker/SWwisePicker.h"
 //#include "WwisePicker/WwiseWwuParser.h"
 //#include "DirectoryWatcherModule.h"
@@ -392,7 +392,7 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 			[
 				SNew(SImage) 
 				//.Image(FAkAudioStyle::GetBrush(EWwiseTreeItemType::Event))
-				.Image(FWaapi_PlayerStyle::GetBrush(TreeItem->ItemType))
+				.Image(FWaapiPlayerStyle::GetBrush(TreeItem->ItemType))
 			]
 
 			+ SHorizontalBox::Slot()

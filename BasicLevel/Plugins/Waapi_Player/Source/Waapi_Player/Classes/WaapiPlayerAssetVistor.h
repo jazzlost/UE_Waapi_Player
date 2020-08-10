@@ -1,6 +1,8 @@
+#pragma once
+
 #include "HAL/PlatformFilemanager.h"
 #include "HAL/FileManager.h"
-#include "Waapi_PlayerTreeItem.h"
+#include "WaapiPlayerTreeItem.h"
 
 
 
