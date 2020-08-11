@@ -4,7 +4,7 @@
 	SWwisePicker.cpp
 ------------------------------------------------------------------------------------*/
 
-#include "SPlayerMainWidget.h"
+#include "SPlayerTreeViewWidget.h"
 #include "AkAudioDevice.h"
 //#include "AkAudioBankGenerationHelpers.h"
 #include "AkAudioStyle.h"
@@ -28,16 +28,16 @@
 
 #define LOCTEXT_NAMESPACE "AkAudio"
 
-//const FName SPlayerMainWidget::WwisePickerTabName = FName("WwisePicker");
+//const FName SPlayerTreeViewWidget::WwisePickerTabName = FName("WwisePicker");
 
 
-SPlayerMainWidget::SPlayerMainWidget()
+SPlayerTreeViewWidget::SPlayerTreeViewWidget()
 {
 	AllowTreeViewDelegates = true;
 	//isPickerVisible = !FAkWaapiClient::IsProjectLoaded();
 }
 
-//void SPlayerMainWidget::RemoveClientCallbacks()
+//void SPlayerTreeViewWidget::RemoveClientCallbacks()
 //{
 //	auto pWaapiClient = FAkWaapiClient::Get();
 //	if (pWaapiClient != nullptr)
@@ -55,7 +55,7 @@ SPlayerMainWidget::SPlayerMainWidget()
 //	}
 //}
 
-//void SPlayerMainWidget::UpdateDirectoryWatcher()
+//void SPlayerTreeViewWidget::UpdateDirectoryWatcher()
 //{
 //	FString OldProjectFolder = ProjectFolder;
 //	ProjectFolder = FPaths::GetPath(WwiseBnkGenHelper::GetLinkedProjectPath());
@@ -70,13 +70,13 @@ SPlayerMainWidget::SPlayerMainWidget()
 //
 //	DirectoryWatcherModule.Get()->RegisterDirectoryChangedCallback_Handle(
 //		ProjectFolder
-//		, IDirectoryWatcher::FDirectoryChanged::CreateRaw(this, &SPlayerMainWidget::OnProjectDirectoryChanged)
+//		, IDirectoryWatcher::FDirectoryChanged::CreateRaw(this, &SPlayerTreeViewWidget::OnProjectDirectoryChanged)
 //		, ProjectDirectoryModifiedDelegateHandle
 //		);
 //
 //}
 
-//void SPlayerMainWidget::OnProjectDirectoryChanged(const TArray<struct FFileChangeData>& ChangedFiles)
+//void SPlayerTreeViewWidget::OnProjectDirectoryChanged(const TArray<struct FFileChangeData>& ChangedFiles)
 //{
 //	bool bFoundWorkUnit = false;
 //	for(auto File : ChangedFiles)
@@ -95,7 +95,7 @@ SPlayerMainWidget::SPlayerMainWidget()
 //	}
 //}
 
-SPlayerMainWidget::~SPlayerMainWidget()
+SPlayerTreeViewWidget::~SPlayerTreeViewWidget()
 {
 	RootItems.Empty();
 	//RemoveClientCallbacks();
@@ -110,11 +110,11 @@ SPlayerMainWidget::~SPlayerMainWidget()
 	//DirectoryWatcherModule.Get()->UnregisterDirectoryChangedCallback_Handle(ProjectFolder, ProjectDirectoryModifiedDelegateHandle);
 }
 
-void SPlayerMainWidget::Construct(const FArguments& InArgs)
+void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 {
 	//UpdateDirectoryWatcher();
-	SearchBoxFilter = MakeShareable( new StringFilter( StringFilter::FItemToStringArray::CreateSP( this, &SPlayerMainWidget::PopulateSearchStrings ) ) );
-	SearchBoxFilter->OnChanged().AddSP( this, &SPlayerMainWidget::FilterUpdated );
+	SearchBoxFilter = MakeShareable( new StringFilter( StringFilter::FItemToStringArray::CreateSP( this, &SPlayerTreeViewWidget::PopulateSearchStrings ) ) );
+	SearchBoxFilter->OnChanged().AddSP( this, &SPlayerTreeViewWidget::FilterUpdated );
 
     //UAkSettings* AkSettings = GetMutableDefault<UAkSettings>();
     //AkSettings->bRequestRefresh = false;
@@ -132,7 +132,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 			.VAlign(VAlign_Fill)
 			[
 				SNew(SVerticalBox)
-				.Visibility(this, &SPlayerMainWidget::isPickerAllowed)
+				.Visibility(this, &SPlayerTreeViewWidget::isPickerAllowed)
 
 				// Search
 				+ SVerticalBox::Slot()
@@ -152,7 +152,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 					[
 						SNew(SSearchBox)
 						.HintText( LOCTEXT( "WwisePickerSearchTooltip", "Search Wwise Item" ) )
-						.OnTextChanged( this, &SPlayerMainWidget::OnSearchBoxChanged )
+						.OnTextChanged( this, &SPlayerTreeViewWidget::OnSearchBoxChanged )
 						.SelectAllTextWhenFocused(false)
 						.DelayChangeNotificationsWhileTyping(true)
 					]
@@ -177,7 +177,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 					//[
 					//	SNew(STextBlock)
 					//	.Font( FEditorStyle::GetFontStyle("ContentBrowser.SourceTitleFont") )
-					//	.Text( this, &SPlayerMainWidget::GetProjectName )
+					//	.Text( this, &SPlayerTreeViewWidget::GetProjectName )
 					//	.Visibility(InArgs._ShowTreeTitle ? EVisibility::Visible : EVisibility::Collapsed)
 					//]
 
@@ -192,7 +192,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 					//[
 					//	SNew(SButton)
 					//	.Text(LOCTEXT("AkPickerPopulate", "Populate"))
-					//	.OnClicked(this, &SPlayerMainWidget::OnPopulateClicked)
+					//	.OnClicked(this, &SPlayerTreeViewWidget::OnPopulateClicked)
 					//]
 				]
 
@@ -211,13 +211,13 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 				[
 					SAssignNew(TreeViewPtr, STreeView< TSharedPtr<FWaapiPlayerTreeItem> >)
 					.TreeItemsSource(&RootItems)
-					.OnGenerateRow( this, &SPlayerMainWidget::GenerateRow )
+					.OnGenerateRow( this, &SPlayerTreeViewWidget::GenerateRow )
 					//.OnItemScrolledIntoView( this, &SPathView::TreeItemScrolledIntoView )
 					.ItemHeight(18)
 					.SelectionMode(InArgs._SelectionMode)
-					.OnSelectionChanged(this, &SPlayerMainWidget::TreeSelectionChanged)
-					.OnExpansionChanged(this, &SPlayerMainWidget::TreeExpansionChanged)
-					.OnGetChildren( this, &SPlayerMainWidget::GetChildrenForTree )
+					.OnSelectionChanged(this, &SPlayerTreeViewWidget::TreeSelectionChanged)
+					.OnExpansionChanged(this, &SPlayerTreeViewWidget::TreeExpansionChanged)
+					.OnGetChildren( this, &SPlayerTreeViewWidget::GetChildrenForTree )
 					//.OnSetExpansionRecursive( this, &SPathView::SetTreeItemExpansionRecursive )
 					//.OnContextMenuOpening(this, &SPathView::MakePathViewContextMenu)
 					.ClearSelectionOnClick(false)
@@ -236,7 +236,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 				.AutoHeight()
 				[
 					SNew(STextBlock)
-					.Visibility(this, &SPlayerMainWidget::isWarningVisible)
+					.Visibility(this, &SPlayerTreeViewWidget::isWarningVisible)
 					.AutoWrapText(true)
 					.Justification(ETextJustify::Center)
 					.Text(LOCTEXT("EmptyWwiseTree", "WAAPI connection available; the Wwise Picker has been disabled. Please use the WAAPI Picker."))
@@ -247,7 +247,7 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 				.AutoHeight()
 				[
 					SNew(SHyperlink)
-					.Visibility(this, &SPlayerMainWidget::isWarningVisible)
+					.Visibility(this, &SPlayerTreeViewWidget::isWarningVisible)
 					.Text(LOCTEXT("WaapiDucumentation", "For more informaton, please Visit Waapi Documentation."))
 					.ToolTipText(LOCTEXT("WaapiDucumentationTooltip", "Opens Waapi documentation in a new browser window"))
 					.OnNavigate_Lambda([=]() { FPlatformProcess::LaunchURL(*FString("https://www.audiokinetic.com/library/?source=SDK&id=waapi.html"), nullptr, nullptr); })
@@ -287,21 +287,21 @@ void SPlayerMainWidget::Construct(const FArguments& InArgs)
 	ExpandFirstLevel();
 }
 
-EVisibility SPlayerMainWidget::isPickerAllowed() const
+EVisibility SPlayerTreeViewWidget::isPickerAllowed() const
 {
 	if (isPickerVisible)
 		return EVisibility::Visible;
 	return EVisibility::Hidden;
 }
 
-EVisibility SPlayerMainWidget::isWarningVisible() const
+EVisibility SPlayerTreeViewWidget::isWarningVisible() const
 {
 	if (!isPickerVisible)
 		return EVisibility::Visible;
 	return EVisibility::Hidden;
 }
 
-//void SPlayerMainWidget::Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime )
+//void SPlayerTreeViewWidget::Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime )
 //{
 //	UAkSettings* AkSettings = GetMutableDefault<UAkSettings>();
 //    if(AkSettings->bRequestRefresh)
@@ -311,7 +311,7 @@ EVisibility SPlayerMainWidget::isWarningVisible() const
 //    }
 //}
 
-void SPlayerMainWidget::ForceRefresh()
+void SPlayerTreeViewWidget::ForceRefresh()
 {
 	//FWwiseWwuParser::ForcePopulate();
 	//UpdateDirectoryWatcher();
@@ -321,19 +321,19 @@ void SPlayerMainWidget::ForceRefresh()
 	ConstructTree();
 }
 
-//FText SPlayerMainWidget::GetProjectName() const
+//FText SPlayerTreeViewWidget::GetProjectName() const
 //{
 //	return FText::FromString(ProjectName);
 //}
 
-//FReply SPlayerMainWidget::OnPopulateClicked()
+//FReply SPlayerTreeViewWidget::OnPopulateClicked()
 //{
 //	//FWwiseWwuParser::Populate();
 //	ConstructTree();
 //	//return FReply::Handled();
 //}
 
-void SPlayerMainWidget::ConstructTree()
+void SPlayerTreeViewWidget::ConstructTree()
 {
 	//if (!FAkWaapiClient::IsProjectLoaded())
 	//{
@@ -355,7 +355,7 @@ void SPlayerMainWidget::ConstructTree()
 	TreeViewPtr->RequestTreeRefresh();
 }
 
-void SPlayerMainWidget::ExpandFirstLevel()
+void SPlayerTreeViewWidget::ExpandFirstLevel()
 {
 	// Expand root items and first-level work units.
 	for(int32 i = 0; i < RootItems.Num(); i++)
@@ -364,7 +364,7 @@ void SPlayerMainWidget::ExpandFirstLevel()
 	}
 }
 
-void SPlayerMainWidget::ExpandParents(TSharedPtr<FWaapiPlayerTreeItem> Item)
+void SPlayerTreeViewWidget::ExpandParents(TSharedPtr<FWaapiPlayerTreeItem> Item)
 {
 	if(Item->Parent.IsValid())
 	{
@@ -373,7 +373,7 @@ void SPlayerMainWidget::ExpandParents(TSharedPtr<FWaapiPlayerTreeItem> Item)
 	}
 }
 
-TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTreeItem> TreeItem, const TSharedRef<STableViewBase>& OwnerTable )
+TSharedRef<ITableRow> SPlayerTreeViewWidget::GenerateRow( TSharedPtr<FWaapiPlayerTreeItem> TreeItem, const TSharedRef<STableViewBase>& OwnerTable )
 {
 	check(TreeItem.IsValid());
 
@@ -381,7 +381,7 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 	//EVisibility RowVisibility = EVisibility::Visible;
 
 	TSharedPtr<ITableRow> NewRow = SNew( STableRow< TSharedPtr<FWaapiPlayerTreeItem> >, OwnerTable )
-		.OnDragDetected( this, &SPlayerMainWidget::OnDragDetected )
+		.OnDragDetected( this, &SPlayerTreeViewWidget::OnDragDetected )
 		.Visibility(RowVisibility)
 		[
 			SNew(SHorizontalBox)
@@ -401,7 +401,7 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 			[
 				SNew(STextBlock)
 				.Text(FText::FromString(TreeItem->DisplayName))
-				.HighlightText(this, &SPlayerMainWidget::GetHighlightText)
+				.HighlightText(this, &SPlayerTreeViewWidget::GetHighlightText)
 			]
 		];
 
@@ -410,12 +410,12 @@ TSharedRef<ITableRow> SPlayerMainWidget::GenerateRow( TSharedPtr<FWaapiPlayerTre
 	return NewRow.ToSharedRef();
 }
 
-void SPlayerMainWidget::GetChildrenForTree( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, TArray< TSharedPtr<FWaapiPlayerTreeItem> >& OutChildren )
+void SPlayerTreeViewWidget::GetChildrenForTree( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, TArray< TSharedPtr<FWaapiPlayerTreeItem> >& OutChildren )
 {
 	OutChildren = TreeItem->Children;
 }
 
-//FReply SPlayerMainWidget::OnDragDetected(const FGeometry& Geometry, const FPointerEvent& MouseEvent)
+//FReply SPlayerTreeViewWidget::OnDragDetected(const FGeometry& Geometry, const FPointerEvent& MouseEvent)
 //{
 //	if ( MouseEvent.IsMouseButtonDown( EKeys::LeftMouseButton ) )
 //	{
@@ -426,22 +426,22 @@ void SPlayerMainWidget::GetChildrenForTree( TSharedPtr< FWaapiPlayerTreeItem > T
 //	return FReply::Unhandled();
 //}
 
-void SPlayerMainWidget::PopulateSearchStrings( const FString& FolderName, OUT TArray< FString >& OutSearchStrings ) const
+void SPlayerTreeViewWidget::PopulateSearchStrings( const FString& FolderName, OUT TArray< FString >& OutSearchStrings ) const
 {
 	OutSearchStrings.Add( FolderName );
 }
 
-void SPlayerMainWidget::OnSearchBoxChanged( const FText& InSearchText )
+void SPlayerTreeViewWidget::OnSearchBoxChanged( const FText& InSearchText )
 {
 	SearchBoxFilter->SetRawFilterText( InSearchText );
 }
 
-FText SPlayerMainWidget::GetHighlightText() const
+FText SPlayerTreeViewWidget::GetHighlightText() const
 {
 	return SearchBoxFilter->GetRawFilterText();
 }
 
-void SPlayerMainWidget::FilterUpdated()
+void SPlayerTreeViewWidget::FilterUpdated()
 {
 	FScopedSlowTask SlowTask(2.f, LOCTEXT("AK_PopulatingPicker", "Populating Wwise Picker..."));
 	SlowTask.MakeDialog();
@@ -452,7 +452,7 @@ void SPlayerMainWidget::FilterUpdated()
 	TreeViewPtr->RequestTreeRefresh();
 }
 
-void SPlayerMainWidget::SetItemVisibility(TSharedPtr<FWaapiPlayerTreeItem> Item, bool IsVisible)
+void SPlayerTreeViewWidget::SetItemVisibility(TSharedPtr<FWaapiPlayerTreeItem> Item, bool IsVisible)
 {
 	if( Item.IsValid() )
 	{
@@ -470,7 +470,7 @@ void SPlayerMainWidget::SetItemVisibility(TSharedPtr<FWaapiPlayerTreeItem> Item,
 	}
 }
 
-void SPlayerMainWidget::ApplyFilter(TSharedPtr<FWaapiPlayerTreeItem> ItemToFilter)
+void SPlayerTreeViewWidget::ApplyFilter(TSharedPtr<FWaapiPlayerTreeItem> ItemToFilter)
 {
 
 	EWwiseTreeItemType::Type CurrentType = EWwiseTreeItemType::Event;
@@ -486,7 +486,7 @@ void SPlayerMainWidget::ApplyFilter(TSharedPtr<FWaapiPlayerTreeItem> ItemToFilte
 	AllowTreeViewDelegates = true;
 }
 
-void SPlayerMainWidget::RestoreTreeExpansion(const TArray< TSharedPtr<FWaapiPlayerTreeItem> >& Items)
+void SPlayerTreeViewWidget::RestoreTreeExpansion(const TArray< TSharedPtr<FWaapiPlayerTreeItem> >& Items)
 {
 	for(int i = 0; i < Items.Num(); i++)
 	{
@@ -498,7 +498,7 @@ void SPlayerMainWidget::RestoreTreeExpansion(const TArray< TSharedPtr<FWaapiPlay
 	}
 }
 
-void SPlayerMainWidget::TreeSelectionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, ESelectInfo::Type /*SelectInfo*/ )
+void SPlayerTreeViewWidget::TreeSelectionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, ESelectInfo::Type /*SelectInfo*/ )
 {
 	if( AllowTreeViewDelegates )
 	{
@@ -516,7 +516,7 @@ void SPlayerMainWidget::TreeSelectionChanged( TSharedPtr< FWaapiPlayerTreeItem >
 	}
 }
 
-void SPlayerMainWidget::TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, bool bIsExpanded )
+void SPlayerTreeViewWidget::TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, bool bIsExpanded )
 {
 	if( AllowTreeViewDelegates )
 	{

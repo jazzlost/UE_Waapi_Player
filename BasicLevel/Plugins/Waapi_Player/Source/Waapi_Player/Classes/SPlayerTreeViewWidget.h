@@ -9,10 +9,10 @@
 
 typedef TTextFilter< const FString& > StringFilter;
 
-class SPlayerMainWidget : public SCompoundWidget
+class SPlayerTreeViewWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SPlayerMainWidget)
+	SLATE_BEGIN_ARGS(SPlayerTreeViewWidget)
 		: _FocusSearchBoxWhenOpened(false)
 		, _ShowTreeTitle(true)
 		, _ShowSearchBar(true)
@@ -45,9 +45,9 @@ public:
 
 	void Construct(const FArguments& InArgs);
 	
-	SPlayerMainWidget();
+	SPlayerTreeViewWidget();
 	
-	~SPlayerMainWidget();
+	~SPlayerTreeViewWidget();
 
 	static const FName PlayerMainWidgetTabName;
 

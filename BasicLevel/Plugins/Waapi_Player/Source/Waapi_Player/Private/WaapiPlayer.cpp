@@ -9,7 +9,7 @@
 #include "Widgets/Text/STextBlock.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 
-#include "SPlayerMainWidget.h"
+#include "SPlayerTreeViewWidget.h"
 
 static const FName Waapi_PlayerTabName("Waapi_Player");
 
@@ -86,7 +86,14 @@ TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& S
 				.HAlign(HAlign_Fill)
 				.VAlign(VAlign_Fill)
 				[
-					SNew(SPlayerMainWidget)
+					SNew(SPlayerTreeViewWidget)
+				]
+				
+				+ SHorizontalBox::Slot()
+				.HAlign(HAlign_Fill)
+				.VAlign(VAlign_Fill)
+				[
+					SNew(SPlayerTreeViewWidget)
 				]
 			//]
 		];
