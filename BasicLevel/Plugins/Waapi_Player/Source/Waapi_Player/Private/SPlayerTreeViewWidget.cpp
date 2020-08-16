@@ -26,7 +26,7 @@
 //#include "AkSettings.h"
 
 
-#define LOCTEXT_NAMESPACE "AkAudio"
+#define LOCTEXT_NAMESPACE "WaapiPlayer"
 
 //const FName SPlayerTreeViewWidget::WwisePickerTabName = FName("WwisePicker");
 
