@@ -49,7 +49,18 @@ SPlayerControlPanelWidget::SPlayerControlPanelWidget()
 		Data->SwitchOrState.Add(Option_03);
 		Data->bSwitch = true;
 
-		DataList.Add(Data);
+		SwitchDataList.Add(Data);
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		WaapiRtpcDataPtr Data = MakeShareable(new WaapiRtpcObject);
+		Data->RtpcName = TEXT("RTPC_") + FString::FromInt(i);
+		Data->DefaultValue = i * 20.0f;
+		Data->MinValue = i * 5.0f;
+		Data->MaxValue = i * 30.0f;
+
+		RtpcDataList.Add(Data);
 	}
 }
 
@@ -160,13 +171,20 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 				+SVerticalBox::Slot()
 				.AutoHeight()
 				[
-					SAssignNew(ListView, SSwitchOrStateListViewWidget)
+					SAssignNew(SwitchListView, SSwitchOrStateListViewWidget)
+				]
+
+				+SVerticalBox::Slot()
+				.AutoHeight()
+				[
+					SAssignNew(RtpcListView, SRtpcListViewWidget)
 				]
 			]
 		]
 	];
 
-	ListView->SetItemList(DataList);
+	SwitchListView->SetItemList(SwitchDataList);
+	RtpcListView->SetItemList(RtpcDataList);
 }
 
 //TSharedRef<SWidget> SPlayerControlPanelWidget::GenerateCollectionFilterItem(TSharedPtr<FName> InItem)

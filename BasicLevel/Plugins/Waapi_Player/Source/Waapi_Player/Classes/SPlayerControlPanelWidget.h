@@ -59,7 +59,9 @@ public:
 
 private:
 	/** List of collection filter options */
-	TSharedPtr<SSwitchOrStateListViewWidget> ListView;
+	TSharedPtr<SSwitchOrStateListViewWidget> SwitchListView;
+	TSharedPtr<SRtpcListViewWidget> RtpcListView;
 
-	TArray<WaapiSwitchOrStateDataPtr> DataList;
+	TArray<WaapiSwitchOrStateDataPtr> SwitchDataList;
+	TArray<WaapiRtpcDataPtr> RtpcDataList;
 };
