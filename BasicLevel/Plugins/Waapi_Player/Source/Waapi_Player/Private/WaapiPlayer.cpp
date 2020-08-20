@@ -50,13 +50,19 @@ void FWaapiPlayerModule::StartupModule()
 	
 	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Waapi_PlayerTabName, FOnSpawnTab::CreateRaw(this, &FWaapiPlayerModule::OnSpawnPluginTab))
 		.SetDisplayName(LOCTEXT("FWaapi_PlayerTabTitle", "Waapi_Player"))
-		.SetMenuType(ETabSpawnerMenuType::Hidden);
+		.SetMenuType(ETabSpawnerMenuType::Enabled);
+
+	ToolBarExtensibilityManager = MakeShareable(new FExtensibilityManager);
+	MenuExtensibilityManager = MakeShareable(new FExtensibilityManager);
 }
 
 void FWaapiPlayerModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	ToolBarExtensibilityManager.Reset();
+	MenuExtensibilityManager.Reset();
+
 	FWaapiPlayerStyle::Shutdown();
 
 	FWaapiPlayerCommands::Unregister();
@@ -66,43 +72,36 @@ void FWaapiPlayerModule::ShutdownModule()
 
 TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	FText WidgetText = FText::Format(
-		LOCTEXT("WindowWidgetText", "Add code to {0} in {1} to override this window's contents"),
-		FText::FromString(TEXT("FWaapiPlayerModule::OnSpawnPluginTab")),
-		FText::FromString(TEXT("Waapi_Player.cpp"))
-		);
-
 	return SNew(SDockTab)
 		.TabRole(ETabRole::NomadTab)
 		[
-			// Put your tab content here!
-			//SNew(SBox)
-			//.HAlign(HAlign_Center)
-			//.VAlign(VAlign_Center)
-			//[
-				/*SNew(STextBlock)
-				.Text(WidgetText)*/
-				SNew(SHorizontalBox)
-				+ SHorizontalBox::Slot()
-				.HAlign(HAlign_Fill)
-				.VAlign(VAlign_Fill)
-				[
-					SNew(SPlayerTreeViewWidget)
-				]
-				
-				+ SHorizontalBox::Slot()
-				.HAlign(HAlign_Fill)
-				.VAlign(VAlign_Fill)
-				[
-					SNew(SPlayerControlPanelWidget)
-				]
-			//]
+			SNew(SHorizontalBox)
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Fill)
+			.VAlign(VAlign_Fill)
+			[
+				SNew(SPlayerTreeViewWidget)
+			]
+			
+			+ SHorizontalBox::Slot()
+			.HAlign(HAlign_Fill)
+			.VAlign(VAlign_Fill)
+			[
+				SNew(SPlayerControlPanelWidget)
+			]
 		];
 }
 
 void FWaapiPlayerModule::PluginButtonClicked()
 {
 	FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
+}
+
+TSharedPtr<IWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UAkAudioEvent * Asset)
+{
+	TSharedPtr<IWaapiPlayerAssetEditor> NewAssetEditor(new FWaapiPlayerAssetEditor());
+	NewAssetEditor->InitAssetEditor(Mode, InitToolkitHost, Asset);
+	return NewAssetEditor;
 }
 
 void FWaapiPlayerModule::AddMenuExtension(FMenuBuilder& Builder)
@@ -114,6 +113,8 @@ void FWaapiPlayerModule::AddToolbarExtension(FToolBarBuilder& Builder)
 {
 	Builder.AddToolBarButton(FWaapiPlayerCommands::Get().OpenPluginWindow);
 }
+
+
 
 #undef LOCTEXT_NAMESPACE
 	

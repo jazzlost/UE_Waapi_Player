@@ -52,7 +52,7 @@ SPlayerControlPanelWidget::SPlayerControlPanelWidget()
 		SwitchDataList.Add(Data);
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (int i = 1; i < 5; i++)
 	{
 		WaapiRtpcDataPtr Data = MakeShareable(new WaapiRtpcObject);
 		Data->RtpcName = TEXT("RTPC_") + FString::FromInt(i);

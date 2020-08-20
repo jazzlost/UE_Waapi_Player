@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class Waapi_Player : ModuleRules
+public class WaapiPlayer : ModuleRules
 {
-	public Waapi_Player(ReadOnlyTargetRules Target) : base(Target)
+	public WaapiPlayer(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 		
