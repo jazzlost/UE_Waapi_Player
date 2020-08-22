@@ -9,6 +9,7 @@
 #include "Widgets/Text/STextBlock.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 
+#include "WaapiPlayerAssetEditor.h"
 #include "SPlayerTreeViewWidget.h"
 #include "SPlayerControlPanelWidget.h"
 
@@ -72,29 +73,30 @@ void FWaapiPlayerModule::ShutdownModule()
 
 TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	return SNew(SDockTab)
-		.TabRole(ETabRole::NomadTab)
-		[
-			SNew(SHorizontalBox)
-			+ SHorizontalBox::Slot()
-			.HAlign(HAlign_Fill)
-			.VAlign(VAlign_Fill)
-			[
-				SNew(SPlayerTreeViewWidget)
-			]
-			
-			+ SHorizontalBox::Slot()
-			.HAlign(HAlign_Fill)
-			.VAlign(VAlign_Fill)
-			[
-				SNew(SPlayerControlPanelWidget)
-			]
-		];
+	//return SNew(SDockTab)
+	//	.TabRole(ETabRole::NomadTab)
+	//	[
+	//		SNew(SHorizontalBox)
+	//		+ SHorizontalBox::Slot()
+	//		.HAlign(HAlign_Fill)
+	//		.VAlign(VAlign_Fill)
+	//		[
+	//			SNew(SPlayerTreeViewWidget)
+	//		]
+	//		
+	//		+ SHorizontalBox::Slot()
+	//		.HAlign(HAlign_Fill)
+	//		.VAlign(VAlign_Fill)
+	//		[
+	//			SNew(SPlayerControlPanelWidget)
+	//		]
+	//	];
 }
 
 void FWaapiPlayerModule::PluginButtonClicked()
 {
-	FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
+	//FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
+
 }
 
 TSharedPtr<IWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UAkAudioEvent * Asset)
