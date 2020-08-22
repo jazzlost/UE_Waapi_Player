@@ -11,7 +11,7 @@ class FWaapiPlayerCommands : public TCommands<FWaapiPlayerCommands>
 public:
 
 	FWaapiPlayerCommands()
-		: TCommands<FWaapiPlayerCommands>(TEXT("Waapi_Player"), NSLOCTEXT("Contexts", "Waapi_Player", "Waapi_Player Plugin"), NAME_None, FWaapiPlayerStyle::GetStyleSetName())
+		: TCommands<FWaapiPlayerCommands>(TEXT("WaapiPlayer"), NSLOCTEXT("Contexts", "WaapiPlayer", "WaapiPlayer Plugin"), NAME_None, FWaapiPlayerStyle::GetStyleSetName())
 	{
 	}
 

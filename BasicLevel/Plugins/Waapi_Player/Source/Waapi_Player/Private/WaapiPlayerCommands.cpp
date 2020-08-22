@@ -6,7 +6,7 @@
 
 void FWaapiPlayerCommands::RegisterCommands()
 {
-	UI_COMMAND(OpenPluginWindow, "Waapi_Player", "Bring up Waapi_Player window", EUserInterfaceActionType::Button, FInputGesture());
+	UI_COMMAND(OpenPluginWindow, "WaapiPlayer", "Bring up WaapiPlayer window", EUserInterfaceActionType::Button, FInputGesture());
 }
 
 #undef LOCTEXT_NAMESPACE

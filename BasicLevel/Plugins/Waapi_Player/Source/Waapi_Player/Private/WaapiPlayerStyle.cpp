@@ -16,7 +16,7 @@ TSharedPtr< FSlateStyleSet > FWaapiPlayerStyle::StyleInstance = NULL;
 #define TTF_FONT( RelativePath, ... ) FSlateFontInfo( Style->RootToContentDir( RelativePath, TEXT(".ttf") ), __VA_ARGS__ )
 #define OTF_FONT( RelativePath, ... ) FSlateFontInfo( Style->RootToContentDir( RelativePath, TEXT(".otf") ), __VA_ARGS__ )
 
-#define WAAPI_TEXTURE( RelativePath, TextureName ) LoadObject<UTexture2D>(nullptr, *(FString("/Waapi_Player/") / FString(RelativePath) / FString(TextureName) + FString(".") + FString(TextureName)))
+#define WAAPI_TEXTURE( RelativePath, TextureName ) LoadObject<UTexture2D>(nullptr, *(FString("/WaapiPlayer/") / FString(RelativePath) / FString(TextureName) + FString(".") + FString(TextureName)))
 #define WAAPI_IMAGE_BRUSH( Texture, ... ) FSlateImageBrush( Texture, __VA_ARGS__ )
 
 
@@ -111,9 +111,9 @@ const FVector2D Icon40x40(40.0f, 40.0f);
 TSharedRef< FSlateStyleSet > FWaapiPlayerStyle::Create()
 {
 	TSharedRef< FSlateStyleSet > Style = MakeShareable(new FSlateStyleSet("Waapi_PlayerStyle"));
-	Style->SetContentRoot(IPluginManager::Get().FindPlugin("Waapi_Player")->GetBaseDir() / TEXT("Resources"));
+	Style->SetContentRoot(IPluginManager::Get().FindPlugin("WaapiPlayer")->GetBaseDir() / TEXT("Resources"));
 
-	Style->Set("Waapi_Player.OpenPluginWindow", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
+	Style->Set("WaapiPlayer.OpenPluginWindow", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
 
 	return Style;
 }

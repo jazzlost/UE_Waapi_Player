@@ -9,7 +9,7 @@ class IDetailView;
 class SDockableTab;
 class UAkAudioEvent;
 
-class FWaapiPlayerAssetEditor : public IWaapiPlayerAssetEditor
+class WAAPIPLAYER_API FWaapiPlayerAssetEditor : public IWaapiPlayerAssetEditor
 {
 public:
 	/** IToolkit interface */
@@ -24,7 +24,7 @@ public:
 	virtual UAkAudioEvent* GetAsset();
 	virtual void SetAsset(UAkAudioEvent* Asset);
 
-	void InitAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UAkAudioEvent * Asset);
+	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset);
 
 private:
 	TSharedRef<SDockTab> SpawnAkEventTab(const FSpawnTabArgs& Args);
@@ -40,6 +40,7 @@ private:
 	static const FName AkEventTabId;
 	static const FName TreeItemsTabId;
 	static const FName ControlPanelTabId;
+	static const FName EditorAppIdentifier;
 
 	UAkAudioEvent* Asset;
 

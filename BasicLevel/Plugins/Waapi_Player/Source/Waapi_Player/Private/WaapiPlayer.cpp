@@ -12,8 +12,9 @@
 #include "WaapiPlayerAssetEditor.h"
 #include "SPlayerTreeViewWidget.h"
 #include "SPlayerControlPanelWidget.h"
+#include "AkAudioEvent.h"
 
-static const FName Waapi_PlayerTabName("Waapi_Player");
+static const FName Waapi_PlayerTabName("WaapiPlayer");
 
 #define LOCTEXT_NAMESPACE "FWaapiPlayerModule"
 
@@ -49,9 +50,9 @@ void FWaapiPlayerModule::StartupModule()
 		LevelEditorModule.GetToolBarExtensibilityManager()->AddExtender(ToolbarExtender);
 	}
 	
-	FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Waapi_PlayerTabName, FOnSpawnTab::CreateRaw(this, &FWaapiPlayerModule::OnSpawnPluginTab))
-		.SetDisplayName(LOCTEXT("FWaapi_PlayerTabTitle", "Waapi_Player"))
-		.SetMenuType(ETabSpawnerMenuType::Enabled);
+	//FGlobalTabmanager::Get()->RegisterNomadTabSpawner(Waapi_PlayerTabName, FOnSpawnTab::CreateRaw(this, &FWaapiPlayerModule::OnSpawnPluginTab))
+	//	.SetDisplayName(LOCTEXT("FWaapi_PlayerTabTitle", "WaapiPlayer"))
+	//	.SetMenuType(ETabSpawnerMenuType::Enabled);
 
 	ToolBarExtensibilityManager = MakeShareable(new FExtensibilityManager);
 	MenuExtensibilityManager = MakeShareable(new FExtensibilityManager);
@@ -73,7 +74,7 @@ void FWaapiPlayerModule::ShutdownModule()
 
 TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
 {
-	//return SNew(SDockTab)
+	return SNew(SDockTab);
 	//	.TabRole(ETabRole::NomadTab)
 	//	[
 	//		SNew(SHorizontalBox)
@@ -96,13 +97,13 @@ TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& S
 void FWaapiPlayerModule::PluginButtonClicked()
 {
 	//FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
-
+	CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
 }
 
-TSharedPtr<IWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UAkAudioEvent * Asset)
+TSharedRef<FWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)
 {
-	TSharedPtr<IWaapiPlayerAssetEditor> NewAssetEditor(new FWaapiPlayerAssetEditor());
-	NewAssetEditor->InitAssetEditor(Mode, InitToolkitHost, Asset);
+	TSharedRef<FWaapiPlayerAssetEditor> NewAssetEditor(new FWaapiPlayerAssetEditor());
+	NewAssetEditor->InitEditor(Mode, InitToolkitHost, Asset);
 	return NewAssetEditor;
 }
 
@@ -120,4 +121,4 @@ void FWaapiPlayerModule::AddToolbarExtension(FToolBarBuilder& Builder)
 
 #undef LOCTEXT_NAMESPACE
 	
-IMPLEMENT_MODULE(FWaapiPlayerModule, Waapi_Player)
+IMPLEMENT_MODULE(FWaapiPlayerModule, WaapiPlayer)

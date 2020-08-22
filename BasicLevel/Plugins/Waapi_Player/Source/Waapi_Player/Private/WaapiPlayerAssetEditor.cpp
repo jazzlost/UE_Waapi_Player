@@ -8,12 +8,15 @@
 #include "AssetEditorToolkit.h"
 #include "WaapiPlayer.h"
 #include "SPlayerControlPanelWidget.h"
+#include "SPlayerTreeViewWidget.h"
+#include "AkAudioEvent.h"
 
 #define LOCTEXT_NAMESPACE "WaapiPlayerAssetEditor"
 
 const FName FWaapiPlayerAssetEditor::AkEventTabId(TEXT("WaapiPlayerAssetEditor_AkEvent"));
 const FName FWaapiPlayerAssetEditor::TreeItemsTabId(TEXT("WaapiPlayerAssetEditor_TreeItems"));
 const FName FWaapiPlayerAssetEditor::ControlPanelTabId(TEXT("WaapiPlayerAssetEditor_ControlPanel"));
+const FName FWaapiPlayerAssetEditor::EditorAppIdentifier(TEXT("WaapiPlayerAssetEditorApp"));
 
 
 void FWaapiPlayerAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
@@ -69,20 +72,76 @@ FLinearColor FWaapiPlayerAssetEditor::GetWorldCentricTabColorScale() const
 	return FLinearColor(0.5f, 0.0f, 0.0f, 0.5f);
 }
 
+UAkAudioEvent * FWaapiPlayerAssetEditor::GetAsset()
+{
+	return nullptr;
+}
+
+void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
+{
+}
+
+void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)
+{
+	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("Standalone_WaapiPlayerAssetEditor_Layout");
+	StandaloneDefaultLayout
+		->AddArea
+		(
+			FTabManager::NewPrimaryArea()->SetOrientation(Orient_Vertical)
+			->Split
+			(
+				FTabManager::NewStack()
+				->SetSizeCoefficient(0.1f)
+				->SetHideTabWell(true)
+				->AddTab(GetToolbarTabId(), ETabState::OpenedTab)
+			)
+			->Split
+			(
+				FTabManager::NewSplitter()
+				->Split
+				(
+					FTabManager::NewStack()
+					->AddTab(AkEventTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
+					->AddTab(TreeItemsTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
+					->AddTab(ControlPanelTabId, ETabState::OpenedTab)
+				)
+			)
+		);
+
+	const bool bCreateDefaultStandaloneMenu = true;
+	const bool bCreateDefaultToolbar = true;
+	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, FWaapiPlayerAssetEditor::EditorAppIdentifier, StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, Asset);
+}
+
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArgs & Args)
 {
-	return TSharedRef<SDockTab>();
+	return SNew(SDockTab);
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTreeItemsTab(const FSpawnTabArgs & Args)
 {
-	return TSharedRef<SDockTab>();
+	check(Args.GetTabId() == TreeItemsTabId);
 
+	return SNew(SDockTab)
+		.Icon(FEditorStyle::GetBrush("GenericEditor.Tab.Properties"))
+		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "Event TreeView"))
+		.TabColorScale(GetTabColorScale())
+		[
+			SNew(SPlayerTreeViewWidget)
+		];
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnTabArgs & Args)
 {
-	check(Args.GetTabId == ControlPanelTabId);
+	check(Args.GetTabId() == ControlPanelTabId);
 
 	return SNew(SDockTab)
 		.Icon(FEditorStyle::GetBrush("GenericEditor.Tab.Properties"))
@@ -90,5 +149,5 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnT
 		.TabColorScale(GetTabColorScale())
 		[
 			SNew(SPlayerControlPanelWidget)
-		]
+		];
 }

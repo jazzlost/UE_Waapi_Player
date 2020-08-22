@@ -8,8 +8,8 @@
 
 class FToolBarBuilder;
 class FMenuBuilder;
-class UAkAudioEvent;
 class IWaapiPlayerAssetEditor;
+class FWaapiPlayerAssetEditor;
 
 class FWaapiPlayerModule : public IModuleInterface, public IHasToolBarExtensibility, public IHasMenuExtensibility
 {
@@ -22,7 +22,7 @@ public:
 	/** This function will be bound to Command (by default it will bring up plugin window) */
 	void PluginButtonClicked();
 
-	virtual TSharedPtr<IWaapiPlayerAssetEditor> CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UAkAudioEvent* Asset);
+	virtual TSharedRef<FWaapiPlayerAssetEditor> CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset);
 	
 	virtual TSharedPtr<FExtensibilityManager> GetMenuExtensibilityManager() override { return MenuExtensibilityManager; }
 
