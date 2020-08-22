@@ -35,7 +35,8 @@ private:
 	TSharedPtr<SDockableTab> TreeItemsTab;
 	TSharedPtr<SDockableTab> ControlPanelTab;
 
-	TSharedPtr<IDetailView> DetailsView;
+	TSharedPtr<class IDetailsView> AkEventDetailsView;
+
 
 	static const FName AkEventTabId;
 	static const FName TreeItemsTabId;

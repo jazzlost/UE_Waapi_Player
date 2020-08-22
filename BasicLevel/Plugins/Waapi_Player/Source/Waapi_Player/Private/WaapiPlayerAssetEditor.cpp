@@ -83,6 +83,16 @@ void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
 
 void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)
 {
+	const bool bIsUpdatable = false;
+	const bool bAllowFavorites = true;
+	const bool bIsLockable = false;
+
+	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
+	AkEventDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+	AkEventDetailsView->SetObject(UAkAudioEvent::StaticClass()->GetDefaultObject());
+
+
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("Standalone_WaapiPlayerAssetEditor_Layout");
 	StandaloneDefaultLayout
 		->AddArea
@@ -123,7 +133,15 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArgs & Args)
 {
-	return SNew(SDockTab);
+	check(Args.GetTabId() == AkEventTabId);
+
+	return SNew(SDockTab)
+		.Icon(FEditorStyle::GetBrush("GenericEditor.Tab.Properties"))
+		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "AkAudioEvent"))
+		.TabColorScale(GetTabColorScale())
+		[
+			AkEventDetailsView.ToSharedRef()
+		];
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTreeItemsTab(const FSpawnTabArgs & Args)
