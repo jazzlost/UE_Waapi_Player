@@ -17,6 +17,27 @@ struct WaapiRtpcObject
 	float MinValue;
 };
 
+struct WaapiTargetObject
+{
+	FString TargetName;
+	float Volume;
+	int Pitch;
+	int LPF;
+	int HPF;
+	bool UseMaxSoundInstance;
+	int MaxSound;
+	bool UseListenerRelativeRoute;
+	FString Spatialization3D;
+	int MaxDistance;
+	bool UseConeAttenuation;
+};
+
+struct WaapiEventObject
+{
+	FString EventName;
+	TMap<int, WaapiTargetObject> Targets;
+};
+
 struct WaapiQuaryObject
 {
 	FString EventName;
