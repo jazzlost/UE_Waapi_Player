@@ -20,22 +20,22 @@ struct WaapiRtpcObject
 struct WaapiTargetObject
 {
 	FString TargetName;
-	float Volume;
-	int Pitch;
-	int LPF;
-	int HPF;
-	bool UseMaxSoundInstance;
-	int MaxSound;
-	bool UseListenerRelativeRoute;
+	FString Volume;
+	FString Pitch;
+	FString LPF;
+	FString HPF;
+	FString UseMaxSoundInstance;
+	FString MaxSound;
+	FString UseListenerRelativeRoute;
 	FString Spatialization3D;
-	int MaxDistance;
-	bool UseConeAttenuation;
+	FString MaxDistance;
+	FString UseConeAttenuation;
 };
 
 struct WaapiEventObject
 {
 	FString EventName;
-	TMap<int, WaapiTargetObject> Targets;
+	TArray<WaapiTargetObject> Targets;
 };
 
 struct WaapiQuaryObject
