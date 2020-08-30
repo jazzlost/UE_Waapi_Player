@@ -30,5 +30,6 @@ private:
 
 private:
 	TSharedPtr<FWaapiEventObject> EventObjectPtr;
-	TSharedPtr<class IDetailsView> WaapiTargetDetailsView;
+
+	TArray<TSharedPtr<class IDetailsView>> WaapiTargetDetailsViews;
 };

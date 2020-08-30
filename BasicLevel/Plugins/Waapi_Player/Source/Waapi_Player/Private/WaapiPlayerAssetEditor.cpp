@@ -200,7 +200,23 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabA
 	Target->Spatialization3D = TEXT("Relative");
 	Target->MaxDistance = TEXT("10000");
 	Target->UseConeAttenuation = TEXT("no");
+	
 	WaapiNewObject->Targets.Add(Target);
+
+	UWaapiTargetObject* Target02 = NewObject<UWaapiTargetObject>();
+	Target02->TargetName = TEXT("TargetName");
+	Target02->Volume = TEXT("20");
+	Target02->Pitch = TEXT("30");
+	Target02->LPF = TEXT("1200");
+	Target02->HPF = TEXT("5000");
+	Target02->UseMaxSoundInstance = TEXT("yes");
+	Target02->MaxSound = TEXT("5");
+	Target02->UseListenerRelativeRoute = TEXT("yes");
+	Target02->Spatialization3D = TEXT("Relative");
+	Target02->MaxDistance = TEXT("10000");
+	Target02->UseConeAttenuation = TEXT("no");
+
+	WaapiNewObject->Targets.Add(Target02);
 
 
 

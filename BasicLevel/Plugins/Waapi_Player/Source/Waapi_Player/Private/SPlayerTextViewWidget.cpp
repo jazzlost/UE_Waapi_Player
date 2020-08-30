@@ -45,9 +45,16 @@ void SPlayerTextViewWidget::Construct(const FArguments & InArgs)
 	const bool bIsLockable = false;
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
-	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
-	WaapiTargetDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	WaapiTargetDetailsView->SetObject(EventObjectPtr->Targets[0]);
+
+	for (int i = 0; i < EventObjectPtr->Targets.Num(); i++)
+	{
+		FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
+		TSharedPtr<class IDetailsView> WaapiTargetDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
+		WaapiTargetDetailsView->SetObject(EventObjectPtr->Targets[i]);
+
+		WaapiTargetDetailsViews.Add(WaapiTargetDetailsView);
+	}
+
 
 	ChildSlot
 	[
@@ -73,7 +80,7 @@ void SPlayerTextViewWidget::Construct(const FArguments & InArgs)
 	{
 		TempScroll->AddSlot()
 			[
-				WaapiTargetDetailsView.ToSharedRef()
+				WaapiTargetDetailsViews[i].ToSharedRef()
 			];
 	};
 }
