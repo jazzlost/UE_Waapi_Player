@@ -34,6 +34,11 @@ void FWaapiPlayerModule::StartupModule()
 		FWaapiPlayerCommands::Get().OpenPluginWindow,
 		FExecuteAction::CreateRaw(this, &FWaapiPlayerModule::PluginButtonClicked),
 		FCanExecuteAction());
+
+	PluginCommands->MapAction(
+		FWaapiPlayerCommands::Get().PressPlayButton,
+		FExecuteAction::CreateRaw(this, &FWaapiPlayerModule::OnPlayButtonPressed),
+		FCanExecuteAction());
 		
 	FLevelEditorModule& LevelEditorModule = FModuleManager::LoadModuleChecked<FLevelEditorModule>("LevelEditor");
 	
@@ -73,13 +78,13 @@ void FWaapiPlayerModule::ShutdownModule()
 
 	FWaapiPlayerCommands::Unregister();
 
-	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(Waapi_PlayerTabName);
+	//FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(Waapi_PlayerTabName);
 
-	FPropertyEditorModule* PropertyModule = FModuleManager::GetModulePtr<FPropertyEditorModule>("PropertyEditor");
-	if (PropertyModule)
-	{
-		PropertyModule->UnregisterCustomPropertyTypeLayout("WaapiTargetObject");
-	}
+	//FPropertyEditorModule* PropertyModule = FModuleManager::GetModulePtr<FPropertyEditorModule>("PropertyEditor");
+	//if (PropertyModule)
+	//{
+	//	PropertyModule->UnregisterCustomPropertyTypeLayout("WaapiTargetObject");
+	//}
 }
 
 TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)
@@ -110,10 +115,15 @@ void FWaapiPlayerModule::PluginButtonClicked()
 	CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
 }
 
+void FWaapiPlayerModule::OnPlayButtonPressed()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Play Button Pressed"));
+}
+
 TSharedRef<FWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)
 {
 	TSharedRef<FWaapiPlayerAssetEditor> NewAssetEditor(new FWaapiPlayerAssetEditor());
-	NewAssetEditor->InitEditor(Mode, InitToolkitHost, Asset);
+	NewAssetEditor->InitEditor(Mode, InitToolkitHost, Asset, PluginCommands);
 	return NewAssetEditor;
 }
 

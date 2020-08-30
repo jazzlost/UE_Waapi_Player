@@ -24,13 +24,19 @@ public:
 	virtual UAkAudioEvent* GetAsset();
 	virtual void SetAsset(UAkAudioEvent* Asset);
 
-	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset);
+	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset, TSharedPtr<class FUICommandList> CommandList);
 
 private:
 	TSharedRef<SDockTab> SpawnAkEventTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTreeItemsTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnControlPanelTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTextItemsTab(const FSpawnTabArgs& Args);
+
+	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
+	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);
+
+private:
+	TSharedPtr<class FUICommandList> EditorCommandList;
 
 	TSharedPtr<SDockableTab> AkEventTab;
 	TSharedPtr<SDockableTab> TreeItemsTab;

@@ -5,6 +5,7 @@
 #include "PropertyEditorModule.h"
 #include "IDetailsView.h"
 #include "Editor.h"
+#include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "AssetEditorToolkit.h"
 #include "WaapiPlayer.h"
 #include "SPlayerControlPanelWidget.h"
@@ -12,6 +13,8 @@
 #include "SPlayerTextViewWidget.h"
 #include "AkAudioEvent.h"
 #include "WaapiTargetObject.h"
+#include "WaapiPlayerCommands.h"
+
 
 #define LOCTEXT_NAMESPACE "WaapiPlayerAssetEditor"
 
@@ -90,16 +93,19 @@ void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
 {
 }
 
-void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)
+void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset, TSharedPtr<class FUICommandList> CommandList)
 {
 	const bool bIsUpdatable = false;
 	const bool bAllowFavorites = true;
 	const bool bIsLockable = false;
+	EditorCommandList = CommandList;
 
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
 	AkEventDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
 	AkEventDetailsView->SetObject(UAkAudioEvent::StaticClass()->GetDefaultObject());
+
+	AddToolbarButton(EditorCommandList);
 
 
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("Standalone_WaapiPlayerAssetEditor_Layout");
@@ -230,4 +236,16 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabA
 			SNew(SPlayerTextViewWidget)
 			.WaapiEventObject(WaapiNewObject)
 		];
+}
+
+void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList)
+{
+	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender());
+	ToolbarExtender->AddToolBarExtension("Asset", EExtensionHook::After, EditorCommandList, FToolBarExtensionDelegate::CreateRaw(this, &FWaapiPlayerAssetEditor::AddPlayButton));
+	AddToolbarExtender(ToolbarExtender);
+}
+
+void FWaapiPlayerAssetEditor::AddPlayButton(FToolBarBuilder& ToolbarBuilder)
+{
+	ToolbarBuilder.AddToolBarButton(FWaapiPlayerCommands::Get().PressPlayButton, FName(TEXT("PlayButton")), LOCTEXT("PlayButtonName", "Play"));
 }

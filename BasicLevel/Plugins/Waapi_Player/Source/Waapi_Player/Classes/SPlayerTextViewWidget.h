@@ -25,8 +25,6 @@ public:
 	SPlayerTextViewWidget();
 	~SPlayerTextViewWidget();
 
-private:
-	//TSharedRef<STextBlock> GenerateTextWidget();
 
 private:
 	TSharedPtr<FWaapiEventObject> EventObjectPtr;

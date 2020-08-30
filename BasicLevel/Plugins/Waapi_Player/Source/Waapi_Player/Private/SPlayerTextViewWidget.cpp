@@ -15,24 +15,6 @@ SPlayerTextViewWidget::~SPlayerTextViewWidget()
 {
 }
 
-//TSharedRef<STextBlock> SPlayerTextViewWidget::GenerateTextWidget()
-//{
-//	//TArray<TSharedRef<STextBlock>> Widgets;
-//
-//	//for (int i = 0; i < 4; i++)
-//	//{
-//		TSharedPtr<STextBlock> TempWidget;
-//
-//		SAssignNew(TempWidget, STextBlock);
-//			//		.Text(*FString::FromInt(i));
-//
-//			//	Widgets.Add(TempWidget.ToSharedRef());
-//			//}
-//
-//			//return Widgets;
-//
-//			return TempWidget.ToSharedRef();
-//}
 
 void SPlayerTextViewWidget::Construct(const FArguments & InArgs)
 {
