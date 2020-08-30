@@ -9,13 +9,16 @@
 #include "WaapiPlayer.h"
 #include "SPlayerControlPanelWidget.h"
 #include "SPlayerTreeViewWidget.h"
+#include "SPlayerTextViewWidget.h"
 #include "AkAudioEvent.h"
+#include "WaapiTargetObject.h"
 
 #define LOCTEXT_NAMESPACE "WaapiPlayerAssetEditor"
 
 const FName FWaapiPlayerAssetEditor::AkEventTabId(TEXT("WaapiPlayerAssetEditor_AkEvent"));
 const FName FWaapiPlayerAssetEditor::TreeItemsTabId(TEXT("WaapiPlayerAssetEditor_TreeItems"));
 const FName FWaapiPlayerAssetEditor::ControlPanelTabId(TEXT("WaapiPlayerAssetEditor_ControlPanel"));
+const FName FWaapiPlayerAssetEditor::TextItemsTabId(TEXT("WaapiPlayerAssetEditor_TextItems"));
 const FName FWaapiPlayerAssetEditor::EditorAppIdentifier(TEXT("WaapiPlayerAssetEditorApp"));
 
 
@@ -35,6 +38,11 @@ void FWaapiPlayerAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>&
 		.SetGroup(WorkspaceMenuCategory.ToSharedRef())
 		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Details"));
 
+	TabManager->RegisterTabSpawner(TextItemsTabId, FOnSpawnTab::CreateSP(this, &FWaapiPlayerAssetEditor::SpawnTextItemsTab))
+		.SetDisplayName(LOCTEXT("TextItemsTabTitle", "TextItems"))
+		.SetGroup(WorkspaceMenuCategory.ToSharedRef())
+		.SetIcon(FSlateIcon(FEditorStyle::GetStyleSetName(), "LevelEditor.Tabs.Details"));
+
 	TabManager->RegisterTabSpawner(ControlPanelTabId, FOnSpawnTab::CreateSP(this, &FWaapiPlayerAssetEditor::SpawnControlPanelTab))
 		.SetDisplayName(LOCTEXT("ControlPanelTabTitle", "ControlPanel"))
 		.SetGroup(WorkspaceMenuCategory.ToSharedRef())
@@ -49,6 +57,7 @@ void FWaapiPlayerAssetEditor::UnregisterTabSpawners(const TSharedRef<FTabManager
 	TabManager->UnregisterTabSpawner(AkEventTabId);
 	TabManager->UnregisterTabSpawner(TreeItemsTabId);
 	TabManager->UnregisterTabSpawner(ControlPanelTabId);
+	TabManager->UnregisterTabSpawner(TextItemsTabId);
 }
 
 FName FWaapiPlayerAssetEditor::GetToolkitFName() const
@@ -121,6 +130,11 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 				->Split
 				(
 					FTabManager::NewStack()
+					->AddTab(TextItemsTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
 					->AddTab(ControlPanelTabId, ETabState::OpenedTab)
 				)
 			)
@@ -167,5 +181,37 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnT
 		.TabColorScale(GetTabColorScale())
 		[
 			SNew(SPlayerControlPanelWidget)
+		];
+}
+
+TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabArgs & Args)
+{
+	TSharedPtr<FWaapiEventObject> WaapiNewObject = MakeShareable(new FWaapiEventObject);
+	WaapiNewObject->EventName = TEXT("WaapiEventObjectName");
+	UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
+	Target->TargetName = TEXT("TargetName");
+	Target->Volume = TEXT("20");
+	Target->Pitch = TEXT("30");
+	Target->LPF = TEXT("1200");
+	Target->HPF = TEXT("5000");
+	Target->UseMaxSoundInstance = TEXT("yes");
+	Target->MaxSound = TEXT("5");
+	Target->UseListenerRelativeRoute = TEXT("yes");
+	Target->Spatialization3D = TEXT("Relative");
+	Target->MaxDistance = TEXT("10000");
+	Target->UseConeAttenuation = TEXT("no");
+	WaapiNewObject->Targets.Add(Target);
+
+
+
+	check(Args.GetTabId() == TextItemsTabId);
+
+	return SNew(SDockTab)
+		.Icon(FEditorStyle::GetBrush("GenericEditor.Tab.Properties"))
+		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "Event Info"))
+		.TabColorScale(GetTabColorScale())
+		[
+			SNew(SPlayerTextViewWidget)
+			.WaapiEventObject(WaapiNewObject)
 		];
 }

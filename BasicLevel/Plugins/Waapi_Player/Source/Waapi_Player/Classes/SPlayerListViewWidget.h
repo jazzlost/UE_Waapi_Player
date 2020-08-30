@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Widgets/SCompoundWidget.h"
-#include "WaapiPlayerSqlManager.h"
+#include "WaapiTargetObject.h"
 #include "Widgets/Views/SListView.h"
 
 typedef TSharedPtr<WaapiSwitchStateObject> WaapiSwitchOrStateDataPtr;

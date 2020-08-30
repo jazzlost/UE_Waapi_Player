@@ -30,10 +30,12 @@ private:
 	TSharedRef<SDockTab> SpawnAkEventTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTreeItemsTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnControlPanelTab(const FSpawnTabArgs& Args);
+	TSharedRef<SDockTab> SpawnTextItemsTab(const FSpawnTabArgs& Args);
 
 	TSharedPtr<SDockableTab> AkEventTab;
 	TSharedPtr<SDockableTab> TreeItemsTab;
 	TSharedPtr<SDockableTab> ControlPanelTab;
+	TSharedPtr<SDockableTab> TextItemsTab;
 
 	TSharedPtr<class IDetailsView> AkEventDetailsView;
 
@@ -41,6 +43,7 @@ private:
 	static const FName AkEventTabId;
 	static const FName TreeItemsTabId;
 	static const FName ControlPanelTabId;
+	static const FName TextItemsTabId;
 	static const FName EditorAppIdentifier;
 
 	UAkAudioEvent* Asset;

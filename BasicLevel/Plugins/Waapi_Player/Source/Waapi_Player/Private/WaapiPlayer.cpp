@@ -8,6 +8,7 @@
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Text/STextBlock.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
+#include "PropertyEditorModule.h"
 
 #include "WaapiPlayerAssetEditor.h"
 #include "SPlayerTreeViewWidget.h"
@@ -56,6 +57,9 @@ void FWaapiPlayerModule::StartupModule()
 
 	ToolBarExtensibilityManager = MakeShareable(new FExtensibilityManager);
 	MenuExtensibilityManager = MakeShareable(new FExtensibilityManager);
+
+	//FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
+	//PropertyModule.RegisterCustomPropertyTypeLayout("WaapiTargetObject", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FPlayerTextViewCustomization::MakeInstance));
 }
 
 void FWaapiPlayerModule::ShutdownModule()
@@ -70,6 +74,12 @@ void FWaapiPlayerModule::ShutdownModule()
 	FWaapiPlayerCommands::Unregister();
 
 	FGlobalTabmanager::Get()->UnregisterNomadTabSpawner(Waapi_PlayerTabName);
+
+	FPropertyEditorModule* PropertyModule = FModuleManager::GetModulePtr<FPropertyEditorModule>("PropertyEditor");
+	if (PropertyModule)
+	{
+		PropertyModule->UnregisterCustomPropertyTypeLayout("WaapiTargetObject");
+	}
 }
 
 TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& SpawnTabArgs)

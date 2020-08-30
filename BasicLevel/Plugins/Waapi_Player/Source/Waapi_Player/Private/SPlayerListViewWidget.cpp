@@ -10,6 +10,7 @@
 #include "Widgets/Layout/SSpacer.h"
 #include "Widgets/Input/SComboBox.h"
 #include "Widgets/Layout/SScrollBox.h"
+#include "Widgets/Input/SComboBox.h"
 #include "Misc/ScopedSlowTask.h"
 
 #include "WaapiPlayerAssetManager.h"
