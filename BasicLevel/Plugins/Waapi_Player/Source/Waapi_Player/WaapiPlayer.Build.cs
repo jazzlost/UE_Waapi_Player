@@ -26,6 +26,8 @@ public class WaapiPlayer : ModuleRules
 			new string[]
 			{
 				"Core",
+                "SQLiteSupport",
+                "SQLiteCore"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
