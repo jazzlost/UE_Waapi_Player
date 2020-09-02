@@ -26,8 +26,7 @@ public class WaapiPlayer : ModuleRules
 			new string[]
 			{
 				"Core",
-                "SQLiteSupport",
-                "SQLiteCore"
+                "SQLiteSupport"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -45,7 +44,8 @@ public class WaapiPlayer : ModuleRules
 				"Slate",
 				"SlateCore",
                 "EditorStyle",
-                "AkAudio"
+                "AkAudio",
+                "SQLiteCore"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

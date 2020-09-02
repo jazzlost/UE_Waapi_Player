@@ -10,6 +10,8 @@
 #include "HAL/PlatformFilemanager.h"
 #include "Misc/ScopedSlowTask.h"
 
+#include "WaapiPlayerSqlManager.h"
+
 
 #define LOCTEXT_NAMESPACE "WaapiPlayer"
 
@@ -33,6 +35,8 @@ void WaapiPlayerAssetManager::Init()
 	ChildrenItems.Empty();
 
 	Recurse(EventBasePath, EventBaseFolderName);
+
+	WaapiPlaySqlManager::Get().Init();
 }
 
 void WaapiPlayerAssetManager::Clear()
