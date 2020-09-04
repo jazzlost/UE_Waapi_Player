@@ -13,9 +13,11 @@ public:
 	
 	~WaapiPlaySqlManager(){}
 
-	void Init();
+	void Init(FString DatabasePath) { DatabaseFullPath = DatabasePath; }
 
-	void Open();
 
 private:
+	bool Open();
+	FString DatabaseFullPath;
+	FSQLiteDatabaseConnection& Conn;
 };
