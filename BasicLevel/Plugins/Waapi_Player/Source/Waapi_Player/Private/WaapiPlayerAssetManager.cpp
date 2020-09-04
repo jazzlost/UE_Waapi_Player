@@ -35,8 +35,6 @@ void WaapiPlayerAssetManager::Init()
 	ChildrenItems.Empty();
 
 	Recurse(EventBasePath, EventBaseFolderName);
-
-	WaapiPlaySqlManager::Get().Init(TEXT("D:\\Project\\Code\\waapi.db"));
 }
 
 void WaapiPlayerAssetManager::Clear()

@@ -14,6 +14,8 @@
 #include "AkAudioEvent.h"
 #include "WaapiTargetObject.h"
 #include "WaapiPlayerCommands.h"
+#include "WaapiPlayerSqlManager.h"
+
 
 
 #define LOCTEXT_NAMESPACE "WaapiPlayerAssetEditor"
@@ -149,6 +151,9 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	const bool bCreateDefaultStandaloneMenu = true;
 	const bool bCreateDefaultToolbar = true;
 	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, FWaapiPlayerAssetEditor::EditorAppIdentifier, StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, Asset);
+	
+	WaapiPlaySqlManager::Get().Init(TEXT("D:\\Dropbox\\Git\\WaapiDatabase\\waapi.db"));
+	WaapiPlaySqlManager::Get().Open();
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArgs & Args)
