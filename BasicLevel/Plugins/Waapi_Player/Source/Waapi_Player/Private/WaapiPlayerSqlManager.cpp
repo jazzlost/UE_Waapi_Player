@@ -48,10 +48,24 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 
 			for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
 			{
-				FString TargetName = Iter->GetString(TEXT("Name"));
 				UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
+
+				//Query Target General Info
+				FillGeneralTargetResult(Target, Iter);
+
 				QueryResultObjects.Add(Target);
 			}
+		}
+
+		if (QueryResultObjects.Num() <= 0)
+			return true;
+
+		//Query Target General Info
+		for (auto Target : QueryResultObjects)
+		{
+			FSQLiteResultSet* Result = nullptr;
+			FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Name='%s';"), *TargetsId);
+			Conn->Execute(*SQL, Result);
 		}
 	}
 
@@ -86,6 +100,7 @@ void WaapiPlaySqlManager::Close()
 	}
 }
 
+
 const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet* Result)
 {
 	FSQLiteResultSet::TIterator Iter(Result);
@@ -96,11 +111,26 @@ const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutRe
 	for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
 	{
 		FString TargetId = Iter->GetString(TEXT("TargetId"));
-		if (!TargetId.IsEmpty())
+		int TargetAction = Iter->GetInt(TEXT("ActionType"));
+
+		if (!TargetId.IsEmpty() && TargetAction == 1)
 		{
 			OutTargetsId.Add(TargetId);
 			UE_LOG(LogTemp, Warning, TEXT("SQL TargetId Result: %s"), *TargetId);
 		}
 	}
 	return OutTargetsId;
+}
+
+void TargetObjectUtil::FillGeneralTargetResult(UWaapiTargetObject * TargetObject, FSQLiteResultSet::TIterator ResultIter)
+{
+	TargetObject->TargetName = Iter->GetString(TEXT("Name"));
+	TargetObject->Volume = Iter->GetString(TEXT("Volume"));
+	TargetObject->Pitch = Iter->GetString(TEXT("Pitch"));
+	TargetObject->LPF = Iter->GetString(TEXT("LPF"));
+	TargetObject->HPF = Iter->GetString(TEXT("HPF"));
+	TargetObject->UseMaxSoundInstance = Iter->GetString(TEXT("UseMaxSoundInstance"));
+	TargetObject->MaxSound = Iter->GetString(TEXT("MaxSound"));
+	TargetObject->UseListenerRelativeRoute = Iter->GetString(TEXT("UseListenerRelativeRoute"));
+	TargetObject->Spatialization3D = Iter->GetString(TEXT("Spatialization3D"));
 }

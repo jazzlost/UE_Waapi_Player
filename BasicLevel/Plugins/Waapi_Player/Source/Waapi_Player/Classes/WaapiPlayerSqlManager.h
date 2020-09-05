@@ -32,7 +32,7 @@ private:
 namespace TargetObjectUtil
 {
 	const TArray<FString> FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet* Result);
-	void FillGeneralTargetResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
+	void FillGeneralTargetResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet::TIterator ResultIter);
 	void FillSwitchResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
 	void FillStateResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
 	void FillAttenResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);

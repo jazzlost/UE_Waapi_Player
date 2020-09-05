@@ -48,7 +48,8 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	FString UseConeAttenuation;
-	
+
+	WaapiTargetDataObject TargetExtraData;
 };
 
 struct WaapiSwitchStateObject
@@ -74,12 +75,8 @@ struct FWaapiEventObject
 	TArray<UWaapiTargetObject*> Targets;
 };
 
-struct WaapiQuaryObject
-{
-	FString EventName;
-};
 
-struct WaapiDataObject
+struct WaapiTargetDataObject
 {
 	TArray<WaapiSwitchStateObject> SwitchOrStateObjects;
 	TArray<WaapiRtpcObject> RtpcObjects;
