@@ -9,6 +9,38 @@
 /**
  * 
  */
+
+struct WaapiSwitchStateObject
+{
+	FString SwitchOrStateGroup;
+	TArray<TSharedPtr<FName>> SwitchOrState;
+	bool bSwitch;
+};
+
+struct WaapiRtpcObject
+{
+	FString RtpcName;
+	float DefaultValue;
+	float MaxValue;
+	float MinValue;
+};
+
+
+struct FWaapiEventObject
+{
+	FString EventName;
+
+	TArray<UWaapiTargetObject*> Targets;
+};
+
+
+struct WaapiTargetDataObject
+{
+	TArray<WaapiSwitchStateObject> SwitchOrStateObjects;
+	TArray<WaapiRtpcObject> RtpcObjects;
+};
+
+
 UCLASS()
 class WAAPIPLAYER_API UWaapiTargetObject : public UObject
 {
@@ -50,34 +82,4 @@ public:
 	FString UseConeAttenuation;
 
 	WaapiTargetDataObject TargetExtraData;
-};
-
-struct WaapiSwitchStateObject
-{
-	FString SwitchOrStateGroup;
-	TArray<TSharedPtr<FName>> SwitchOrState;
-	bool bSwitch;
-};
-
-struct WaapiRtpcObject
-{
-	FString RtpcName;
-	float DefaultValue;
-	float MaxValue;
-	float MinValue;
-};
-
-
-struct FWaapiEventObject
-{
-	FString EventName;
-
-	TArray<UWaapiTargetObject*> Targets;
-};
-
-
-struct WaapiTargetDataObject
-{
-	TArray<WaapiSwitchStateObject> SwitchOrStateObjects;
-	TArray<WaapiRtpcObject> RtpcObjects;
 };

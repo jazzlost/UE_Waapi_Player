@@ -31,8 +31,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 
 	//Query Event
 	FSQLiteResultSet* Result = nullptr;
-	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
-	Conn->Execute(*SQL, Result);
+	QueryEvent(EventName, Result);
 
 	if (Result)
 	{
@@ -42,16 +41,49 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 		QueryResultObjects.Empty();
 		for (auto Id : TargetsId)
 		{
-			FSQLiteResultSet* Result = nullptr;
-			FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *Id);
-			Conn->Execute(*SQL, Result);
+			//Query Target General Info
+			QueryTarget(Id, Result);
 
-			for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
+			for (SqlResultIter TargetIter(Result); TargetIter; ++TargetIter)
 			{
 				UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
+				TargetObjectUtil::FillGeneralTargetResult(Target, TargetIter);
 
-				//Query Target General Info
-				FillGeneralTargetResult(Target, Iter);
+				//Query Switch Info
+				FString SwitchGroupSql = TargetIter->GetString(TEXT("SwitchGroupId"));
+				TArray<FString> SwitchGroupIds = TargetObjectUtil::SplitSqlResult(SwitchGroupSql);
+				for (auto SwitchGroupId : SwitchGroupIds)
+				{
+					QuerySwitch(SwitchGroupId, Result);
+					SqlResultIter SwitchIter(Result);
+					TargetObjectUtil::FillSwitchResult(Target, SwitchIter);
+				}
+
+				//Query State Info
+				FString StateGroupSql = TargetIter->GetString(TEXT("StateGroupId"));
+				TArray<FString> StateGroupIds = TargetObjectUtil::SplitSqlResult(StateGroupSql);
+				for (auto StateGroupId : StateGroupIds)
+				{
+					QueryState(StateGroupId, Result);
+					SqlResultIter StateIter(Result);
+					TargetObjectUtil::FillStateResult(Target, StateIter);
+				}
+
+				//Query Atten Info
+				FString AttenId = TargetIter->GetString(TEXT("AttenId"));
+				QueryAtten(AttenId, Result);
+				SqlResultIter AttenIter(Result);
+				TargetObjectUtil::FillAttenResult(Target, AttenIter);
+
+				//Query RTPC Info
+				FString RtpcIdSql = TargetIter->GetString(TEXT("RtpcId"));
+				TArray<FString> RtpcIds = TargetObjectUtil::SplitSqlResult(RtpcIdSql);
+				for (auto RtpcId : RtpcIds)
+				{
+					QueryRtpc(RtpcId, Result);
+					SqlResultIter RtpcIter(Result);
+					TargetObjectUtil::FillRtpcResult(Target, RtpcIter);
+				}
 
 				QueryResultObjects.Add(Target);
 			}
@@ -59,16 +91,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 
 		if (QueryResultObjects.Num() <= 0)
 			return true;
-
-		//Query Target General Info
-		for (auto Target : QueryResultObjects)
-		{
-			FSQLiteResultSet* Result = nullptr;
-			FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Name='%s';"), *TargetsId);
-			Conn->Execute(*SQL, Result);
-		}
 	}
-
 
 	return true;
 }
@@ -100,15 +123,53 @@ void WaapiPlaySqlManager::Close()
 	}
 }
 
-
-const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet* Result)
+void WaapiPlaySqlManager::QueryEvent(FString EventName, FSQLiteResultSet *& Result)
 {
-	FSQLiteResultSet::TIterator Iter(Result);
+	Result = nullptr;
+	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
+	Conn->Execute(*SQL, Result);
+}
+
+void WaapiPlaySqlManager::QueryTarget(FString TargetId, FSQLiteResultSet *& Result)
+{
+	Result = nullptr;
+	FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *TargetId);
+	Conn->Execute(*SQL, Result);
+}
+
+void WaapiPlaySqlManager::QuerySwitch(FString SwitchId, FSQLiteResultSet *& Result)
+{
+	Result = nullptr;
+	FString SQL = FString::Printf(TEXT("SELECT * FROM Switch WHERE Id='%s';"), *SwitchId);
+	Conn->Execute(*SQL, Result);
+}
+
+void WaapiPlaySqlManager::QueryState(FString StateGroupId, FSQLiteResultSet *& Result)
+{
+}
+
+void WaapiPlaySqlManager::QueryAtten(FString StateGroupId, FSQLiteResultSet *& Result)
+{
+}
+
+void WaapiPlaySqlManager::QueryRtpc(FString RtpcId, FSQLiteResultSet *& Result)
+{
+}
+
+
+TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)
+{
+	return TArray<FString>();
+}
+
+const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet*& Result)
+{
+	SqlResultIter Iter(Result);
 	OutResult.EventName = Iter->GetString(TEXT("Name"));
 
 	TArray<FString> OutTargetsId;
 
-	for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
+	for (; Iter; ++Iter)
 	{
 		FString TargetId = Iter->GetString(TEXT("TargetId"));
 		int TargetAction = Iter->GetInt(TEXT("ActionType"));
@@ -122,15 +183,31 @@ const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutRe
 	return OutTargetsId;
 }
 
-void TargetObjectUtil::FillGeneralTargetResult(UWaapiTargetObject * TargetObject, FSQLiteResultSet::TIterator ResultIter)
+void TargetObjectUtil::FillGeneralTargetResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
-	TargetObject->TargetName = Iter->GetString(TEXT("Name"));
-	TargetObject->Volume = Iter->GetString(TEXT("Volume"));
-	TargetObject->Pitch = Iter->GetString(TEXT("Pitch"));
-	TargetObject->LPF = Iter->GetString(TEXT("LPF"));
-	TargetObject->HPF = Iter->GetString(TEXT("HPF"));
-	TargetObject->UseMaxSoundInstance = Iter->GetString(TEXT("UseMaxSoundInstance"));
-	TargetObject->MaxSound = Iter->GetString(TEXT("MaxSound"));
-	TargetObject->UseListenerRelativeRoute = Iter->GetString(TEXT("UseListenerRelativeRoute"));
-	TargetObject->Spatialization3D = Iter->GetString(TEXT("Spatialization3D"));
+	TargetObject->TargetName = ResultIter->GetString(TEXT("Name"));
+	TargetObject->Volume = ResultIter->GetString(TEXT("Volume"));
+	TargetObject->Pitch = ResultIter->GetString(TEXT("Pitch"));
+	TargetObject->LPF = ResultIter->GetString(TEXT("LPF"));
+	TargetObject->HPF = ResultIter->GetString(TEXT("HPF"));
+	TargetObject->UseMaxSoundInstance = ResultIter->GetString(TEXT("UseMaxSoundInstance"));
+	TargetObject->MaxSound = ResultIter->GetString(TEXT("MaxSound"));
+	TargetObject->UseListenerRelativeRoute = ResultIter->GetString(TEXT("UseListenerRelativeRoute"));
+	TargetObject->Spatialization3D = ResultIter->GetString(TEXT("Spatialization3D"));
+}
+
+void TargetObjectUtil::FillSwitchResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
+{
+}
+
+void TargetObjectUtil::FillStateResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
+{
+}
+
+void TargetObjectUtil::FillAttenResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
+{
+}
+
+void TargetObjectUtil::FillRtpcResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
+{
 }

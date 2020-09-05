@@ -98,6 +98,8 @@ void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
 
 void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset, TSharedPtr<class FUICommandList> CommandList)
 {
+	WaapiPlaySqlManager::Get().Close();
+
 	const bool bIsUpdatable = false;
 	const bool bAllowFavorites = true;
 	const bool bIsLockable = false;
