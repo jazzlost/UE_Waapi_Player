@@ -13,31 +13,32 @@
 struct WaapiSwitchStateObject
 {
 	FString SwitchOrStateGroup;
-	TArray<TSharedPtr<FName>> SwitchOrState;
+	TArray<FString> SwitchOrState;
 	bool bSwitch;
+};
+
+struct WaapiAttenObject
+{
+	FString AttenName;
+	int MaxDistance;
+	int UseConeAttenuation;
 };
 
 struct WaapiRtpcObject
 {
 	FString RtpcName;
+	int UseBuildInParam;
 	float DefaultValue;
 	float MaxValue;
 	float MinValue;
 };
 
 
-struct FWaapiEventObject
-{
-	FString EventName;
-
-	TArray<UWaapiTargetObject*> Targets;
-};
-
-
 struct WaapiTargetDataObject
 {
-	TArray<WaapiSwitchStateObject> SwitchOrStateObjects;
-	TArray<WaapiRtpcObject> RtpcObjects;
+	TSharedPtr<WaapiAttenObject> AttenObject;
+	TArray<TSharedPtr<WaapiSwitchStateObject>> SwitchOrStateObjects;
+	TArray<TSharedPtr<WaapiRtpcObject>> RtpcObjects;
 };
 
 
@@ -52,34 +53,45 @@ public:
 	FString TargetName;
 
 	UPROPERTY(VisibleAnywhere)
-	FString Volume;
+	float Volume;
 	
 	UPROPERTY(VisibleAnywhere)
-	FString Pitch;
+	int Pitch;
 
 	UPROPERTY(VisibleAnywhere)
-	FString LPF;
+	int LPF;
 
 	UPROPERTY(VisibleAnywhere)
-	FString HPF;
+	int HPF;
 
 	UPROPERTY(VisibleAnywhere)
-	FString UseMaxSoundInstance;
+	int UseMaxSoundInstance;
 
 	UPROPERTY(VisibleAnywhere)
-	FString MaxSound;
+	int MaxSound;
 
 	UPROPERTY(VisibleAnywhere)
-	FString UseListenerRelativeRoute;
+	int UseListenerRelativeRoute;
 
 	UPROPERTY(VisibleAnywhere)
 	FString Spatialization3D;
 
-	UPROPERTY(VisibleAnywhere)
-	FString MaxDistance;
+	//UPROPERTY(VisibleAnywhere)
+	//FString AttenName;
 
-	UPROPERTY(VisibleAnywhere)
-	FString UseConeAttenuation;
+	//UPROPERTY(VisibleAnywhere)
+	//FString MaxDistance;
+
+	//UPROPERTY(VisibleAnywhere)
+	//FString UseConeAttenuation;
 
 	WaapiTargetDataObject TargetExtraData;
+};
+
+
+struct FWaapiEventObject
+{
+	FString EventName;
+
+	TArray<UWaapiTargetObject*> Targets;
 };

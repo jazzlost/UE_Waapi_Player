@@ -7,6 +7,16 @@
 
 typedef FSQLiteResultSet::TIterator SqlResultIter;
 
+enum class WaapiPlayerQueryType
+{
+	Event,
+	Target,
+	Switch,
+	State,
+	Atten,
+	Rtpc
+};
+
 class WaapiPlaySqlManager
 {
 public:
@@ -25,12 +35,7 @@ public:
 private:
 	bool Open();
 
-	void QueryEvent(FString EventName, FSQLiteResultSet*& Result);
-	void QueryTarget(FString TargetId, FSQLiteResultSet*& Result);
-	void QuerySwitch(FString SwitchGroupId, FSQLiteResultSet*& Result);
-	void QueryState(FString StateGroupId, FSQLiteResultSet*& Result);
-	void QueryAtten(FString StateGroupId, FSQLiteResultSet*& Result);
-	void QueryRtpc(FString RtpcId, FSQLiteResultSet*& Result);
+	void Query(FString ColumnName, WaapiPlayerQueryType Type, FSQLiteResultSet*& Result);
 
 private:
 	FString DatabaseFullPath;

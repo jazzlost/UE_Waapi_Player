@@ -31,7 +31,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 
 	//Query Event
 	FSQLiteResultSet* Result = nullptr;
-	QueryEvent(EventName, Result);
+	Query(EventName, WaapiPlayerQueryType::Event, Result);
 
 	if (Result)
 	{
@@ -42,7 +42,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 		for (auto Id : TargetsId)
 		{
 			//Query Target General Info
-			QueryTarget(Id, Result);
+			Query(Id, WaapiPlayerQueryType::Target, Result);
 
 			for (SqlResultIter TargetIter(Result); TargetIter; ++TargetIter)
 			{
@@ -54,7 +54,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 				TArray<FString> SwitchGroupIds = TargetObjectUtil::SplitSqlResult(SwitchGroupSql);
 				for (auto SwitchGroupId : SwitchGroupIds)
 				{
-					QuerySwitch(SwitchGroupId, Result);
+					Query(SwitchGroupId, WaapiPlayerQueryType::Switch, Result);
 					SqlResultIter SwitchIter(Result);
 					TargetObjectUtil::FillSwitchResult(Target, SwitchIter);
 				}
@@ -64,14 +64,14 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 				TArray<FString> StateGroupIds = TargetObjectUtil::SplitSqlResult(StateGroupSql);
 				for (auto StateGroupId : StateGroupIds)
 				{
-					QueryState(StateGroupId, Result);
+					Query(StateGroupId, WaapiPlayerQueryType::State, Result);
 					SqlResultIter StateIter(Result);
 					TargetObjectUtil::FillStateResult(Target, StateIter);
 				}
 
 				//Query Atten Info
 				FString AttenId = TargetIter->GetString(TEXT("AttenId"));
-				QueryAtten(AttenId, Result);
+				Query(AttenId, WaapiPlayerQueryType::Atten, Result);
 				SqlResultIter AttenIter(Result);
 				TargetObjectUtil::FillAttenResult(Target, AttenIter);
 
@@ -80,7 +80,7 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 				TArray<FString> RtpcIds = TargetObjectUtil::SplitSqlResult(RtpcIdSql);
 				for (auto RtpcId : RtpcIds)
 				{
-					QueryRtpc(RtpcId, Result);
+					Query(RtpcId, WaapiPlayerQueryType::Rtpc, Result);
 					SqlResultIter RtpcIter(Result);
 					TargetObjectUtil::FillRtpcResult(Target, RtpcIter);
 				}
@@ -88,9 +88,6 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 				QueryResultObjects.Add(Target);
 			}
 		}
-
-		if (QueryResultObjects.Num() <= 0)
-			return true;
 	}
 
 	return true;
@@ -101,19 +98,55 @@ bool WaapiPlaySqlManager::Open()
 {
 	Conn = MakeShareable(new FSQLiteDatabaseConnection());
 	return Conn->Open(*DatabaseFullPath, nullptr, nullptr);
-
-	//FSQLiteResultSet* Result = nullptr;
-	//FString EventName = TEXT("Play_Ambient");
-	//Database.Execute(*(FString::Printf(TEXT("Select * from Event where Name = %s;"), *EventName)), Result);
-
-	//Conn->Execute(*(FString::Printf(TEXT("SELECT * FROM waapiTable WHERE value=6.0"))), Result);
-	//for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
-	//{
-	//	FString ID = Iter->GetString(TEXT("keyword"));
-	//	UE_LOG(LogTemp, Warning, TEXT("SQL Result: %s"), *ID);
-	//}
-	//Conn->Close();
 }
+
+void WaapiPlaySqlManager::Query(FString ColumnName, WaapiPlayerQueryType Type, FSQLiteResultSet *& Result)
+{
+	if (ColumnName.IsEmpty())
+		return;
+
+	Result = nullptr;
+	FString SQL;
+
+	switch (Type)
+	{
+	case WaapiPlayerQueryType::Event:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *ColumnName);
+		break;
+	}
+	case WaapiPlayerQueryType::Target:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *ColumnName);
+		break;
+	}
+	case WaapiPlayerQueryType::Switch:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM Switch WHERE Id='%s';"), *ColumnName);
+		break;
+	}
+	case WaapiPlayerQueryType::State:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM State WHERE Id='%s';"), *ColumnName);
+		break;
+	}
+	case WaapiPlayerQueryType::Atten:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM Attenuation WHERE Id='%s';"), *ColumnName);
+		break;
+	}
+	case WaapiPlayerQueryType::Rtpc:
+	{
+		SQL = FString::Printf(TEXT("SELECT * FROM RTPC WHERE Id='%s';"), *ColumnName);
+		break;
+	}
+	default:
+		break;
+	}
+
+	Conn->Execute(*SQL, Result);
+}
+
 
 void WaapiPlaySqlManager::Close()
 {
@@ -123,43 +156,50 @@ void WaapiPlaySqlManager::Close()
 	}
 }
 
-void WaapiPlaySqlManager::QueryEvent(FString EventName, FSQLiteResultSet *& Result)
-{
-	Result = nullptr;
-	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
-	Conn->Execute(*SQL, Result);
-}
-
-void WaapiPlaySqlManager::QueryTarget(FString TargetId, FSQLiteResultSet *& Result)
-{
-	Result = nullptr;
-	FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *TargetId);
-	Conn->Execute(*SQL, Result);
-}
-
-void WaapiPlaySqlManager::QuerySwitch(FString SwitchId, FSQLiteResultSet *& Result)
-{
-	Result = nullptr;
-	FString SQL = FString::Printf(TEXT("SELECT * FROM Switch WHERE Id='%s';"), *SwitchId);
-	Conn->Execute(*SQL, Result);
-}
-
-void WaapiPlaySqlManager::QueryState(FString StateGroupId, FSQLiteResultSet *& Result)
-{
-}
-
-void WaapiPlaySqlManager::QueryAtten(FString StateGroupId, FSQLiteResultSet *& Result)
-{
-}
-
-void WaapiPlaySqlManager::QueryRtpc(FString RtpcId, FSQLiteResultSet *& Result)
-{
-}
+//void WaapiPlaySqlManager::QueryEvent(FString EventName, FSQLiteResultSet *& Result)
+//{
+//	Result = nullptr;
+//	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
+//	Conn->Execute(*SQL, Result);
+//}
+//
+//void WaapiPlaySqlManager::QueryTarget(FString TargetId, FSQLiteResultSet *& Result)
+//{
+//	Result = nullptr;
+//	FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *TargetId);
+//	Conn->Execute(*SQL, Result);
+//}
+//
+//void WaapiPlaySqlManager::QuerySwitch(FString SwitchId, FSQLiteResultSet *& Result)
+//{
+//	Result = nullptr;
+//	FString SQL = FString::Printf(TEXT("SELECT * FROM Switch WHERE Id='%s';"), *SwitchId);
+//	Conn->Execute(*SQL, Result);
+//}
+//
+//void WaapiPlaySqlManager::QueryState(FString StateGroupId, FSQLiteResultSet *& Result)
+//{
+//	Result = nullptr;
+//	FString SQL = FString::Printf(TEXT("SELECT * FROM State WHERE Id='%s';"), *StateGroupId);
+//	Conn->Execute(*SQL, Result);
+//}
+//
+//void WaapiPlaySqlManager::QueryAtten(FString StateGroupId, FSQLiteResultSet *& Result)
+//{
+//}
+//
+//void WaapiPlaySqlManager::QueryRtpc(FString RtpcId, FSQLiteResultSet *& Result)
+//{
+//}
 
 
 TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)
 {
-	return TArray<FString>();
+	TArray<FString> OutResult;
+	FString Delim = TEXT(",");
+	SqlResult.ParseIntoArray(OutResult, *Delim, true);
+
+	return OutResult;
 }
 
 const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet*& Result)
@@ -185,29 +225,88 @@ const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutRe
 
 void TargetObjectUtil::FillGeneralTargetResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
+	if (!ResultIter)
+		return;
+
 	TargetObject->TargetName = ResultIter->GetString(TEXT("Name"));
-	TargetObject->Volume = ResultIter->GetString(TEXT("Volume"));
-	TargetObject->Pitch = ResultIter->GetString(TEXT("Pitch"));
-	TargetObject->LPF = ResultIter->GetString(TEXT("LPF"));
-	TargetObject->HPF = ResultIter->GetString(TEXT("HPF"));
-	TargetObject->UseMaxSoundInstance = ResultIter->GetString(TEXT("UseMaxSoundInstance"));
-	TargetObject->MaxSound = ResultIter->GetString(TEXT("MaxSound"));
-	TargetObject->UseListenerRelativeRoute = ResultIter->GetString(TEXT("UseListenerRelativeRoute"));
+	TargetObject->Volume = ResultIter->GetFloat(TEXT("Volume"));
+	TargetObject->Pitch = ResultIter->GetInt(TEXT("Pitch"));
+	TargetObject->LPF = ResultIter->GetInt(TEXT("LPF"));
+	TargetObject->HPF = ResultIter->GetInt(TEXT("HPF"));
+	TargetObject->UseMaxSoundInstance = ResultIter->GetInt(TEXT("UseMaxSoundInstance"));
+	TargetObject->MaxSound = ResultIter->GetInt(TEXT("MaxSound"));
+	TargetObject->UseListenerRelativeRoute = ResultIter->GetInt(TEXT("UseListenerRelativeRoute"));
 	TargetObject->Spatialization3D = ResultIter->GetString(TEXT("Spatialization3D"));
 }
 
 void TargetObjectUtil::FillSwitchResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
+	if (!ResultIter)
+		return;
+
+	for (; ResultIter; ++ResultIter)
+	{
+		TSharedPtr<WaapiSwitchStateObject> NewSwitchObject = MakeShareable(new WaapiSwitchStateObject());
+		NewSwitchObject->SwitchOrStateGroup = ResultIter->GetString(TEXT("Name"));
+		TArray<FString> Switchs = SplitSqlResult(ResultIter->GetString(TEXT("SwitchName")));
+		for (auto Switch : Switchs)
+		{
+			NewSwitchObject->SwitchOrState.Add(Switch);
+		}
+
+		NewSwitchObject->bSwitch = true;
+		TargetObject->TargetExtraData.SwitchOrStateObjects.Add(NewSwitchObject);
+	}
 }
 
 void TargetObjectUtil::FillStateResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
+	if (!ResultIter)
+		return;
+
+	for (; ResultIter; ++ResultIter)
+	{
+		TSharedPtr<WaapiSwitchStateObject> NewStateObject = MakeShareable(new WaapiSwitchStateObject());
+		NewStateObject->SwitchOrStateGroup = ResultIter->GetString(TEXT("Name"));
+		TArray<FString> States = SplitSqlResult(ResultIter->GetString(TEXT("StateName")));
+		for (auto State : States)
+		{
+			NewStateObject->SwitchOrState.Add(State);
+		}
+
+		NewStateObject->bSwitch = false;
+		TargetObject->TargetExtraData.SwitchOrStateObjects.Add(NewStateObject);
+	}
 }
 
 void TargetObjectUtil::FillAttenResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
+	if (!ResultIter)
+		return;
+
+	TSharedPtr<WaapiAttenObject> NewAttenObject = MakeShareable(new WaapiAttenObject());
+
+	NewAttenObject->AttenName = ResultIter->GetString(TEXT("Name"));
+	NewAttenObject->MaxDistance = ResultIter->GetInt(TEXT("MaxDistance"));
+	NewAttenObject->UseConeAttenuation = ResultIter->GetInt(TEXT("UseConeAttenuation"));
+
+	TargetObject->TargetExtraData.AttenObject = NewAttenObject;
 }
 
 void TargetObjectUtil::FillRtpcResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)
 {
+	if (!ResultIter)
+		return;
+
+	for (; ResultIter; ++ResultIter)
+	{
+		TSharedPtr<WaapiRtpcObject> NewRtpcObject = MakeShareable(new WaapiRtpcObject());
+		NewRtpcObject->RtpcName = ResultIter->GetString(TEXT("Name"));
+		NewRtpcObject->UseBuildInParam = ResultIter->GetInt(TEXT("UseBuildInParam"));
+		NewRtpcObject->DefaultValue = ResultIter->GetFloat(TEXT("DefaultValue"));
+		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MaxValue"));
+		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MinValue"));
+
+		TargetObject->TargetExtraData.RtpcObjects.Add(NewRtpcObject);
+	}
 }
