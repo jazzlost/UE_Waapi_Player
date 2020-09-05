@@ -17,17 +17,23 @@ public:
 
 	bool Init(FString DatabasePath);
 
-	TArray<UWaapiTargetObject> QueryWaapiTargetObjects(FString EventName);
+	bool QueryWaapiTargetObjects(FString EventName, FWaapiEventObject& OutResultObject);
 
 private:
 	bool Open();
 	void Close();
-	void Query(FString EventName);
+
+private:
 	FString DatabaseFullPath;
 	TSharedPtr<FSQLiteDatabaseConnection> Conn;
+	TArray<UWaapiTargetObject*> QueryResultObjects;
 };
 
 namespace TargetObjectUtil
 {
-
+	const TArray<FString> FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet* Result);
+	void FillGeneralTargetResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
+	void FillSwitchResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
+	void FillStateResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
+	void FillAttenResult(UWaapiTargetObject* TargetObject, FSQLiteResultSet* Result);
 }

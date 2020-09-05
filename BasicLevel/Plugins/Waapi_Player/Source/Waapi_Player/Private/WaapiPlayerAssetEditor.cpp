@@ -15,6 +15,7 @@
 #include "WaapiTargetObject.h"
 #include "WaapiPlayerCommands.h"
 #include "WaapiPlayerSqlManager.h"
+#include "Misc/Paths.h"
 
 
 
@@ -152,8 +153,13 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	const bool bCreateDefaultToolbar = true;
 	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, FWaapiPlayerAssetEditor::EditorAppIdentifier, StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, Asset);
 	
-	WaapiPlaySqlManager::Get().Init(TEXT("D:\\Dropbox\\Git\\WaapiDatabase\\waapi.db"));
-	WaapiPlaySqlManager::Get().Open();
+	FString DatabasePath = FPaths::ProjectPluginsDir() + TEXT("/Waapi_Player/Content/waapi.db");
+	bool bInitDB = WaapiPlaySqlManager::Get().Init(DatabasePath);
+	FWaapiEventObject OutResultObject;
+	if (bInitDB)
+	{
+		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(TEXT("Play_Ambient"), OutResultObject);
+	}
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArgs & Args)

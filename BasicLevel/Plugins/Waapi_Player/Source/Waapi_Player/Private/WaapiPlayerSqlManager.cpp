@@ -24,15 +24,39 @@ bool WaapiPlaySqlManager::Init(FString DatabasePath)
 	return Open();
 }
 
-TArray<UWaapiTargetObject> WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName)
+bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEventObject& OutResultObject)
 {
 	if (EventName.IsEmpty() || !Conn.IsValid())
-		return;
+		return false;
 
+	//Query Event
 	FSQLiteResultSet* Result = nullptr;
-	Conn->Execute(*(FString::Printf(TEXT("Select * from Event where Name = %s;"), *EventName)), Result);
-	
-	return TArray<UWaapiTargetObject>();
+	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
+	Conn->Execute(*SQL, Result);
+
+	if (Result)
+	{
+		const TArray<FString>& TargetsId = TargetObjectUtil::FillEventResult(OutResultObject, Result);
+
+		//Query TargetsList
+		QueryResultObjects.Empty();
+		for (auto Id : TargetsId)
+		{
+			FSQLiteResultSet* Result = nullptr;
+			FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *Id);
+			Conn->Execute(*SQL, Result);
+
+			for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
+			{
+				FString TargetName = Iter->GetString(TEXT("Name"));
+				UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
+				QueryResultObjects.Add(Target);
+			}
+		}
+	}
+
+
+	return true;
 }
 
 
@@ -56,8 +80,27 @@ bool WaapiPlaySqlManager::Open()
 
 void WaapiPlaySqlManager::Close()
 {
-	if (Conn->IsValid())
+	if (Conn.IsValid())
 	{
 		Conn->Close();
 	}
+}
+
+const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet* Result)
+{
+	FSQLiteResultSet::TIterator Iter(Result);
+	OutResult.EventName = Iter->GetString(TEXT("Name"));
+
+	TArray<FString> OutTargetsId;
+
+	for (FSQLiteResultSet::TIterator Iter(Result); Iter; ++Iter)
+	{
+		FString TargetId = Iter->GetString(TEXT("TargetId"));
+		if (!TargetId.IsEmpty())
+		{
+			OutTargetsId.Add(TargetId);
+			UE_LOG(LogTemp, Warning, TEXT("SQL TargetId Result: %s"), *TargetId);
+		}
+	}
+	return OutTargetsId;
 }
