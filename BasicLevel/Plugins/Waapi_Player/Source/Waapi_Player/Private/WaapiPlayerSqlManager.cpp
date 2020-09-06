@@ -38,7 +38,6 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, TSharedPtr<
 		const TArray<FString>& TargetsId = TargetObjectUtil::FillEventResult(OutResultObject, Result);
 
 		//Query TargetsList
-		QueryResultObjects.Empty();
 		for (auto Id : TargetsId)
 		{
 			//Query Target General Info
@@ -85,14 +84,13 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, TSharedPtr<
 					TargetObjectUtil::FillRtpcResult(Target, RtpcIter);
 				}
 
-				QueryResultObjects.Add(Target);
+				OutResultObject->Targets.Add(Target);
 			}
 		}
 	}
 
 	return true;
 }
-
 
 
 void WaapiPlaySqlManager::Query(FString ColumnName, WaapiPlayerQueryType Type, FSQLiteResultSet *& Result)
@@ -155,8 +153,6 @@ void WaapiPlaySqlManager::Close()
 		Conn->Close();
 	}
 }
-
-
 
 TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)
 {
@@ -249,13 +245,10 @@ void TargetObjectUtil::FillAttenResult(UWaapiTargetObject * TargetObject, SqlRes
 	if (!ResultIter)
 		return;
 
-	TSharedPtr<WaapiAttenObject> NewAttenObject = MakeShareable(new WaapiAttenObject());
+	TargetObject->AttenName = ResultIter->GetString(TEXT("Name"));
+	TargetObject->MaxDistance = ResultIter->GetInt(TEXT("MaxDistance"));
+	TargetObject->UseConeAttenuation = ResultIter->GetInt(TEXT("UseConeAttenuation"));
 
-	NewAttenObject->AttenName = ResultIter->GetString(TEXT("Name"));
-	NewAttenObject->MaxDistance = ResultIter->GetInt(TEXT("MaxDistance"));
-	NewAttenObject->UseConeAttenuation = ResultIter->GetInt(TEXT("UseConeAttenuation"));
-
-	TargetObject->TargetExtraData.AttenObject = NewAttenObject;
 }
 
 void TargetObjectUtil::FillRtpcResult(UWaapiTargetObject * TargetObject, SqlResultIter ResultIter)

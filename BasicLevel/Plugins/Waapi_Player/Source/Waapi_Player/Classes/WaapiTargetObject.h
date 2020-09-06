@@ -12,25 +12,25 @@
 
 struct WaapiSwitchStateObject
 {
-	FString SwitchOrStateGroup;
+	FString SwitchOrStateGroup = TEXT("None");
 	TArray<FString> SwitchOrState;
-	bool bSwitch;
+	bool bSwitch = true;
 };
 
 struct WaapiAttenObject
 {
-	FString AttenName;
-	int MaxDistance;
-	int UseConeAttenuation;
+	FString AttenName = TEXT("None");
+	int MaxDistance = 0;
+	int UseConeAttenuation = 0;
 };
 
 struct WaapiRtpcObject
 {
-	FString RtpcName;
-	int UseBuildInParam;
-	float DefaultValue;
-	float MaxValue;
-	float MinValue;
+	FString RtpcName = TEXT("None");
+	int UseBuildInParam = 0;
+	float DefaultValue = 0.f;
+	float MaxValue = 1.f;
+	float MinValue = 0.f;
 };
 
 USTRUCT()
@@ -38,7 +38,7 @@ struct FWaapiTargetDataObject
 {
 	GENERATED_BODY()
 
-	TSharedPtr<WaapiAttenObject> AttenObject;
+	//TSharedPtr<WaapiAttenObject> AttenObject;
 	TArray<TSharedPtr<WaapiSwitchStateObject>> SwitchOrStateObjects;
 	TArray<TSharedPtr<WaapiRtpcObject>> RtpcObjects;
 };
@@ -52,31 +52,40 @@ class WAAPIPLAYER_API UWaapiTargetObject : public UObject
 public:
 
 	UPROPERTY(VisibleAnywhere)
-	FString TargetName;
+	FString TargetName = TEXT("None");
 
 	UPROPERTY(VisibleAnywhere)
-	float Volume;
+	float Volume = 0.f;
 	
 	UPROPERTY(VisibleAnywhere)
-	int Pitch;
+	int Pitch = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	int LPF;
+	int LPF = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	int HPF;
+	int HPF = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	int UseMaxSoundInstance;
+	int UseMaxSoundInstance = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	int MaxSound;
+	int MaxSound = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	int UseListenerRelativeRoute;
+	int UseListenerRelativeRoute = 0;
 
 	UPROPERTY(VisibleAnywhere)
-	FString Spatialization3D;
+	FString Spatialization3D = TEXT("None");
+
+	UPROPERTY(VisibleAnywhere)
+	FString AttenName = TEXT("None");
+
+	UPROPERTY(VisibleAnywhere)
+	int MaxDistance = 0;
+
+	UPROPERTY(VisibleAnywhere)
+	int UseConeAttenuation = 0;
 
 	FWaapiTargetDataObject TargetExtraData;
 };
@@ -86,6 +95,8 @@ struct FWaapiEventObject
 {
 	GENERATED_BODY()
 
-	FString EventName;
+	FWaapiEventObject();
+
+	FString EventName = TEXT("None");
 	TArray<UWaapiTargetObject*> Targets;
 };

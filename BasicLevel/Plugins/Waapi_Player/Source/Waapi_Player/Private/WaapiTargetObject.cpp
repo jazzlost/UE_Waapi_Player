@@ -3,3 +3,6 @@
 
 #include "WaapiTargetObject.h"
 
+FWaapiEventObject::FWaapiEventObject()
+{
+}

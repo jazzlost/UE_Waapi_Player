@@ -40,8 +40,6 @@ private:
 private:
 	FString DatabaseFullPath;
 	TSharedPtr<FSQLiteDatabaseConnection> Conn;
-	TArray<UWaapiTargetObject*> QueryResultObjects;
-
 };
 
 namespace TargetObjectUtil

@@ -38,11 +38,13 @@ private:
 	TSharedRef<SDockTab> SpawnTreeItemsTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnControlPanelTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTextItemsTab(const FSpawnTabArgs& Args);
+	void RefreshTextItemsTab();
 
 	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
 	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);
 
 	void InitWaapiSqlManager();
+	void InitWaapiEventObject();
 	void RegisterCallback();
 	void QueryCallback(FString EventName);
 
@@ -53,9 +55,9 @@ private:
 	TSharedPtr<SDockableTab> TreeItemsTab;
 	TSharedPtr<SDockableTab> ControlPanelTab;
 	TSharedPtr<SDockableTab> TextItemsTab;
+	TSharedPtr<SVerticalBox> TextItemVerticalBox;
 
 	TSharedPtr<class IDetailsView> AkEventDetailsView;
-
 
 	static const FName AkEventTabId;
 	static const FName TreeItemsTabId;

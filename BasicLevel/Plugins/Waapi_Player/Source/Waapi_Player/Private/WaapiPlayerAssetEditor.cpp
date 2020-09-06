@@ -7,6 +7,8 @@
 #include "Editor.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "AssetEditorToolkit.h"
+#include "Widgets/Layout/SWrapBox.h"
+#include "Misc/Paths.h"
 #include "WaapiPlayer.h"
 #include "SPlayerControlPanelWidget.h"
 #include "SPlayerTreeViewWidget.h"
@@ -15,7 +17,6 @@
 #include "WaapiTargetObject.h"
 #include "WaapiPlayerCommands.h"
 #include "WaapiPlayerSqlManager.h"
-#include "Misc/Paths.h"
 
 
 
@@ -120,7 +121,7 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	AkEventDetailsView->SetObject(UAkAudioEvent::StaticClass()->GetDefaultObject());
 
 	AddToolbarButton(EditorCommandList);
-
+	InitWaapiEventObject();
 
 	const TSharedRef<FTabManager::FLayout> StandaloneDefaultLayout = FTabManager::NewLayout("Standalone_WaapiPlayerAssetEditor_Layout");
 	StandaloneDefaultLayout
@@ -209,40 +210,6 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnT
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabArgs & Args)
 {
-	TSharedPtr<FWaapiEventObject> WaapiNewObject = MakeShareable(new FWaapiEventObject);
-	//WaapiNewObject->EventName = TEXT("WaapiEventObjectName");
-	//UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
-	//Target->TargetName = TEXT("TargetName");
-	//Target->Volume = TEXT("20");
-	//Target->Pitch = TEXT("30");
-	//Target->LPF = TEXT("1200");
-	//Target->HPF = TEXT("5000");
-	//Target->UseMaxSoundInstance = TEXT("yes");
-	//Target->MaxSound = TEXT("5");
-	//Target->UseListenerRelativeRoute = TEXT("yes");
-	//Target->Spatialization3D = TEXT("Relative");
-	//Target->MaxDistance = TEXT("10000");
-	//Target->UseConeAttenuation = TEXT("no");
-	//
-	//WaapiNewObject->Targets.Add(Target);
-
-	//UWaapiTargetObject* Target02 = NewObject<UWaapiTargetObject>();
-	//Target02->TargetName = TEXT("TargetName");
-	//Target02->Volume = TEXT("20");
-	//Target02->Pitch = TEXT("30");
-	//Target02->LPF = TEXT("1200");
-	//Target02->HPF = TEXT("5000");
-	//Target02->UseMaxSoundInstance = TEXT("yes");
-	//Target02->MaxSound = TEXT("5");
-	//Target02->UseListenerRelativeRoute = TEXT("yes");
-	//Target02->Spatialization3D = TEXT("Relative");
-	//Target02->MaxDistance = TEXT("10000");
-	//Target02->UseConeAttenuation = TEXT("no");
-
-	//WaapiNewObject->Targets.Add(Target02);
-
-
-
 	check(Args.GetTabId() == TextItemsTabId);
 
 	return SNew(SDockTab)
@@ -250,9 +217,24 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabA
 		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "Event Info"))
 		.TabColorScale(GetTabColorScale())
 		[
-			SNew(SPlayerTextViewWidget)
-			.WaapiEventObject(WaapiNewObject)
+			SAssignNew(TextItemVerticalBox, SVerticalBox)
+
+			+SVerticalBox::Slot()
+			[
+				SNew(SPlayerTextViewWidget)
+				.WaapiEventObject(OutResultObject)
+			]
 		];
+}
+
+void FWaapiPlayerAssetEditor::RefreshTextItemsTab()
+{
+	TextItemVerticalBox->ClearChildren();
+	TextItemVerticalBox->AddSlot()
+	[
+		SNew(SPlayerTextViewWidget)
+		.WaapiEventObject(OutResultObject)
+	];
 }
 
 void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList)
@@ -273,6 +255,13 @@ void FWaapiPlayerAssetEditor::InitWaapiSqlManager()
 	bInitDB = WaapiPlaySqlManager::Get().Init(DatabasePath);
 }
 
+void FWaapiPlayerAssetEditor::InitWaapiEventObject()
+{
+	OutResultObject = MakeShareable(new FWaapiEventObject);
+	UWaapiTargetObject* DefaultTarget = NewObject<UWaapiTargetObject>();
+	OutResultObject->Targets.Add(DefaultTarget);
+}
+
 void FWaapiPlayerAssetEditor::RegisterCallback()
 {
 	OnTreeItemSelected.AddRaw(this, &FWaapiPlayerAssetEditor::QueryCallback);
@@ -284,5 +273,6 @@ void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
 	if (bInitDB)
 	{
 		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(EventName, OutResultObject);
+		RefreshTextItemsTab();
 	}
 }
