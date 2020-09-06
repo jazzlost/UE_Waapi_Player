@@ -156,41 +156,6 @@ void WaapiPlaySqlManager::Close()
 	}
 }
 
-//void WaapiPlaySqlManager::QueryEvent(FString EventName, FSQLiteResultSet *& Result)
-//{
-//	Result = nullptr;
-//	FString SQL = FString::Printf(TEXT("SELECT * FROM Event WHERE Name='%s';"), *EventName);
-//	Conn->Execute(*SQL, Result);
-//}
-//
-//void WaapiPlaySqlManager::QueryTarget(FString TargetId, FSQLiteResultSet *& Result)
-//{
-//	Result = nullptr;
-//	FString SQL = FString::Printf(TEXT("SELECT * FROM Target WHERE Id='%s';"), *TargetId);
-//	Conn->Execute(*SQL, Result);
-//}
-//
-//void WaapiPlaySqlManager::QuerySwitch(FString SwitchId, FSQLiteResultSet *& Result)
-//{
-//	Result = nullptr;
-//	FString SQL = FString::Printf(TEXT("SELECT * FROM Switch WHERE Id='%s';"), *SwitchId);
-//	Conn->Execute(*SQL, Result);
-//}
-//
-//void WaapiPlaySqlManager::QueryState(FString StateGroupId, FSQLiteResultSet *& Result)
-//{
-//	Result = nullptr;
-//	FString SQL = FString::Printf(TEXT("SELECT * FROM State WHERE Id='%s';"), *StateGroupId);
-//	Conn->Execute(*SQL, Result);
-//}
-//
-//void WaapiPlaySqlManager::QueryAtten(FString StateGroupId, FSQLiteResultSet *& Result)
-//{
-//}
-//
-//void WaapiPlaySqlManager::QueryRtpc(FString RtpcId, FSQLiteResultSet *& Result)
-//{
-//}
 
 
 TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)

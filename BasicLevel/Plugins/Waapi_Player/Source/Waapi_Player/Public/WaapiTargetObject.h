@@ -33,9 +33,11 @@ struct WaapiRtpcObject
 	float MinValue;
 };
 
-
-struct WaapiTargetDataObject
+USTRUCT()
+struct FWaapiTargetDataObject
 {
+	GENERATED_BODY()
+
 	TSharedPtr<WaapiAttenObject> AttenObject;
 	TArray<TSharedPtr<WaapiSwitchStateObject>> SwitchOrStateObjects;
 	TArray<TSharedPtr<WaapiRtpcObject>> RtpcObjects;
@@ -76,16 +78,7 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	FString Spatialization3D;
 
-	//UPROPERTY(VisibleAnywhere)
-	//FString AttenName;
-
-	//UPROPERTY(VisibleAnywhere)
-	//FString MaxDistance;
-
-	//UPROPERTY(VisibleAnywhere)
-	//FString UseConeAttenuation;
-
-	WaapiTargetDataObject TargetExtraData;
+	FWaapiTargetDataObject TargetExtraData;
 };
 
 

@@ -36,32 +36,32 @@
 
 SPlayerControlPanelWidget::SPlayerControlPanelWidget()
 {
-	for (int i = 0; i < 4; i++)
-	{
-		TSharedPtr<FName> Option_01 = MakeShareable(new FName("Option01"));
-		TSharedPtr<FName> Option_02 = MakeShareable(new FName("Option02"));
-		TSharedPtr<FName> Option_03 = MakeShareable(new FName("Option03"));
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	TSharedPtr<FName> Option_01 = MakeShareable(new FName("Option01"));
+	//	TSharedPtr<FName> Option_02 = MakeShareable(new FName("Option02"));
+	//	TSharedPtr<FName> Option_03 = MakeShareable(new FName("Option03"));
 
-		WaapiSwitchOrStateDataPtr Data = MakeShareable(new WaapiSwitchStateObject);
-		Data->SwitchOrStateGroup = TEXT("SwitchGroup") + FString::FromInt(i);
-		Data->SwitchOrState.Add(Option_01);
-		Data->SwitchOrState.Add(Option_02);
-		Data->SwitchOrState.Add(Option_03);
-		Data->bSwitch = true;
+	//	WaapiSwitchOrStateDataPtr Data = MakeShareable(new WaapiSwitchStateObject);
+	//	Data->SwitchOrStateGroup = TEXT("SwitchGroup") + FString::FromInt(i);
+	//	Data->SwitchOrState.Add(Option_01);
+	//	Data->SwitchOrState.Add(Option_02);
+	//	Data->SwitchOrState.Add(Option_03);
+	//	Data->bSwitch = true;
 
-		SwitchDataList.Add(Data);
-	}
+	//	SwitchDataList.Add(Data);
+	//}
 
-	for (int i = 1; i < 5; i++)
-	{
-		WaapiRtpcDataPtr Data = MakeShareable(new WaapiRtpcObject);
-		Data->RtpcName = TEXT("RTPC_") + FString::FromInt(i);
-		Data->DefaultValue = i * 20.0f;
-		Data->MinValue = i * 5.0f;
-		Data->MaxValue = i * 30.0f;
+	//for (int i = 1; i < 5; i++)
+	//{
+	//	WaapiRtpcDataPtr Data = MakeShareable(new WaapiRtpcObject);
+	//	Data->RtpcName = TEXT("RTPC_") + FString::FromInt(i);
+	//	Data->DefaultValue = i * 20.0f;
+	//	Data->MinValue = i * 5.0f;
+	//	Data->MaxValue = i * 30.0f;
 
-		RtpcDataList.Add(Data);
-	}
+	//	RtpcDataList.Add(Data);
+	//}
 }
 
 

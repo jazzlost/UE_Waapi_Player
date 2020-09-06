@@ -160,7 +160,7 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	FWaapiEventObject OutResultObject;
 	if (bInitDB)
 	{
-		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(TEXT("Play_Ambient"), OutResultObject);
+		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(TEXT("Play_Weapon"), OutResultObject);
 	}
 }
 
@@ -206,36 +206,36 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnT
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTextItemsTab(const FSpawnTabArgs & Args)
 {
 	TSharedPtr<FWaapiEventObject> WaapiNewObject = MakeShareable(new FWaapiEventObject);
-	WaapiNewObject->EventName = TEXT("WaapiEventObjectName");
-	UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
-	Target->TargetName = TEXT("TargetName");
-	Target->Volume = TEXT("20");
-	Target->Pitch = TEXT("30");
-	Target->LPF = TEXT("1200");
-	Target->HPF = TEXT("5000");
-	Target->UseMaxSoundInstance = TEXT("yes");
-	Target->MaxSound = TEXT("5");
-	Target->UseListenerRelativeRoute = TEXT("yes");
-	Target->Spatialization3D = TEXT("Relative");
-	Target->MaxDistance = TEXT("10000");
-	Target->UseConeAttenuation = TEXT("no");
-	
-	WaapiNewObject->Targets.Add(Target);
+	//WaapiNewObject->EventName = TEXT("WaapiEventObjectName");
+	//UWaapiTargetObject* Target = NewObject<UWaapiTargetObject>();
+	//Target->TargetName = TEXT("TargetName");
+	//Target->Volume = TEXT("20");
+	//Target->Pitch = TEXT("30");
+	//Target->LPF = TEXT("1200");
+	//Target->HPF = TEXT("5000");
+	//Target->UseMaxSoundInstance = TEXT("yes");
+	//Target->MaxSound = TEXT("5");
+	//Target->UseListenerRelativeRoute = TEXT("yes");
+	//Target->Spatialization3D = TEXT("Relative");
+	//Target->MaxDistance = TEXT("10000");
+	//Target->UseConeAttenuation = TEXT("no");
+	//
+	//WaapiNewObject->Targets.Add(Target);
 
-	UWaapiTargetObject* Target02 = NewObject<UWaapiTargetObject>();
-	Target02->TargetName = TEXT("TargetName");
-	Target02->Volume = TEXT("20");
-	Target02->Pitch = TEXT("30");
-	Target02->LPF = TEXT("1200");
-	Target02->HPF = TEXT("5000");
-	Target02->UseMaxSoundInstance = TEXT("yes");
-	Target02->MaxSound = TEXT("5");
-	Target02->UseListenerRelativeRoute = TEXT("yes");
-	Target02->Spatialization3D = TEXT("Relative");
-	Target02->MaxDistance = TEXT("10000");
-	Target02->UseConeAttenuation = TEXT("no");
+	//UWaapiTargetObject* Target02 = NewObject<UWaapiTargetObject>();
+	//Target02->TargetName = TEXT("TargetName");
+	//Target02->Volume = TEXT("20");
+	//Target02->Pitch = TEXT("30");
+	//Target02->LPF = TEXT("1200");
+	//Target02->HPF = TEXT("5000");
+	//Target02->UseMaxSoundInstance = TEXT("yes");
+	//Target02->MaxSound = TEXT("5");
+	//Target02->UseListenerRelativeRoute = TEXT("yes");
+	//Target02->Spatialization3D = TEXT("Relative");
+	//Target02->MaxDistance = TEXT("10000");
+	//Target02->UseConeAttenuation = TEXT("no");
 
-	WaapiNewObject->Targets.Add(Target02);
+	//WaapiNewObject->Targets.Add(Target02);
 
 
 
