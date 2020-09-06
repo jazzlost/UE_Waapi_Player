@@ -23,6 +23,8 @@ bool FWaapiPlayerDirectoryVisitor::Visit(const TCHAR* FilenameOrDirectory, bool 
 	}
 	else
 	{
+		FString Suffix = TEXT(".uasset");
+		FolderName.RemoveFromEnd(*Suffix, ESearchCase::Type::IgnoreCase);
 		TreeItem = CreateTreeItem(FolderName, FolderPathStr, ParentItemCache, EWaapiPlayerTreeItemType::Type::Event);
 		if (ParentItemCache.IsValid())
 		{

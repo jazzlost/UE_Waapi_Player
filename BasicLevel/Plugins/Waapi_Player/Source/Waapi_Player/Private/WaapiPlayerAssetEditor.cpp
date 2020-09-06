@@ -27,6 +27,8 @@ const FName FWaapiPlayerAssetEditor::ControlPanelTabId(TEXT("WaapiPlayerAssetEdi
 const FName FWaapiPlayerAssetEditor::TextItemsTabId(TEXT("WaapiPlayerAssetEditor_TextItems"));
 const FName FWaapiPlayerAssetEditor::EditorAppIdentifier(TEXT("WaapiPlayerAssetEditorApp"));
 
+const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/waapi.db");
+
 
 void FWaapiPlayerAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
 {
@@ -87,13 +89,20 @@ FLinearColor FWaapiPlayerAssetEditor::GetWorldCentricTabColorScale() const
 	return FLinearColor(0.5f, 0.0f, 0.0f, 0.5f);
 }
 
-UAkAudioEvent * FWaapiPlayerAssetEditor::GetAsset()
-{
-	return nullptr;
-}
+//UAkAudioEvent * FWaapiPlayerAssetEditor::GetAsset()
+//{
+//	return nullptr;
+//}
+//
+//void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
+//{
+//}
 
-void FWaapiPlayerAssetEditor::SetAsset(UAkAudioEvent * Asset)
+bool FWaapiPlayerAssetEditor::OnRequestClose()
 {
+	WaapiPlaySqlManager::Get().Close();
+
+	return true;
 }
 
 void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset, TSharedPtr<class FUICommandList> CommandList)
@@ -155,13 +164,8 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	const bool bCreateDefaultToolbar = true;
 	FAssetEditorToolkit::InitAssetEditor(Mode, InitToolkitHost, FWaapiPlayerAssetEditor::EditorAppIdentifier, StandaloneDefaultLayout, bCreateDefaultStandaloneMenu, bCreateDefaultToolbar, Asset);
 	
-	FString DatabasePath = FPaths::ProjectPluginsDir() + TEXT("/Waapi_Player/Content/waapi.db");
-	bool bInitDB = WaapiPlaySqlManager::Get().Init(DatabasePath);
-	FWaapiEventObject OutResultObject;
-	if (bInitDB)
-	{
-		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(TEXT("Play_Weapon"), OutResultObject);
-	}
+	InitWaapiSqlManager();
+	RegisterCallback();
 }
 
 TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArgs & Args)
@@ -261,4 +265,24 @@ void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> 
 void FWaapiPlayerAssetEditor::AddPlayButton(FToolBarBuilder& ToolbarBuilder)
 {
 	ToolbarBuilder.AddToolBarButton(FWaapiPlayerCommands::Get().PressPlayButton, FName(TEXT("PlayButton")), LOCTEXT("PlayButtonName", "Play"));
+}
+
+void FWaapiPlayerAssetEditor::InitWaapiSqlManager()
+{
+	FString DatabasePath = FPaths::ProjectPluginsDir() + DatabaseRelativePath;
+	bInitDB = WaapiPlaySqlManager::Get().Init(DatabasePath);
+}
+
+void FWaapiPlayerAssetEditor::RegisterCallback()
+{
+	OnTreeItemSelected.AddRaw(this, &FWaapiPlayerAssetEditor::QueryCallback);
+}
+
+void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
+{
+	OutResultObject = MakeShareable(new FWaapiEventObject);
+	if (bInitDB)
+	{
+		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(EventName, OutResultObject);
+	}
 }

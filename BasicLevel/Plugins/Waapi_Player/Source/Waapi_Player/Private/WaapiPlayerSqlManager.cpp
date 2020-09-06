@@ -24,7 +24,7 @@ bool WaapiPlaySqlManager::Init(FString DatabasePath)
 	return Open();
 }
 
-bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEventObject& OutResultObject)
+bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, TSharedPtr<FWaapiEventObject> OutResultObject)
 {
 	if (EventName.IsEmpty() || !Conn.IsValid())
 		return false;
@@ -94,11 +94,6 @@ bool WaapiPlaySqlManager::QueryWaapiTargetObjects(FString EventName, FWaapiEvent
 }
 
 
-bool WaapiPlaySqlManager::Open()
-{
-	Conn = MakeShareable(new FSQLiteDatabaseConnection());
-	return Conn->Open(*DatabaseFullPath, nullptr, nullptr);
-}
 
 void WaapiPlaySqlManager::Query(FString ColumnName, WaapiPlayerQueryType Type, FSQLiteResultSet *& Result)
 {
@@ -147,6 +142,11 @@ void WaapiPlaySqlManager::Query(FString ColumnName, WaapiPlayerQueryType Type, F
 	Conn->Execute(*SQL, Result);
 }
 
+bool WaapiPlaySqlManager::Open()
+{
+	Conn = MakeShareable(new FSQLiteDatabaseConnection());
+	return Conn->Open(*DatabaseFullPath, nullptr, nullptr);
+}
 
 void WaapiPlaySqlManager::Close()
 {
@@ -167,10 +167,10 @@ TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)
 	return OutResult;
 }
 
-const TArray<FString> TargetObjectUtil::FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet*& Result)
+const TArray<FString> TargetObjectUtil::FillEventResult(TSharedPtr<FWaapiEventObject> OutResult, FSQLiteResultSet*& Result)
 {
 	SqlResultIter Iter(Result);
-	OutResult.EventName = Iter->GetString(TEXT("Name"));
+	OutResult->EventName = Iter->GetString(TEXT("Name"));
 
 	TArray<FString> OutTargetsId;
 

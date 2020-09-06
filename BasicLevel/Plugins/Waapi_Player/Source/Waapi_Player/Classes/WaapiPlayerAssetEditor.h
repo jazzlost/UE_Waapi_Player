@@ -8,6 +8,8 @@
 class IDetailView;
 class SDockableTab;
 class UAkAudioEvent;
+struct FWaapiEventObject;
+
 
 class WAAPIPLAYER_API FWaapiPlayerAssetEditor : public IWaapiPlayerAssetEditor
 {
@@ -21,10 +23,15 @@ public:
 	virtual FString GetWorldCentricTabPrefix() const override;	// Must implement in derived class!
 	virtual bool IsPrimaryEditor() const override { return true; }
 	virtual FLinearColor GetWorldCentricTabColorScale() const override;
-	virtual UAkAudioEvent* GetAsset();
-	virtual void SetAsset(UAkAudioEvent* Asset);
+	//virtual UAkAudioEvent* GetAsset();
+	//virtual void SetAsset(UAkAudioEvent* Asset);
+	virtual bool OnRequestClose() override;
 
 	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset, TSharedPtr<class FUICommandList> CommandList);
+	bool GetIsInitDB() { return bInitDB; }
+
+public:
+	FWaapiPlayerTreeItemClickedCallback OnTreeItemSelected;
 
 private:
 	TSharedRef<SDockTab> SpawnAkEventTab(const FSpawnTabArgs& Args);
@@ -34,6 +41,10 @@ private:
 
 	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
 	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);
+
+	void InitWaapiSqlManager();
+	void RegisterCallback();
+	void QueryCallback(FString EventName);
 
 private:
 	TSharedPtr<class FUICommandList> EditorCommandList;
@@ -54,4 +65,6 @@ private:
 
 	UAkAudioEvent* Asset;
 
+	bool bInitDB = false;
+	TSharedPtr<FWaapiEventObject> OutResultObject;
 };

@@ -5,11 +5,13 @@
 
 class UAkAudioEvent;
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FWaapiPlayerTreeItemClickedCallback, FString)
+
 class IWaapiPlayerAssetEditor : public FAssetEditorToolkit
 {
 public:
 
-	virtual UAkAudioEvent* GetAsset() = 0;
+	//virtual UAkAudioEvent* GetAsset() = 0;
 
-	virtual void SetAsset(UAkAudioEvent* Asset) = 0;
+	//virtual void SetAsset(UAkAudioEvent* Asset) = 0;
 };

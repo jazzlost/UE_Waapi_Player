@@ -113,6 +113,8 @@ private:
 	/** Handler for tree view expansion changes */
 	void TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, bool bIsExpanded );
 
+	void OnTreeItemsDoubleClicked(TSharedPtr<FWaapiPlayerTreeItem> ClickedItem);
+
 	//void OnProjectDirectoryChanged(const TArray<struct FFileChangeData>& ChangedFiles);
 	//FDelegateHandle ProjectDirectoryModifiedDelegateHandle;
 	FString ProjectFolder;

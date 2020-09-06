@@ -20,7 +20,10 @@
 //#include "WwiseEventDragDropOp.h"
 #include "Widgets/Input/SHyperlink.h"
 
+#include "WaapiPlayer.h"
 #include "WaapiPlayerAssetManager.h"
+#include "WaapiPlayerAssetEditor.h"
+#include "Modules/ModuleManager.h"
 
 //#include "AkWaapiClient.h"
 //#include "AkSettings.h"
@@ -221,6 +224,7 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 					//.OnSetExpansionRecursive( this, &SPathView::SetTreeItemExpansionRecursive )
 					//.OnContextMenuOpening(this, &SPathView::MakePathViewContextMenu)
 					.ClearSelectionOnClick(false)
+					.OnMouseButtonDoubleClick(this, &SPlayerTreeViewWidget::OnTreeItemsDoubleClicked)
 				]
 			]
 
@@ -533,6 +537,18 @@ void SPlayerTreeViewWidget::TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeIt
 				LastExpandedPaths.Add(Item->FolderPath);
 			}
 		}
+	}
+}
+
+void SPlayerTreeViewWidget::OnTreeItemsDoubleClicked(TSharedPtr<FWaapiPlayerTreeItem> ClickedItem)
+{
+	FWaapiPlayerModule& WaapiPlayerModule =  FModuleManager::Get().GetModuleChecked<FWaapiPlayerModule>("WaapiPlayer");
+	TSharedPtr<FWaapiPlayerAssetEditor> AssetEditor = WaapiPlayerModule.GetAssetEditor();
+
+	if (AssetEditor.IsValid())
+	{
+		FString ClickedEventName = ClickedItem->DisplayName;
+		AssetEditor->OnTreeItemSelected.Broadcast(ClickedEventName);
 	}
 }
 

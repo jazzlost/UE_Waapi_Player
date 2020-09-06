@@ -81,12 +81,12 @@ void WaapiPlayerAssetManager::Recurse(FString EventBasePath, FString BaseFolderN
 	//}
 
 
-	for (auto ChildItem : ChildrenItems)
-	{
+	//for (auto ChildItem : ChildrenItems)
+	//{
 
-	}
+	//}
 
-	TArray<FAssetData> Assets;
-	auto& AssetRegistry = AssetRegistryModule->Get();
+	//TArray<FAssetData> Assets;
+	//auto& AssetRegistry = AssetRegistryModule->Get();
 
 }

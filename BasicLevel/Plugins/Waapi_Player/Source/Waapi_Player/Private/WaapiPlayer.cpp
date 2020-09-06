@@ -124,6 +124,7 @@ TSharedRef<FWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const 
 {
 	TSharedRef<FWaapiPlayerAssetEditor> NewAssetEditor(new FWaapiPlayerAssetEditor());
 	NewAssetEditor->InitEditor(Mode, InitToolkitHost, Asset, PluginCommands);
+	MyAssetEditor = NewAssetEditor;
 	return NewAssetEditor;
 }
 

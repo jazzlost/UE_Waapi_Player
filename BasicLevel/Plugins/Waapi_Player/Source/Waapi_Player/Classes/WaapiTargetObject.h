@@ -81,10 +81,11 @@ public:
 	FWaapiTargetDataObject TargetExtraData;
 };
 
-
+USTRUCT()
 struct FWaapiEventObject
 {
-	FString EventName;
+	GENERATED_BODY()
 
+	FString EventName;
 	TArray<UWaapiTargetObject*> Targets;
 };

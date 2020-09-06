@@ -30,7 +30,7 @@ public:
 	bool Init(FString DatabasePath);
 	void Close();
 
-	bool QueryWaapiTargetObjects(FString EventName, FWaapiEventObject& OutResultObject);
+	bool QueryWaapiTargetObjects(FString EventName, TSharedPtr<FWaapiEventObject> OutResultObject);
 
 private:
 	bool Open();
@@ -48,7 +48,7 @@ namespace TargetObjectUtil
 {
 	TArray<FString> SplitSqlResult(FString SqlResult);
 
-	const TArray<FString> FillEventResult(FWaapiEventObject& OutResult, FSQLiteResultSet*& Result);
+	const TArray<FString> FillEventResult(TSharedPtr<FWaapiEventObject> OutResult, FSQLiteResultSet*& Result);
 	void FillGeneralTargetResult(UWaapiTargetObject* TargetObject, SqlResultIter ResultIter);
 	void FillSwitchResult(UWaapiTargetObject* TargetObject, SqlResultIter ResultIter);
 	void FillStateResult(UWaapiTargetObject* TargetObject, SqlResultIter ResultIter);
