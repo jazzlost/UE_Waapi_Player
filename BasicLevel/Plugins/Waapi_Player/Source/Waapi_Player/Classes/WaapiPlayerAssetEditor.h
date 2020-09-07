@@ -39,6 +39,7 @@ private:
 	TSharedRef<SDockTab> SpawnControlPanelTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTextItemsTab(const FSpawnTabArgs& Args);
 	void RefreshTextItemsTab();
+	void RefreshControlPanelTab();
 
 	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
 	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);
@@ -55,7 +56,9 @@ private:
 	TSharedPtr<SDockableTab> TreeItemsTab;
 	TSharedPtr<SDockableTab> ControlPanelTab;
 	TSharedPtr<SDockableTab> TextItemsTab;
+
 	TSharedPtr<SVerticalBox> TextItemVerticalBox;
+	TSharedPtr<SVerticalBox> ControlPanelVerticalBox;
 
 	TSharedPtr<class IDetailsView> AkEventDetailsView;
 

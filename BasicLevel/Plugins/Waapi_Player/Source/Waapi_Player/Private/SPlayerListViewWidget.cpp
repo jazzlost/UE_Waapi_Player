@@ -53,7 +53,7 @@ TSharedRef<ITableRow> SSwitchOrStateListViewWidget::OnGenerateRow(WaapiSwitchOrS
 			[
 				SNew(SPlayerSwitchWidget)
 				.GroupName(DataPtr->SwitchOrStateGroup)
-				//.OptionList(DataPtr->SwitchOrState)
+				.OptionList(DataPtr->SwitchOrState)
 				.ShowWidget(bCanShowWidget)
 			];
 }

@@ -204,7 +204,13 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnControlPanelTab(const FSpawnT
 		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "Control Panel"))
 		.TabColorScale(GetTabColorScale())
 		[
-			SNew(SPlayerControlPanelWidget)
+			SAssignNew(ControlPanelVerticalBox, SVerticalBox)
+
+			+SVerticalBox::Slot()
+			[
+				SNew(SPlayerControlPanelWidget)
+				.TargetObjects(OutResultObject->Targets)
+			]
 		];
 }
 
@@ -237,6 +243,16 @@ void FWaapiPlayerAssetEditor::RefreshTextItemsTab()
 	];
 }
 
+void FWaapiPlayerAssetEditor::RefreshControlPanelTab()
+{
+	ControlPanelVerticalBox->ClearChildren();
+	ControlPanelVerticalBox->AddSlot()
+	[
+		SNew(SPlayerControlPanelWidget)
+		.TargetObjects(OutResultObject->Targets)
+	];
+}
+
 void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList)
 {
 	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender());
@@ -259,6 +275,15 @@ void FWaapiPlayerAssetEditor::InitWaapiEventObject()
 {
 	OutResultObject = MakeShareable(new FWaapiEventObject);
 	UWaapiTargetObject* DefaultTarget = NewObject<UWaapiTargetObject>();
+	
+	TSharedPtr<WaapiSwitchStateObject> DefaultSwitch = MakeShareable(new WaapiSwitchStateObject);
+	TSharedPtr<FName> DefaultSwitchState = MakeShareable(new FName(TEXT("None")));
+	DefaultSwitch->SwitchOrState.Add(DefaultSwitchState);
+	DefaultTarget->TargetExtraData.SwitchOrStateObjects.Add(DefaultSwitch);
+
+	TSharedPtr<WaapiRtpcObject> DefaultRtpc = MakeShareable(new WaapiRtpcObject);
+	DefaultTarget->TargetExtraData.RtpcObjects.Add(DefaultRtpc);
+
 	OutResultObject->Targets.Add(DefaultTarget);
 }
 
@@ -274,5 +299,6 @@ void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
 	{
 		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(EventName, OutResultObject);
 		RefreshTextItemsTab();
+		RefreshControlPanelTab();
 	}
 }

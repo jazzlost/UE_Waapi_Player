@@ -12,14 +12,15 @@
 class SPlayerControlPanelWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SPlayerControlPanelWidget){}
+	SLATE_BEGIN_ARGS(SPlayerControlPanelWidget)
+		: _TargetObjects()
 		//: _FocusSearchBoxWhenOpened(false)
 		//, _ShowTreeTitle(true)
 		//, _ShowSearchBar(true)
 		//, _ShowSeparator(true)
 		//, _AllowContextMenu(true)
 		//, _SelectionMode( ESelectionMode::Single)
-		//{}
+		{}
 
 	//	/** Content displayed to the left of the search bar */
 	//SLATE_NAMED_SLOT(FArguments, SearchContent)
@@ -41,6 +42,9 @@ public:
 
 	//	/** The selection mode for the tree view */
 	//	SLATE_ARGUMENT(ESelectionMode::Type, SelectionMode)
+
+		SLATE_ARGUMENT(TArray<UWaapiTargetObject*>, TargetObjects)
+
 	SLATE_END_ARGS();
 
 	void Construct(const FArguments& InArgs);
@@ -62,6 +66,9 @@ private:
 	TSharedPtr<SSwitchOrStateListViewWidget> SwitchListView;
 	TSharedPtr<SRtpcListViewWidget> RtpcListView;
 
+	TArray<UWaapiTargetObject*> Targets;
+
+	/**List Data*/
 	TArray<WaapiSwitchOrStateDataPtr> SwitchDataList;
 	TArray<WaapiRtpcDataPtr> RtpcDataList;
 };

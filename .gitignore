@@ -75,5 +75,6 @@ DerivedDataCache/*
 
 BasicLevel/*/*
 !BasicLevel/Plugins/Waapi_Player
+!BasicLevel/Content/WwiseEvent
 BasicLevel/Plugins/Waapi_Player/Binaries
 BasicLevel/Plugins/Waapi_Player/Intermediate

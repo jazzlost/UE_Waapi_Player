@@ -13,7 +13,7 @@
 struct WaapiSwitchStateObject
 {
 	FString SwitchOrStateGroup = TEXT("None");
-	TArray<FString> SwitchOrState;
+	TArray<TSharedPtr<FName>> SwitchOrState;
 	bool bSwitch = true;
 };
 

@@ -212,7 +212,8 @@ void TargetObjectUtil::FillSwitchResult(UWaapiTargetObject * TargetObject, SqlRe
 		TArray<FString> Switchs = SplitSqlResult(ResultIter->GetString(TEXT("SwitchName")));
 		for (auto Switch : Switchs)
 		{
-			NewSwitchObject->SwitchOrState.Add(Switch);
+			TSharedPtr<FName> SwitchFName = MakeShareable(new FName(*Switch));
+			NewSwitchObject->SwitchOrState.Add(SwitchFName);
 		}
 
 		NewSwitchObject->bSwitch = true;
@@ -232,7 +233,8 @@ void TargetObjectUtil::FillStateResult(UWaapiTargetObject * TargetObject, SqlRes
 		TArray<FString> States = SplitSqlResult(ResultIter->GetString(TEXT("StateName")));
 		for (auto State : States)
 		{
-			NewStateObject->SwitchOrState.Add(State);
+			TSharedPtr<FName> StateFName = MakeShareable(new FName(*StateFName));
+			NewStateObject->SwitchOrState.Add(StateFName);
 		}
 
 		NewStateObject->bSwitch = false;
