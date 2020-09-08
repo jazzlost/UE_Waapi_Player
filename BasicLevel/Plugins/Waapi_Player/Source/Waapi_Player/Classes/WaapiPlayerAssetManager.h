@@ -16,6 +16,8 @@ public:
 	void SetEventBasePath(FString BasePath) { EventBasePath = BasePath; }
 	FString GetEventBasePath() { return EventBasePath; }
 
+	UAkAudioEvent* GetAkEventObjectByName(FName Name);
+
 public:
 	TSharedPtr<FWaapiPlayerTreeItem> RootItem;
 	TArray<TSharedPtr<FWaapiPlayerTreeItem>> ChildrenItems;

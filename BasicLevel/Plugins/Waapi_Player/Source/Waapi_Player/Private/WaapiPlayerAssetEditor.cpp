@@ -17,6 +17,7 @@
 #include "WaapiTargetObject.h"
 #include "WaapiPlayerCommands.h"
 #include "WaapiPlayerSqlManager.h"
+#include "WaapiPlayerAssetManager.h"
 
 
 
@@ -110,7 +111,7 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 {
 	WaapiPlaySqlManager::Get().Close();
 
-	const bool bIsUpdatable = false;
+	const bool bIsUpdatable = true;
 	const bool bAllowFavorites = true;
 	const bool bIsLockable = false;
 	EditorCommandList = CommandList;
@@ -118,7 +119,18 @@ void FWaapiPlayerAssetEditor::InitEditor(const EToolkitMode::Type Mode, const TS
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsViewArgs(bIsUpdatable, bIsLockable, true, FDetailsViewArgs::ObjectsUseNameArea, false);
 	AkEventDetailsView = PropertyEditorModule.CreateDetailView(DetailsViewArgs);
-	AkEventDetailsView->SetObject(UAkAudioEvent::StaticClass()->GetDefaultObject());
+	if (Asset == nullptr)
+	{
+		AkEventDetailsView->SetObject(UAkAudioEvent::StaticClass()->GetDefaultObject());
+	}
+	else
+	{
+		SelectedAsset = Cast<UAkAudioEvent>(Asset);
+		if (SelectedAsset)
+		{
+			AkEventDetailsView->SetObject(SelectedAsset);
+		}
+	}
 
 	AddToolbarButton(EditorCommandList);
 	InitWaapiEventObject();
@@ -178,7 +190,13 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnAkEventTab(const FSpawnTabArg
 		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "AkAudioEvent"))
 		.TabColorScale(GetTabColorScale())
 		[
-			AkEventDetailsView.ToSharedRef()
+			SAssignNew(AkEventTabVerticalBox, SVerticalBox)
+
+			+ SVerticalBox::Slot()
+			[
+				AkEventDetailsView.ToSharedRef()
+			]
+
 		];
 }
 
@@ -253,6 +271,17 @@ void FWaapiPlayerAssetEditor::RefreshControlPanelTab()
 	];
 }
 
+void FWaapiPlayerAssetEditor::RefreshAkEventTab()
+{
+	AkEventDetailsView->SetObject(SelectedAsset);
+
+	AkEventTabVerticalBox->ClearChildren();
+	AkEventTabVerticalBox->AddSlot()
+	[
+		AkEventDetailsView.ToSharedRef()
+	];
+}
+
 void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList)
 {
 	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender());
@@ -300,5 +329,17 @@ void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
 		WaapiPlaySqlManager::Get().QueryWaapiTargetObjects(EventName, OutResultObject);
 		RefreshTextItemsTab();
 		RefreshControlPanelTab();
+
+		UAkAudioEvent* TempEvent = WaapiPlayerAssetManager::Get().GetAkEventObjectByName(FName(*EventName));
+		if (TempEvent)
+		{
+			SelectedAsset = TempEvent;
+		}
+		else
+		{
+			SelectedAsset = Cast<UAkAudioEvent>(UAkAudioEvent::StaticClass()->GetDefaultObject());
+		}
+
+		RefreshAkEventTab();
 	}
 }

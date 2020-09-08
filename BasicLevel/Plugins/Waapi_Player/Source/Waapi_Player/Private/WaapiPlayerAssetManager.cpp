@@ -42,6 +42,25 @@ void WaapiPlayerAssetManager::Clear()
 
 }
 
+UAkAudioEvent * WaapiPlayerAssetManager::GetAkEventObjectByName(FName Name)
+{
+	FAssetRegistryModule& AssetRegistryModule = FModuleManager::LoadModuleChecked<FAssetRegistryModule>("AssetRegistry");
+	TArray<FAssetData> AssetData;
+	FARFilter Filter;
+	Filter.bRecursivePaths = true;
+	Filter.ClassNames.Add(FName("AkAudioEvent"));
+	Filter.PackagePaths.Add("/Game/Content/AkEvent");
+	AssetRegistryModule.Get().GetAssets(Filter, AssetData);
+	if (AssetData.Num() > 0)
+	{
+		UAkAudioEvent* Result = Cast<UAkAudioEvent>(AssetData[0].GetAsset());
+		if (Result)
+			return Result;
+	}
+
+	return nullptr;
+}
+
 
 void WaapiPlayerAssetManager::Recurse(FString EventBasePath, FString BaseFolderName)
 {

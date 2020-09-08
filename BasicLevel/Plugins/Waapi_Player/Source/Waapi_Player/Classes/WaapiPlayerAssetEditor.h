@@ -40,6 +40,7 @@ private:
 	TSharedRef<SDockTab> SpawnTextItemsTab(const FSpawnTabArgs& Args);
 	void RefreshTextItemsTab();
 	void RefreshControlPanelTab();
+	void RefreshAkEventTab();
 
 	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
 	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);
@@ -59,6 +60,7 @@ private:
 
 	TSharedPtr<SVerticalBox> TextItemVerticalBox;
 	TSharedPtr<SVerticalBox> ControlPanelVerticalBox;
+	TSharedPtr<SVerticalBox> AkEventTabVerticalBox;
 
 	TSharedPtr<class IDetailsView> AkEventDetailsView;
 
@@ -68,7 +70,7 @@ private:
 	static const FName TextItemsTabId;
 	static const FName EditorAppIdentifier;
 
-	UAkAudioEvent* Asset;
+	UAkAudioEvent* SelectedAsset;
 
 	bool bInitDB = false;
 	TSharedPtr<FWaapiEventObject> OutResultObject;
