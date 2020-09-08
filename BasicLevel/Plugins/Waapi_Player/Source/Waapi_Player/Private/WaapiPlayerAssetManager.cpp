@@ -49,13 +49,17 @@ UAkAudioEvent * WaapiPlayerAssetManager::GetAkEventObjectByName(FName Name)
 	FARFilter Filter;
 	Filter.bRecursivePaths = true;
 	Filter.ClassNames.Add(FName("AkAudioEvent"));
-	Filter.PackagePaths.Add("/Game/Content/AkEvent");
+	Filter.PackagePaths.Add("/Game/WwiseEvent/");
 	AssetRegistryModule.Get().GetAssets(Filter, AssetData);
 	if (AssetData.Num() > 0)
 	{
-		UAkAudioEvent* Result = Cast<UAkAudioEvent>(AssetData[0].GetAsset());
-		if (Result)
-			return Result;
+		for (auto Asset : AssetData)
+		{
+			if (Asset.AssetName == Name)
+			{
+				return Cast<UAkAudioEvent>(Asset.GetAsset());
+			}
+		}
 	}
 
 	return nullptr;
