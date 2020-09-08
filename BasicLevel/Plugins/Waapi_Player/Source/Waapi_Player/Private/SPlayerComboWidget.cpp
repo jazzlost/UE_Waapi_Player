@@ -28,6 +28,18 @@ SPlayerSwitchWidget::~SPlayerSwitchWidget()
 void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 {   
 	CollectionsComboList = InArgs._OptionList;
+	FString DefaultOptionString = CollectionsComboList[0]->ToString();
+	if (DefaultOptionString.IsEmpty())
+	{
+		DefaultOptionString = TEXT("None");
+	}
+
+	bIsSwitch = InArgs._IsSwitch;
+	FString GroupTitleString = TEXT("Switch");
+	if (!bIsSwitch)
+	{
+		GroupTitleString = TEXT("State");
+	}
 
 	ChildSlot
 	[
@@ -70,6 +82,7 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 					[
 						SNew(STextBlock)
 						.Text(FText::FromString(InArgs._GroupName))
+						.ColorAndOpacity(FColor::Yellow)
 					]
 				]
 
@@ -81,8 +94,8 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 					+SHorizontalBox::Slot()
 					.HAlign(EHorizontalAlignment::HAlign_Fill)
 					[
-						SNew(STextBlock)
-						.Text(LOCTEXT("PlayerSwitchesTitle", "Switches"))
+						SAssignNew(SwitchOrStateTitleText, STextBlock)
+						.Text(FText::FromString(GroupTitleString))
 					]
 
 					+SHorizontalBox::Slot()
@@ -91,11 +104,11 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 						SNew(SComboBox<TSharedPtr<FName>>)
 						.OptionsSource(&CollectionsComboList)
 						.OnGenerateWidget(this, &SPlayerSwitchWidget::OnGenerateWidget)
-						//.OnSelectionChanged(this, &SReferenceViewer::HandleCollectionFilterChanged)
+						.OnSelectionChanged(this, &SPlayerSwitchWidget::OnSelectionChanged)
 						//.ToolTipText(this, &SReferenceViewer::GetCollectionFilterText)
 						[
-							SNew(STextBlock)
-							.Text(LOCTEXT("PlayerSwitchesName", "Switches"))
+							SAssignNew(SelectedSwitchOptionText, STextBlock)
+							.Text(FText::FromString(DefaultOptionString))
 						]
 					]
 
@@ -116,6 +129,11 @@ TSharedRef<SWidget> SPlayerSwitchWidget::OnGenerateWidget(TSharedPtr<FName> InIt
 			.Text(ItemAsText)
 			.ToolTipText(ItemAsText)
 		];
+}
+void SPlayerSwitchWidget::OnSelectionChanged(TSharedPtr<FName> SelectedItems, ESelectInfo::Type Type)
+{
+	FString OptionString = SelectedItems->ToString();
+	SelectedSwitchOptionText->SetText(OptionString);
 }
 //=================================================================================================================
 

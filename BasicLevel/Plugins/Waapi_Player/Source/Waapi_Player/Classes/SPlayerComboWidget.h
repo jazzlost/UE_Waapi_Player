@@ -10,11 +10,14 @@ public:
 	SLATE_BEGIN_ARGS(SPlayerSwitchWidget)
 		: _GroupName("")
 		, _OptionList()
+		, _IsSwitch(true)
 		, _ShowWidget(true)
 		{}
 
 	//	/** If true, the search box will be focus the frame after construction */
 		SLATE_ARGUMENT(FString, GroupName)
+
+		SLATE_ARGUMENT(bool, IsSwitch)
 
 	//	/** If true, The tree title will be displayed */
 		SLATE_ARGUMENT(TArray<TSharedPtr<FName>>, OptionList)
@@ -31,10 +34,15 @@ public:
 	~SPlayerSwitchWidget();
 
 	TSharedRef<SWidget> OnGenerateWidget(TSharedPtr<FName> InItem);
+	void OnSelectionChanged(TSharedPtr<FName> SelectedItems, ESelectInfo::Type Type);
 
 private:
 	/** List of collection filter options */
 	TArray<TSharedPtr<FName>> CollectionsComboList;
+	bool bIsSwitch;
+
+	TSharedPtr<STextBlock> SwitchOrStateTitleText;
+	TSharedPtr<STextBlock> SelectedSwitchOptionText;
 
 };
 
