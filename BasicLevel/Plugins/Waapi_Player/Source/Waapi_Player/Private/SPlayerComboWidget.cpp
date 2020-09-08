@@ -35,10 +35,12 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 	}
 
 	bIsSwitch = InArgs._IsSwitch;
-	FString GroupTitleString = TEXT("Switch");
+	FString GroupTitleString = TEXT("Switch Group");
+	FString TypeTitleString = TEXT("Switch");
 	if (!bIsSwitch)
 	{
-		GroupTitleString = TEXT("State");
+		GroupTitleString = TEXT("State Group");
+		TypeTitleString = TEXT("State");
 	}
 
 	ChildSlot
@@ -74,7 +76,7 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 					.HAlign(EHorizontalAlignment::HAlign_Fill)
 					[
 						SNew(STextBlock)
-						.Text(LOCTEXT("PlayerSwitchGroupTitle", "Switch Group"))
+						.Text(FText::FromString(GroupTitleString))
 					]
 
 					+SHorizontalBox::Slot()
@@ -95,7 +97,7 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 					.HAlign(EHorizontalAlignment::HAlign_Fill)
 					[
 						SAssignNew(SwitchOrStateTitleText, STextBlock)
-						.Text(FText::FromString(GroupTitleString))
+						.Text(FText::FromString(TypeTitleString))
 					]
 
 					+SHorizontalBox::Slot()

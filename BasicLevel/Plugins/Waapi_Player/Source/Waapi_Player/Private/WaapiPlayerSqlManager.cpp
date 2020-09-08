@@ -233,7 +233,7 @@ void TargetObjectUtil::FillStateResult(UWaapiTargetObject * TargetObject, SqlRes
 		TArray<FString> States = SplitSqlResult(ResultIter->GetString(TEXT("StateName")));
 		for (auto State : States)
 		{
-			TSharedPtr<FName> StateFName = MakeShareable(new FName(*StateFName));
+			TSharedPtr<FName> StateFName = MakeShareable(new FName(*State));
 			NewStateObject->SwitchOrState.Add(StateFName);
 		}
 
