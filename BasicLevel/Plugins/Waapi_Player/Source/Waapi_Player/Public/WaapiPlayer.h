@@ -43,4 +43,5 @@ private:
 	TSharedPtr<FExtensibilityManager> ToolBarExtensibilityManager;
 	TSharedPtr<FExtensibilityManager> MenuExtensibilityManager;
 	TSharedPtr<FWaapiPlayerAssetEditor> MyAssetEditor;
+
 };

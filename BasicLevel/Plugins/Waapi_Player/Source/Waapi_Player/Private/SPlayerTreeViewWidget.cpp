@@ -229,23 +229,23 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 			]
 
 			// Empty Picker
-			+ SOverlay::Slot()
-			.VAlign(VAlign_Center)
-			.HAlign(HAlign_Center)
-			[
-				SNew(SVerticalBox)
-				+ SVerticalBox::Slot()
-				.VAlign(VAlign_Center)
-				.HAlign(HAlign_Center)
-				.AutoHeight()
-				[
-					SNew(STextBlock)
-					.Visibility(this, &SPlayerTreeViewWidget::isWarningVisible)
-					.AutoWrapText(true)
-					.Justification(ETextJustify::Center)
-					.Text(LOCTEXT("EmptyWwiseTree", "WAAPI connection available; the Wwise Picker has been disabled. Please use the WAAPI Picker."))
-				]
-				+ SVerticalBox::Slot()
+			//+ SOverlay::Slot()
+			//.VAlign(VAlign_Center)
+			//.HAlign(HAlign_Center)
+			//[
+			//	SNew(SVerticalBox)
+			//	+ SVerticalBox::Slot()
+			//	.VAlign(VAlign_Center)
+			//	.HAlign(HAlign_Center)
+			//	.AutoHeight()
+			//	[
+			//		SNew(STextBlock)
+			//		.Visibility(this, &SPlayerTreeViewWidget::isWarningVisible)
+			//		.AutoWrapText(true)
+			//		.Justification(ETextJustify::Center)
+			//		.Text(LOCTEXT("EmptyWwiseTree", "WAAPI connection available; the Wwise Picker has been disabled. Please use the WAAPI Picker."))
+			//	]
+				/*+ SVerticalBox::Slot()
 				.VAlign(VAlign_Center)
 				.HAlign(HAlign_Center)
 				.AutoHeight()
@@ -255,8 +255,8 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 					.Text(LOCTEXT("WaapiDucumentation", "For more informaton, please Visit Waapi Documentation."))
 					.ToolTipText(LOCTEXT("WaapiDucumentationTooltip", "Opens Waapi documentation in a new browser window"))
 					.OnNavigate_Lambda([=]() { FPlatformProcess::LaunchURL(*FString("https://www.audiokinetic.com/library/?source=SDK&id=waapi.html"), nullptr, nullptr); })
-				]
-			]
+				]*/
+			//]
 		]
 	];
 
@@ -283,8 +283,8 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 	//}
 
 	//OnPopulateClicked();
-	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
-	AssetManager.Init();
+	//WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	//AssetManager.Init();
 
 	ForceRefresh();
 	TreeViewPtr->RequestTreeRefresh();

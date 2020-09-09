@@ -11,6 +11,7 @@
 #include "PropertyEditorModule.h"
 
 #include "WaapiPlayerAssetEditor.h"
+#include "WaapiPlayerAssetManager.h"
 #include "SPlayerTreeViewWidget.h"
 #include "SPlayerControlPanelWidget.h"
 #include "AkAudioEvent.h"
@@ -62,6 +63,8 @@ void FWaapiPlayerModule::StartupModule()
 
 	ToolBarExtensibilityManager = MakeShareable(new FExtensibilityManager);
 	MenuExtensibilityManager = MakeShareable(new FExtensibilityManager);
+
+	WaapiPlayerAssetManager::Get().Init();
 
 	//FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	//PropertyModule.RegisterCustomPropertyTypeLayout("WaapiTargetObject", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FPlayerTextViewCustomization::MakeInstance));
