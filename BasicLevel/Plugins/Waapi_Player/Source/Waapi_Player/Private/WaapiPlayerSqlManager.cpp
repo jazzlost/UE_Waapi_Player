@@ -264,8 +264,8 @@ void TargetObjectUtil::FillRtpcResult(UWaapiTargetObject * TargetObject, SqlResu
 		NewRtpcObject->RtpcName = ResultIter->GetString(TEXT("Name"));
 		NewRtpcObject->UseBuildInParam = ResultIter->GetInt(TEXT("UseBuildInParam"));
 		NewRtpcObject->DefaultValue = ResultIter->GetFloat(TEXT("DefaultValue"));
-		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MAX"));
-		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MIN"));
+		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MaxValue"));
+		NewRtpcObject->MinValue = ResultIter->GetFloat(TEXT("MinValue"));
 
 		TargetObject->TargetExtraData.RtpcObjects.Add(NewRtpcObject);
 	}
