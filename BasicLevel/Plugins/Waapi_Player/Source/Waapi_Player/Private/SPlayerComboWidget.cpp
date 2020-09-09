@@ -9,7 +9,8 @@
 //#include "Widgets/Input/SHyperlink.h"
 
 #include "WaapiPlayerAssetManager.h"
-
+#include "WaapiPlayer.h"
+#include "WaapiPlayerPlayingObject.h"
 
 #define LOCTEXT_NAMESPACE "WaapiPlayer"
 
@@ -28,7 +29,11 @@ SPlayerSwitchWidget::~SPlayerSwitchWidget()
 void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 {   
 	CollectionsComboList = InArgs._OptionList;
+	
 	FString DefaultOptionString = CollectionsComboList[0]->ToString();
+
+	GroupName = InArgs._GroupName;
+
 	if (DefaultOptionString.IsEmpty())
 	{
 		DefaultOptionString = TEXT("None");
@@ -138,11 +143,22 @@ void SPlayerSwitchWidget::OnSelectionChanged(TSharedPtr<FName> SelectedItems, ES
 {
 	FString OptionString = SelectedItems->ToString();
 	SelectedSwitchOptionText->SetText(OptionString);
+
+	if (bIsSwitch)
+	{
+		FWaapiPlayerModule::GetPreplayingObject()->SwitchPair[GroupName] = OptionString;
+	}
+	else
+	{
+		FWaapiPlayerModule::GetPreplayingObject()->StatePair[GroupName] = OptionString;
+	}
 }
 //=================================================================================================================
 
 void SPlayerRtpcWidget::Construct(const FArguments& InArgs)
 {
+	RtpcName = InArgs._RtpcName;
+
 	ChildSlot
 		[
 			SNew(SVerticalBox)
@@ -214,7 +230,7 @@ SPlayerRtpcWidget::~SPlayerRtpcWidget()
 
 void SPlayerRtpcWidget::OnValueChanged(float Value)
 {
-
+	FWaapiPlayerModule::GetPreplayingObject()->SetRtpc(RtpcName, Value);
 }
 
 #undef LOCTEXT_NAMESPACE

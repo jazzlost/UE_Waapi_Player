@@ -40,9 +40,11 @@ private:
 	/** List of collection filter options */
 	TArray<TSharedPtr<FName>> CollectionsComboList;
 	bool bIsSwitch;
+	FString GroupName;
 
 	TSharedPtr<STextBlock> SwitchOrStateTitleText;
 	TSharedPtr<STextBlock> SelectedSwitchOptionText;
+
 
 };
 
@@ -76,5 +78,9 @@ public:
 	~SPlayerRtpcWidget();
 
 	void OnValueChanged(float Value);
+
+private:
+
+	FString RtpcName;
 
 };

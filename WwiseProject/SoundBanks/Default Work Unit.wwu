@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{0A75763E-2008-41E2-BC85-0C0540633BF9}" SchemaVersion="94">
+	<SoundBanks>
+		<WorkUnit Name="Default Work Unit" ID="{0A75763E-2008-41E2-BC85-0C0540633BF9}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="Ambient" ID="{717FA634-DCA3-4460-B17E-B3C48E70342D}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_Ambient" ID="{BE62A221-4503-4000-BF91-55F767088450}" WorkUnitID="{ACF47AE4-4C0E-45D0-ADC2-7557019B28FE}" Filter="7" Origin="Definition"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="Character" ID="{6419FA4E-0CA2-45DC-ABC6-6086ED738CB0}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_Character" ID="{6953B68C-73AC-4A4B-938B-A54B371E0BB9}" WorkUnitID="{ACF47AE4-4C0E-45D0-ADC2-7557019B28FE}" Filter="7" Origin="Definition"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="Vehicle" ID="{B1885108-0E39-4D1D-8FCB-AD3B2D37A5E0}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_Vehicle" ID="{EB9FAB9C-F9BD-467B-B22F-12B0ACD58DB1}" WorkUnitID="{ACF47AE4-4C0E-45D0-ADC2-7557019B28FE}" Filter="7" Origin="Definition"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+				<SoundBank Name="Weapon" ID="{D9186ED2-A009-4FE7-BBB7-E4384C9B003C}">
+					<ObjectInclusionList>
+						<ObjectRef Name="Play_Weapon" ID="{0161906D-E958-4245-BBF5-7C72BFA2ACBB}" WorkUnitID="{ACF47AE4-4C0E-45D0-ADC2-7557019B28FE}" Filter="7" Origin="Definition"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
+	</SoundBanks>
+</WwiseDocument>

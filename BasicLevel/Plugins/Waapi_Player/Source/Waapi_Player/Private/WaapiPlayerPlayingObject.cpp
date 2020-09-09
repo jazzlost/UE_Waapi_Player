@@ -9,22 +9,28 @@ bool UWaapiPlayerPlayingObject::Playing()
 {
 	FAkAudioDevice* AudioDevice = FAkAudioDevice::Get();
 
-	AudioDevice->PostEvent(EventName, nullptr, 0, NULL, NULL, false);
 
 	for (auto Pair : SwitchPair)
 	{
+		if (Pair.Key == "None")
+			continue;
+
 		AudioDevice->SetSwitch(*Pair.Key, *Pair.Value, nullptr);
 	}
 
 	for (auto Pair : StatePair)
 	{
+		if (Pair.Key == "None")
+			continue;
+
 		AudioDevice->SetState(*Pair.Key, *Pair.Value);
 	}
 
-	for (auto Pair : RtpcPair)
-	{
-		AudioDevice->SetRTPCValue(*Pair.Key, Pair.Value, 0, nullptr);
-	}
+	AudioDevice->PostEvent(EventName, nullptr, 0, NULL, NULL, false);
+	//for (auto Pair : RtpcPair)
+	//{
+	//	AudioDevice->SetRTPCValue(*Pair.Key, Pair.Value, 0, nullptr);
+	//}
 
 	return true;
 }

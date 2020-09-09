@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IncrementalBankBuild Version="6" Flags="601859981">
+	<Platform GUID="{03D75073-5D2B-40A2-A567-1D410653888A}">
+		<Banks>
+			<Language ID="393239870">
+				<File Name="Ambient" Hash="3961499965" Timestamp="1599656235"/>
+				<File Name="Character" Hash="3026532227" Timestamp="1599656235"/>
+				<File Name="Init" Hash="4253191674" Timestamp="1599656235"/>
+				<File Name="New_SoundBank" Hash="1436366541" Timestamp="1596292803"/>
+				<File Name="New_SoundBank_01" Hash="3368634100" Timestamp="1596292803"/>
+				<File Name="Vehicle" Hash="1332792412" Timestamp="1599656235"/>
+				<File Name="Weapon" Hash="1238543181" Timestamp="1599659259"/>
+			</Language>
+		</Banks>
+		<XMLInfo>
+			<Language ID="-1">
+				<File Name="" Hash="1293855990" Timestamp="1599659259"/>
+			</Language>
+		</XMLInfo>
+	</Platform>
+</IncrementalBankBuild>
