@@ -10,6 +10,7 @@ class FToolBarBuilder;
 class FMenuBuilder;
 class IWaapiPlayerAssetEditor;
 class FWaapiPlayerAssetEditor;
+class UWaapiPlayerPlayingObject;
 
 class FWaapiPlayerModule : public IModuleInterface, public IHasToolBarExtensibility, public IHasMenuExtensibility
 {
@@ -20,8 +21,7 @@ public:
 	virtual void ShutdownModule() override;
 	
 	/** This function will be bound to Command (by default it will bring up plugin window) */
-	void PluginButtonClicked();
-	void OnPlayButtonPressed();
+
 	TSharedPtr<FWaapiPlayerAssetEditor> GetAssetEditor() { return MyAssetEditor; }
 
 	virtual TSharedRef<FWaapiPlayerAssetEditor> CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset);
@@ -29,6 +29,11 @@ public:
 	virtual TSharedPtr<FExtensibilityManager> GetMenuExtensibilityManager() override { return MenuExtensibilityManager; }
 
 	virtual TSharedPtr<FExtensibilityManager> GetToolBarExtensibilityManager() override { return ToolBarExtensibilityManager; }
+
+	void PluginButtonClicked();
+	void OnPlayButtonPressed();
+
+	static UWaapiPlayerPlayingObject* GetPreplayingObject();
 
 private:
 
@@ -43,5 +48,7 @@ private:
 	TSharedPtr<FExtensibilityManager> ToolBarExtensibilityManager;
 	TSharedPtr<FExtensibilityManager> MenuExtensibilityManager;
 	TSharedPtr<FWaapiPlayerAssetEditor> MyAssetEditor;
+
+	static UWaapiPlayerPlayingObject* PreplayingObject;
 
 };

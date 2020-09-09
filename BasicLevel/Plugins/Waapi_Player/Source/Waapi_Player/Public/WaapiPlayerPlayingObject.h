@@ -17,6 +17,7 @@ class WAAPIPLAYER_API UWaapiPlayerPlayingObject : public UObject
 	GENERATED_BODY()
 
 public:
+	
 	FString EventName;
 	
 	TMap<FString, FString> SwitchPair;
@@ -24,12 +25,10 @@ public:
 	TMap<FString, FString> StatePair;
 	
 	TMap<FString, float> RtpcPair;
-
-private:
-	UAkComponent* Component;
 	
 public:
-	bool Playing();
-	void SetRtpc(FString Name, float value);
 
+	bool Playing();
+	
+	void SetRtpc(FString Name, float value);
 };

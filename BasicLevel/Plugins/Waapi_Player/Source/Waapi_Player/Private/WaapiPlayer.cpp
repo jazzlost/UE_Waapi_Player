@@ -15,8 +15,10 @@
 #include "SPlayerTreeViewWidget.h"
 #include "SPlayerControlPanelWidget.h"
 #include "AkAudioEvent.h"
+#include "WaapiPlayerPlayingObject.h"
 
 static const FName Waapi_PlayerTabName("WaapiPlayer");
+UWaapiPlayerPlayingObject* FWaapiPlayerModule::PreplayingObject = NewObject<UWaapiPlayerPlayingObject>();
 
 #define LOCTEXT_NAMESPACE "FWaapiPlayerModule"
 
@@ -121,6 +123,22 @@ void FWaapiPlayerModule::PluginButtonClicked()
 void FWaapiPlayerModule::OnPlayButtonPressed()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Play Button Pressed"));
+	
+	if (PreplayingObject)
+	{
+		PreplayingObject->Playing();
+	}
+}
+
+UWaapiPlayerPlayingObject * FWaapiPlayerModule::GetPreplayingObject()
+{
+	if (FWaapiPlayerModule::PreplayingObject == nullptr)
+	{
+		FWaapiPlayerModule::PreplayingObject = NewObject<UWaapiPlayerPlayingObject>();
+	}
+	
+	return FWaapiPlayerModule::PreplayingObject;
+		
 }
 
 TSharedRef<FWaapiPlayerAssetEditor> FWaapiPlayerModule::CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject * Asset)

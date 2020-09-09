@@ -8,8 +8,8 @@
 class IDetailView;
 class SDockableTab;
 class UAkAudioEvent;
+class UWaapiPlayerPlayingObject;
 struct FWaapiEventObject;
-
 
 class WAAPIPLAYER_API FWaapiPlayerAssetEditor : public IWaapiPlayerAssetEditor
 {
@@ -41,6 +41,7 @@ private:
 	void RefreshTextItemsTab();
 	void RefreshControlPanelTab();
 	void RefreshAkEventTab();
+	void RefreshPreplayingObject();
 
 	void AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList);
 	void AddPlayButton(FToolBarBuilder& ToolbarBuilder);

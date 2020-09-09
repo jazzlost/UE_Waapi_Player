@@ -18,6 +18,7 @@
 #include "WaapiPlayerCommands.h"
 #include "WaapiPlayerSqlManager.h"
 #include "WaapiPlayerAssetManager.h"
+#include "WaapiPlayerPlayingObject.h"
 
 
 
@@ -282,6 +283,11 @@ void FWaapiPlayerAssetEditor::RefreshAkEventTab()
 	];
 }
 
+void FWaapiPlayerAssetEditor::RefreshPreplayingObject()
+{
+	FWaapiPlayerModule::GetPreplayingObject()->EventName = SelectedAsset->GetName();
+}
+
 void FWaapiPlayerAssetEditor::AddToolbarButton(TSharedPtr<class FUICommandList> EditorCommandList)
 {
 	TSharedPtr<FExtender> ToolbarExtender = MakeShareable(new FExtender());
@@ -341,5 +347,6 @@ void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
 		}
 
 		RefreshAkEventTab();
+		RefreshPreplayingObject();
 	}
 }

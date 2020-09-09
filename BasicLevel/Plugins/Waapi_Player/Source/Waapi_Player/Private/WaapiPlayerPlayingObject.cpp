@@ -7,12 +7,9 @@
 
 bool UWaapiPlayerPlayingObject::Playing()
 {
-	if (Component == nullptr)
-	{
-		Component = FAkAudioDevice::Get()->GetAkComponent();
-	}
+	FAkAudioDevice* AudioDevice = FAkAudioDevice::Get();
 
-	AudioDevice->PostEvent(EventName, nullptr);
+	AudioDevice->PostEvent(EventName, nullptr, 0, NULL, NULL, false);
 
 	for (auto Pair : SwitchPair)
 	{
@@ -30,4 +27,10 @@ bool UWaapiPlayerPlayingObject::Playing()
 	}
 
 	return true;
+}
+
+void UWaapiPlayerPlayingObject::SetRtpc(FString Name, float value)
+{
+	FAkAudioDevice* AudioDevice = FAkAudioDevice::Get();
+	AudioDevice->SetRTPCValue(*Name, value, 0, nullptr);
 }

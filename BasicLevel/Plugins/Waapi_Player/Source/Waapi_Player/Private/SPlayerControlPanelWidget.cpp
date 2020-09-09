@@ -25,6 +25,8 @@
 #include "Widgets/Layout/SScrollBox.h"
 #include "SPlayerListViewWidget.h"
 #include "WaapiPlayerSqlManager.h"
+#include "WaapiPlayerPlayingObject.h"
+#include "WaapiPlayer.h"
 
 //#include "AkWaapiClient.h"
 //#include "AkSettings.h"
@@ -57,6 +59,25 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 	{
 		SwitchDataList.Append(Target->TargetExtraData.SwitchOrStateObjects);
 		RtpcDataList.Append(Target->TargetExtraData.RtpcObjects);
+
+		UWaapiPlayerPlayingObject* PreplayingObject = FWaapiPlayerModule::GetPreplayingObject();
+
+		for (auto SwitchObject : Target->TargetExtraData.SwitchOrStateObjects)
+		{
+			if (SwitchObject->bSwitch)
+			{
+				PreplayingObject->SwitchPair.Add(SwitchObject->SwitchOrStateGroup, SwitchObject->SwitchOrState[0]->ToString());
+			}
+			else
+			{
+				PreplayingObject->StatePair.Add(SwitchObject->SwitchOrStateGroup, SwitchObject->SwitchOrState[0]->ToString());
+			}
+		}
+
+		for (auto RtpcObject : Target->TargetExtraData.RtpcObjects)
+		{
+			PreplayingObject->RtpcPair.Add(RtpcObject->RtpcName, RtpcObject->DefaultValue);
+		}
 	}
 
 	ChildSlot
@@ -75,10 +96,10 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 				.Visibility(EVisibility::Visible)
 
 				// Search
-				+ SVerticalBox::Slot()
-				.AutoHeight()
-				.Padding(0, 1, 0, 3)
-				[
+				//+ SVerticalBox::Slot()
+				//.AutoHeight()
+				//.Padding(0, 1, 0, 3)
+				//[
 					//SNew(SHorizontalBox)
 
 					//+ SHorizontalBox::Slot()
@@ -97,12 +118,12 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 					//	.DelayChangeNotificationsWhileTyping(true)
 					//]
 
-					SNew(STextBlock)
-					.Visibility(EVisibility::Visible)
-					.AutoWrapText(true)
-					.Justification(ETextJustify::Center)
-					.Text(LOCTEXT("Empty", "GO GO GO!!!"))
-				]
+					//SNew(STextBlock)
+					//.Visibility(EVisibility::Visible)
+					//.AutoWrapText(true)
+					//.Justification(ETextJustify::Center)
+					//.Text(LOCTEXT("Empty", "GO GO GO!!!"))
+				//]
 
 				// Tree title
 				//+SVerticalBox::Slot()
@@ -144,7 +165,7 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 
 				// Separator
 				+SVerticalBox::Slot()
-				.AutoHeight()
+				.VAlign(EVerticalAlignment::VAlign_Fill)
 				.Padding(0, 0, 1, 1)
 				[
 					SNew(SSeparator)
@@ -152,7 +173,7 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 				]
 
 				+SVerticalBox::Slot()
-				.AutoHeight()
+				.VAlign(EVerticalAlignment::VAlign_Fill)
 				[
 					SAssignNew(SwitchListView, SSwitchOrStateListViewWidget)
 				]

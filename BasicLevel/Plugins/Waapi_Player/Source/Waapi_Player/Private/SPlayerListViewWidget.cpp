@@ -14,6 +14,8 @@
 #include "Misc/ScopedSlowTask.h"
 
 #include "WaapiPlayerAssetManager.h"
+#include "WaapiPlayer.h"
+#include "WaapiPlayerPlayingObject.h"
 #include "SPlayerComboWidget.h"
 
 
@@ -62,7 +64,11 @@ TSharedRef<ITableRow> SSwitchOrStateListViewWidget::OnGenerateRow(WaapiSwitchOrS
 
 void SSwitchOrStateListViewWidget::OnSelectionChanged(WaapiSwitchOrStateDataPtr DataPtr, ESelectInfo::Type type)
 {
+	//if (DataPtr->bSwitch)
+	//{
+	//	FWaapiPlayerModule::GetPreplayingObject()->SwitchPair.Add(DataPtr->SwitchOrStateGroup);
 
+	//}
 }
 
 

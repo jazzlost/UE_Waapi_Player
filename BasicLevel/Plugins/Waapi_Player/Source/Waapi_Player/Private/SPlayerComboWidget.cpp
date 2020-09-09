@@ -132,6 +132,8 @@ TSharedRef<SWidget> SPlayerSwitchWidget::OnGenerateWidget(TSharedPtr<FName> InIt
 			.ToolTipText(ItemAsText)
 		];
 }
+
+
 void SPlayerSwitchWidget::OnSelectionChanged(TSharedPtr<FName> SelectedItems, ESelectInfo::Type Type)
 {
 	FString OptionString = SelectedItems->ToString();
