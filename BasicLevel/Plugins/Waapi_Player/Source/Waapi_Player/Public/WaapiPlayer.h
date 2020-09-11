@@ -42,6 +42,7 @@ private:
 
 
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
+	void CreateAssetEditorWrapped();
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;

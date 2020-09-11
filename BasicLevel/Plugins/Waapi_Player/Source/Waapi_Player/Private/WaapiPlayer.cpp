@@ -66,7 +66,7 @@ void FWaapiPlayerModule::StartupModule()
 	ToolBarExtensibilityManager = MakeShareable(new FExtensibilityManager);
 	MenuExtensibilityManager = MakeShareable(new FExtensibilityManager);
 
-	WaapiPlayerAssetManager::Get().Init();
+	WaapiPlayerAssetManager::Get().AssetManagerInitedCallback.AddRaw(this, &FWaapiPlayerModule::CreateAssetEditorWrapped);
 
 	//FPropertyEditorModule& PropertyModule = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	//PropertyModule.RegisterCustomPropertyTypeLayout("WaapiTargetObject", FOnGetPropertyTypeCustomizationInstance::CreateStatic(&FPlayerTextViewCustomization::MakeInstance));
@@ -114,10 +114,17 @@ TSharedRef<SDockTab> FWaapiPlayerModule::OnSpawnPluginTab(const FSpawnTabArgs& S
 	//	];
 }
 
+void FWaapiPlayerModule::CreateAssetEditorWrapped()
+{
+	CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
+}
+
+
 void FWaapiPlayerModule::PluginButtonClicked()
 {
 	//FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
-	CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
+	WaapiPlayerAssetManager::Get().Init();
+	//CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
 }
 
 void FWaapiPlayerModule::OnPlayButtonPressed()

@@ -35,6 +35,8 @@ void WaapiPlayerAssetManager::Init()
 	ChildrenItems.Empty();
 
 	Recurse(EventBasePath, EventBaseFolderName);
+
+	AssetManagerInitedCallback.Broadcast();
 }
 
 void WaapiPlayerAssetManager::Clear()

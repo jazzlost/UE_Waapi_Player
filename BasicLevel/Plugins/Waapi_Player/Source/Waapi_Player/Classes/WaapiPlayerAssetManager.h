@@ -3,6 +3,8 @@
 #include "AkAudioEvent.h"
 #include "WaapiPlayerTreeItem.h"
 
+DECLARE_MULTICAST_DELEGATE(FAssetManagerInitDelegate)
+
 class FAssetRegistryModule;
 
 class WaapiPlayerAssetManager
@@ -19,6 +21,8 @@ public:
 	UAkAudioEvent* GetAkEventObjectByName(FName Name);
 
 public:
+	FAssetManagerInitDelegate AssetManagerInitedCallback;
+
 	TSharedPtr<FWaapiPlayerTreeItem> RootItem;
 	TArray<TSharedPtr<FWaapiPlayerTreeItem>> ChildrenItems;
 

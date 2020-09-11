@@ -101,6 +101,8 @@ SPlayerTreeViewWidget::SPlayerTreeViewWidget()
 SPlayerTreeViewWidget::~SPlayerTreeViewWidget()
 {
 	RootItems.Empty();
+	//TreeViewPtr.Reset();
+	//SearchBoxFilter.Reset();
 	//RemoveClientCallbacks();
 	//auto pWaapiClient = FAkWaapiClient::Get();
 	//if (pWaapiClient != nullptr)
@@ -319,8 +321,8 @@ void SPlayerTreeViewWidget::ForceRefresh()
 {
 	//FWwiseWwuParser::ForcePopulate();
 	//UpdateDirectoryWatcher();
-	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
-	AssetManager.Init();
+	//WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	//AssetManager.Init();
 
 	ConstructTree();
 }
