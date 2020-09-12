@@ -172,13 +172,17 @@ const TArray<FString> TargetObjectUtil::FillEventResult(TSharedPtr<FWaapiEventOb
 
 	for (; Iter; ++Iter)
 	{
-		FString TargetId = Iter->GetString(TEXT("TargetId"));
+		FString TargetIdString = Iter->GetString(TEXT("TargetId"));
 		int TargetAction = Iter->GetInt(TEXT("ActionType"));
 
-		if (!TargetId.IsEmpty() && TargetAction == 1)
+		TArray<FString> TargetIds = TargetObjectUtil::SplitSqlResult(TargetIdString);
+		for (auto TargetId : TargetIds)
 		{
-			OutTargetsId.Add(TargetId);
-			UE_LOG(LogTemp, Warning, TEXT("SQL TargetId Result: %s"), *TargetId);
+			if (!TargetId.IsEmpty() && TargetAction == 1)
+			{
+				OutTargetsId.Add(TargetId);
+				UE_LOG(LogTemp, Warning, TEXT("SQL TargetId Result: %s"), *TargetId);
+			}
 		}
 	}
 	return OutTargetsId;

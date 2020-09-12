@@ -101,8 +101,6 @@ SPlayerTreeViewWidget::SPlayerTreeViewWidget()
 SPlayerTreeViewWidget::~SPlayerTreeViewWidget()
 {
 	RootItems.Empty();
-	//TreeViewPtr.Reset();
-	//SearchBoxFilter.Reset();
 	//RemoveClientCallbacks();
 	//auto pWaapiClient = FAkWaapiClient::Get();
 	//if (pWaapiClient != nullptr)
@@ -288,7 +286,15 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 	//WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
 	//AssetManager.Init();
 
-	ForceRefresh();
+	//ForceRefresh();
+
+	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	AssetManager.Init();
+	RootItems.Add(AssetManager.RootItem);
+
+	RestoreTreeExpansion(RootItems);
+
+	//TreeViewPtr->RequestTreeRefresh();
 	TreeViewPtr->RequestTreeRefresh();
 	ExpandFirstLevel();
 }
@@ -307,15 +313,15 @@ EVisibility SPlayerTreeViewWidget::isWarningVisible() const
 	return EVisibility::Hidden;
 }
 
-//void SPlayerTreeViewWidget::Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime )
-//{
-//	UAkSettings* AkSettings = GetMutableDefault<UAkSettings>();
-//    if(AkSettings->bRequestRefresh)
-//    {
-//        ForceRefresh();
-//        AkSettings->bRequestRefresh = false;
-//    }
-//}
+void SPlayerTreeViewWidget::Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime )
+{
+	//UAkSettings* AkSettings = GetMutableDefault<UAkSettings>();
+ //   if(AkSettings->bRequestRefresh)
+ //   {
+        //ForceRefresh();
+        //AkSettings->bRequestRefresh = false;
+    //}
+}
 
 void SPlayerTreeViewWidget::ForceRefresh()
 {
@@ -353,8 +359,8 @@ void SPlayerTreeViewWidget::ConstructTree()
 			//NewRoot->Children.Add(MakeShareable(new FWaapiPlayerTreeItem(TEXT("WaapiChild"), TEXT("Path/Root/Children"), NewRoot, EWaapiPlayerTreeItemType::Event)));
 			//CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
 
-			WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
-			RootItems.Add(AssetManager.RootItem);
+	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
+	RootItems.Add(AssetManager.RootItem);
 		//}		
 	//}
 	RestoreTreeExpansion(RootItems);
@@ -415,6 +421,7 @@ TSharedRef<ITableRow> SPlayerTreeViewWidget::GenerateRow( TSharedPtr<FWaapiPlaye
 
 	return NewRow.ToSharedRef();
 }
+
 
 void SPlayerTreeViewWidget::GetChildrenForTree( TSharedPtr< FWaapiPlayerTreeItem > TreeItem, TArray< TSharedPtr<FWaapiPlayerTreeItem> >& OutChildren )
 {

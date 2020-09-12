@@ -124,7 +124,7 @@ void FWaapiPlayerModule::PluginButtonClicked()
 {
 	//FGlobalTabmanager::Get()->InvokeTab(Waapi_PlayerTabName);
 	WaapiPlayerAssetManager::Get().Init();
-	//CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
+	CreateAssetEditor(EToolkitMode::Type::Standalone, nullptr, UAkAudioEvent::StaticClass()->GetDefaultObject());
 }
 
 void FWaapiPlayerModule::OnPlayButtonPressed()

@@ -24,6 +24,8 @@
 
 void SSwitchOrStateListViewWidget::Construct(const FArguments& InArgs)
 {
+	bIsSwitch = InArgs._IsSwitch;
+
 		ChildSlot
 		[
 			SNew(SScrollBox)
@@ -51,14 +53,28 @@ SSwitchOrStateListViewWidget::~SSwitchOrStateListViewWidget()
 
 TSharedRef<ITableRow> SSwitchOrStateListViewWidget::OnGenerateRow(WaapiSwitchOrStateDataPtr DataPtr, const TSharedRef<STableViewBase>& OwnerTable)
 {
-	return SNew(STableRow<TSharedPtr<WaapiSwitchOrStateDataPtr>>, OwnerTable)
+	if (DataPtr->bSwitch)
+	{
+		return SNew(STableRow<TSharedPtr<WaapiSwitchOrStateDataPtr>>, OwnerTable)
 			[
 				SNew(SPlayerSwitchWidget)
 				.GroupName(DataPtr->SwitchOrStateGroup)
 				.OptionList(DataPtr->SwitchOrState)
-				.IsSwitch(DataPtr->bSwitch)
 				.ShowWidget(bCanShowWidget)
 			];
+	}
+	else
+	{
+		return SNew(STableRow<TSharedPtr<WaapiSwitchOrStateDataPtr>>, OwnerTable)
+			[
+				SNew(SPlayerStateWidget)
+				.GroupName(DataPtr->SwitchOrStateGroup)
+				.OptionList(DataPtr->SwitchOrState)
+				.ShowWidget(bCanShowWidget)
+			];
+	}
+
+
 }
 
 

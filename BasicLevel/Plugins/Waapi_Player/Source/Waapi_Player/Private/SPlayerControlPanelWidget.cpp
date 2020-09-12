@@ -35,7 +35,6 @@
 #define LOCTEXT_NAMESPACE "WaapiPlayer"
 
 
-
 SPlayerControlPanelWidget::SPlayerControlPanelWidget()
 {
 
@@ -57,7 +56,7 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 
 	for (auto Target : Targets)
 	{
-		SwitchDataList.Append(Target->TargetExtraData.SwitchOrStateObjects);
+		//SwitchDataList.Append(Target->TargetExtraData.SwitchOrStateObjects);
 		RtpcDataList.Append(Target->TargetExtraData.RtpcObjects);
 
 		UWaapiPlayerPlayingObject* PreplayingObject = FWaapiPlayerModule::GetPreplayingObject();
@@ -66,10 +65,12 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 		{
 			if (SwitchObject->bSwitch)
 			{
+				SwitchDataList.Add(SwitchObject);
 				PreplayingObject->SwitchPair.Add(SwitchObject->SwitchOrStateGroup, SwitchObject->SwitchOrState[0]->ToString());
 			}
 			else
 			{
+				StateDataList.Add(SwitchObject);
 				PreplayingObject->StatePair.Add(SwitchObject->SwitchOrStateGroup, SwitchObject->SwitchOrState[0]->ToString());
 			}
 		}
@@ -166,7 +167,6 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 				// Separator
 				+SVerticalBox::Slot()
 				.VAlign(EVerticalAlignment::VAlign_Fill)
-				.Padding(0, 0, 1, 1)
 				[
 					SNew(SSeparator)
 					.Visibility(EVisibility::Visible)
@@ -174,12 +174,25 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 
 				+SVerticalBox::Slot()
 				.VAlign(EVerticalAlignment::VAlign_Fill)
+				.FillHeight(80)
+				.Padding(0, 20, 0, 0)
 				[
 					SAssignNew(SwitchListView, SSwitchOrStateListViewWidget)
+					.IsSwitch(true)
+				]
+
+				+ SVerticalBox::Slot()
+				.VAlign(EVerticalAlignment::VAlign_Fill)
+				.FillHeight(80)
+				.Padding(0, 20, 0, 0)
+				[
+					SAssignNew(StateListView, SSwitchOrStateListViewWidget)
+					.IsSwitch(false)
 				]
 
 				+SVerticalBox::Slot()
-				.AutoHeight()
+				.FillHeight(80)
+				.Padding(0, 20, 0, 0)
 				[
 					SAssignNew(RtpcListView, SRtpcListViewWidget)
 				]
@@ -188,6 +201,7 @@ void SPlayerControlPanelWidget::Construct(const FArguments& InArgs)
 	];
 
 	SwitchListView->SetItemList(SwitchDataList);
+	StateListView->SetItemList(StateDataList);
 	RtpcListView->SetItemList(RtpcDataList);
 }
 

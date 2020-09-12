@@ -13,7 +13,10 @@ typedef SListView<WaapiRtpcDataPtr> RtpcListViewType;
 class SSwitchOrStateListViewWidget : public SCompoundWidget
 {
 public:
-	SLATE_BEGIN_ARGS(SSwitchOrStateListViewWidget) {}
+	SLATE_BEGIN_ARGS(SSwitchOrStateListViewWidget)
+		:_IsSwitch(true)
+		{}
+		SLATE_ARGUMENT(bool, IsSwitch)
 	SLATE_END_ARGS();
 
 	void Construct(const FArguments& InArgs);
@@ -32,6 +35,7 @@ private:
 	TSharedPtr<SwitchOrStateListViewType> ListView;
 
 	bool bCanShowWidget;
+	bool bIsSwitch;
 };
 
 

@@ -30,7 +30,9 @@ const FName FWaapiPlayerAssetEditor::ControlPanelTabId(TEXT("WaapiPlayerAssetEdi
 const FName FWaapiPlayerAssetEditor::TextItemsTabId(TEXT("WaapiPlayerAssetEditor_TextItems"));
 const FName FWaapiPlayerAssetEditor::EditorAppIdentifier(TEXT("WaapiPlayerAssetEditorApp"));
 
-const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/waapi.db");
+//const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/waapi.db");
+const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/WaapiFormula.db");
+
 
 
 void FWaapiPlayerAssetEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& TabManager)
@@ -104,7 +106,6 @@ FLinearColor FWaapiPlayerAssetEditor::GetWorldCentricTabColorScale() const
 bool FWaapiPlayerAssetEditor::OnRequestClose()
 {
 	WaapiPlaySqlManager::Get().Close();
-
 	return true;
 }
 
@@ -208,6 +209,7 @@ TSharedRef<SDockTab> FWaapiPlayerAssetEditor::SpawnTreeItemsTab(const FSpawnTabA
 	return SNew(SDockTab)
 		.Icon(FEditorStyle::GetBrush("GenericEditor.Tab.Properties"))
 		.Label(LOCTEXT("WaapiPlayerAssetEditorLabel", "Event TreeView"))
+		.TabRole(ETabRole::NomadTab)
 		.TabColorScale(GetTabColorScale())
 		[
 			SNew(SPlayerTreeViewWidget)

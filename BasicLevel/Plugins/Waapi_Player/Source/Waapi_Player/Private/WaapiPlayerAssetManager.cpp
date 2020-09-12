@@ -15,6 +15,8 @@
 
 #define LOCTEXT_NAMESPACE "WaapiPlayer"
 
+
+
 WaapiPlayerAssetManager & WaapiPlayerAssetManager::Get()
 {
 	static WaapiPlayerAssetManager instance;
@@ -32,16 +34,15 @@ WaapiPlayerAssetManager::WaapiPlayerAssetManager()
 void WaapiPlayerAssetManager::Init()
 {
 	AkEvents.Empty();
-	ChildrenItems.Empty();
-
+	//ChildrenItems.Empty();
 	Recurse(EventBasePath, EventBaseFolderName);
 
-	AssetManagerInitedCallback.Broadcast();
+	//AssetManagerInitedCallback.Broadcast();
 }
 
 void WaapiPlayerAssetManager::Clear()
 {
-
+	RootItem.Reset();
 }
 
 UAkAudioEvent * WaapiPlayerAssetManager::GetAkEventObjectByName(FName Name)

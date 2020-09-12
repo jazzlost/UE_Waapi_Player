@@ -43,17 +43,17 @@ public:
 		SLATE_ARGUMENT(ESelectionMode::Type, SelectionMode)
 	SLATE_END_ARGS();
 
-	void Construct(const FArguments& InArgs);
+	WAAPIPLAYER_API void Construct(const FArguments& InArgs);
 	
 	SPlayerTreeViewWidget();
 	
 	~SPlayerTreeViewWidget();
 
-	static const FName PlayerMainWidgetTabName;
+	WAAPIPLAYER_API static const FName PlayerMainWidgetTabName;
 
-	void ForceRefresh();
+	WAAPIPLAYER_API void ForceRefresh();
     
-    //virtual void Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime ) override;
+    virtual void Tick( const FGeometry& AllottedGeometry, const double InCurrentTime, const float InDeltaTime ) override;
 
 
 private:

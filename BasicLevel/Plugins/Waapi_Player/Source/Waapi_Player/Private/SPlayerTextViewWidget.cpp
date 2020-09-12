@@ -50,7 +50,7 @@ void SPlayerTextViewWidget::Construct(const FArguments & InArgs)
 		]
 
 		+ SVerticalBox::Slot()
-		.AutoHeight()
+		.FillHeight(80)
 		[
 			SAssignNew(TempScroll, SScrollBox)
 			.Orientation(EOrientation::Orient_Vertical)

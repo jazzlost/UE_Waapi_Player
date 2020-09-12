@@ -39,14 +39,9 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 		DefaultOptionString = TEXT("None");
 	}
 
-	bIsSwitch = InArgs._IsSwitch;
 	FString GroupTitleString = TEXT("Switch Group");
 	FString TypeTitleString = TEXT("Switch");
-	if (!bIsSwitch)
-	{
-		GroupTitleString = TEXT("State Group");
-		TypeTitleString = TEXT("State");
-	}
+
 
 	ChildSlot
 	[
@@ -66,7 +61,7 @@ void SPlayerSwitchWidget::Construct(const FArguments& InArgs)
 				// Separator
 				+SVerticalBox::Slot()
 				.AutoHeight()
-				.Padding(0, 0, 1, 1)
+				.Padding(0, 20, 0, 0)
 				[
 					SNew(SSeparator)
 					.Visibility(EVisibility::Visible)
@@ -144,15 +139,136 @@ void SPlayerSwitchWidget::OnSelectionChanged(TSharedPtr<FName> SelectedItems, ES
 	FString OptionString = SelectedItems->ToString();
 	SelectedSwitchOptionText->SetText(OptionString);
 
-	if (bIsSwitch)
-	{
-		FWaapiPlayerModule::GetPreplayingObject()->SwitchPair[GroupName] = OptionString;
-	}
-	else
-	{
-		FWaapiPlayerModule::GetPreplayingObject()->StatePair[GroupName] = OptionString;
-	}
+	FWaapiPlayerModule::GetPreplayingObject()->SwitchPair[GroupName] = OptionString;
 }
+//=================================================================================================================
+SPlayerStateWidget::SPlayerStateWidget()
+{
+
+}
+
+
+SPlayerStateWidget::~SPlayerStateWidget()
+{
+
+}
+
+void SPlayerStateWidget::Construct(const FArguments& InArgs)
+{
+	CollectionsComboList = InArgs._OptionList;
+
+	FString DefaultOptionString = CollectionsComboList[0]->ToString();
+
+	GroupName = InArgs._GroupName;
+
+	if (DefaultOptionString.IsEmpty())
+	{
+		DefaultOptionString = TEXT("None");
+	}
+
+	FString GroupTitleString = TEXT("State Group");
+	FString TypeTitleString = TEXT("State");
+
+
+	ChildSlot
+		[
+			//SNew(SBorder)
+			//.Padding(4)
+			//.BorderImage(FEditorStyle::GetBrush("ToolPanel.GroupBorder"))
+			//[
+			//	SNew(SOverlay)
+
+			//	// Picker
+			//	+ SOverlay::Slot()
+			//	.VAlign(VAlign_Fill)
+			//	[
+			SNew(SVerticalBox)
+			.Visibility(EVisibility::Visible)
+
+		// Separator
+		+ SVerticalBox::Slot()
+		.AutoHeight()
+		.Padding(0, 20, 0, 0)
+		[
+			SNew(SSeparator)
+			.Visibility(EVisibility::Visible)
+		]
+
+	+ SVerticalBox::Slot()
+		.AutoHeight()
+		[
+			SNew(SHorizontalBox)
+
+			+ SHorizontalBox::Slot()
+		.HAlign(EHorizontalAlignment::HAlign_Fill)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString(GroupTitleString))
+		]
+
+	+ SHorizontalBox::Slot()
+		.HAlign(EHorizontalAlignment::HAlign_Fill)
+		[
+			SNew(STextBlock)
+			.Text(FText::FromString(InArgs._GroupName))
+		.ColorAndOpacity(FColor::Yellow)
+		]
+		]
+
+	+ SVerticalBox::Slot()
+		.AutoHeight()
+		[
+			SNew(SHorizontalBox)
+
+			+ SHorizontalBox::Slot()
+		.HAlign(EHorizontalAlignment::HAlign_Fill)
+		[
+			SAssignNew(SwitchOrStateTitleText, STextBlock)
+			.Text(FText::FromString(TypeTitleString))
+		]
+
+	+ SHorizontalBox::Slot()
+		.HAlign(EHorizontalAlignment::HAlign_Fill)
+		[
+			SNew(SComboBox<TSharedPtr<FName>>)
+			.OptionsSource(&CollectionsComboList)
+			.OnGenerateWidget(this, &SPlayerStateWidget::OnGenerateWidget)
+			.OnSelectionChanged(this, &SPlayerStateWidget::OnSelectionChanged)
+			//.ToolTipText(this, &SReferenceViewer::GetCollectionFilterText)
+				[
+				SAssignNew(SelectedSwitchOptionText, STextBlock)
+				.Text(FText::FromString(DefaultOptionString))
+				]
+		]
+
+		]
+	//	]
+	//]
+	];
+}
+
+TSharedRef<SWidget> SPlayerStateWidget::OnGenerateWidget(TSharedPtr<FName> InItem)
+{
+	FText ItemAsText = FText::FromName(*InItem);
+	return
+		SNew(SBox)
+		.WidthOverride(300)
+		[
+			SNew(STextBlock)
+			.Text(ItemAsText)
+			.ToolTipText(ItemAsText)
+		];
+}
+
+
+void SPlayerStateWidget::OnSelectionChanged(TSharedPtr<FName> SelectedItems, ESelectInfo::Type Type)
+{
+	FString OptionString = SelectedItems->ToString();
+	SelectedSwitchOptionText->SetText(OptionString);
+
+	FWaapiPlayerModule::GetPreplayingObject()->StatePair[GroupName] = OptionString;
+}
+
 //=================================================================================================================
 
 void SPlayerRtpcWidget::Construct(const FArguments& InArgs)
@@ -167,7 +283,7 @@ void SPlayerRtpcWidget::Construct(const FArguments& InArgs)
 			// Separator
 			+ SVerticalBox::Slot()
 			.AutoHeight()
-			.Padding(0, 0, 1, 1)
+			.Padding(0, 20, 0, 0)
 			[
 				SNew(SSeparator)
 				.Visibility(EVisibility::Visible)

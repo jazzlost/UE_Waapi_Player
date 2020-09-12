@@ -65,7 +65,7 @@ struct FWaapiPlayerTreeItem : public TSharedFromThis<FWaapiPlayerTreeItem>
 		, FolderPath(MoveTemp(InFolderPath))
 		, ItemType(MoveTemp(InItemType))
 		//, ItemId(InItemId)
-		//, ChildCountInWwise(Children.Num())
+		//, ChildCountInWwise(Children.Num())s
         , Parent(MoveTemp(InParent))
         , IsVisible(true)
 	{}

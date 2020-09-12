@@ -64,11 +64,13 @@ public:
 private:
 	/** List of collection filter options */
 	TSharedPtr<SSwitchOrStateListViewWidget> SwitchListView;
+	TSharedPtr<SSwitchOrStateListViewWidget> StateListView;
 	TSharedPtr<SRtpcListViewWidget> RtpcListView;
 
 	TArray<UWaapiTargetObject*> Targets;
 
 	/**List Data*/
 	TArray<WaapiSwitchOrStateDataPtr> SwitchDataList;
+	TArray<WaapiSwitchOrStateDataPtr> StateDataList;
 	TArray<WaapiRtpcDataPtr> RtpcDataList;
 };

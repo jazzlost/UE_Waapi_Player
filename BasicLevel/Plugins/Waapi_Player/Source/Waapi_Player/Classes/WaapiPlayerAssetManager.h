@@ -24,7 +24,7 @@ public:
 	FAssetManagerInitDelegate AssetManagerInitedCallback;
 
 	TSharedPtr<FWaapiPlayerTreeItem> RootItem;
-	TArray<TSharedPtr<FWaapiPlayerTreeItem>> ChildrenItems;
+	//TArray<TSharedPtr<FWaapiPlayerTreeItem>> ChildrenItems;
 
 private:
 	WaapiPlayerAssetManager();
