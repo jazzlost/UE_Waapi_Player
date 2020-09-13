@@ -552,7 +552,7 @@ void SPlayerTreeViewWidget::TreeExpansionChanged( TSharedPtr< FWaapiPlayerTreeIt
 void SPlayerTreeViewWidget::OnTreeItemsDoubleClicked(TSharedPtr<FWaapiPlayerTreeItem> ClickedItem)
 {
 	FWaapiPlayerModule& WaapiPlayerModule =  FModuleManager::Get().GetModuleChecked<FWaapiPlayerModule>("WaapiPlayer");
-	TSharedPtr<FWaapiPlayerAssetEditor> AssetEditor = WaapiPlayerModule.GetAssetEditor();
+	TSharedPtr<FWaapiPlayerAssetEditor> AssetEditor = StaticCastSharedPtr<FWaapiPlayerAssetEditor>(WaapiPlayerModule.GetAssetEditor());
 
 	if (AssetEditor.IsValid())
 	{

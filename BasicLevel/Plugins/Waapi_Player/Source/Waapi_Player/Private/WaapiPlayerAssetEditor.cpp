@@ -327,6 +327,7 @@ void FWaapiPlayerAssetEditor::InitWaapiEventObject()
 void FWaapiPlayerAssetEditor::RegisterCallback()
 {
 	OnTreeItemSelected.AddRaw(this, &FWaapiPlayerAssetEditor::QueryCallback);
+	OnEventSelected.AddRaw(this, &FWaapiPlayerAssetEditor::QueryCallback);
 }
 
 void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)

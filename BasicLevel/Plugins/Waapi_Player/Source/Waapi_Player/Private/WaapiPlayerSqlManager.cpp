@@ -152,6 +152,7 @@ void WaapiPlaySqlManager::Close()
 	{
 		Conn->Close();
 	}
+	Conn.Reset();
 }
 
 TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)

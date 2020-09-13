@@ -30,9 +30,6 @@ public:
 	void InitEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset, TSharedPtr<class FUICommandList> CommandList);
 	bool GetIsInitDB() { return bInitDB; }
 
-public:
-	FWaapiPlayerTreeItemClickedCallback OnTreeItemSelected;
-
 private:
 	TSharedRef<SDockTab> SpawnAkEventTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnTreeItemsTab(const FSpawnTabArgs& Args);

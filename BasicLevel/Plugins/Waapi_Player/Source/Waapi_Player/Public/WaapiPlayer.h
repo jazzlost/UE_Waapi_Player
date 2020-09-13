@@ -22,7 +22,7 @@ public:
 	
 	/** This function will be bound to Command (by default it will bring up plugin window) */
 
-	TSharedPtr<FWaapiPlayerAssetEditor> GetAssetEditor() { return MyAssetEditor; }
+	TSharedPtr<IWaapiPlayerAssetEditor> GetAssetEditor() { return MyAssetEditor; }
 
 	virtual TSharedRef<FWaapiPlayerAssetEditor> CreateAssetEditor(const EToolkitMode::Type Mode, const TSharedPtr<IToolkitHost>& InitToolkitHost, UObject* Asset);
 	
@@ -42,13 +42,12 @@ private:
 
 
 	TSharedRef<class SDockTab> OnSpawnPluginTab(const class FSpawnTabArgs& SpawnTabArgs);
-	void CreateAssetEditorWrapped();
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
 	TSharedPtr<FExtensibilityManager> ToolBarExtensibilityManager;
 	TSharedPtr<FExtensibilityManager> MenuExtensibilityManager;
-	TSharedPtr<FWaapiPlayerAssetEditor> MyAssetEditor;
+	TSharedPtr<IWaapiPlayerAssetEditor> MyAssetEditor;
 
 	static UWaapiPlayerPlayingObject* PreplayingObject;
 
