@@ -1,6 +1,7 @@
 #include "WaapiPlayerSqlManager.h"
 #include "Templates/SharedPointer.h"
 #include "../../../Plugins/Runtime/Database/SQLiteCore/Source/SQLiteCore/Public/SQLiteDatabase.h"
+#include "WaapiPlayerSqlDatabaseConnection.h"
 
 WaapiPlaySqlManager & WaapiPlaySqlManager::Get()
 {
@@ -142,8 +143,8 @@ void WaapiPlaySqlManager::Query(FString ColumnName, WaapiPlayerQueryType Type, F
 
 bool WaapiPlaySqlManager::Open()
 {
-	Conn = MakeShareable(new FSQLiteDatabaseConnection());
-	return Conn->Open(*DatabaseFullPath, nullptr, nullptr);
+	Conn = MakeShareable(new FWaapiPlayerSqlDatabaseConnection());
+	return Conn->Open(*DatabaseFullPath, ESQLiteDatabaseOpenMode::ReadOnly);
 }
 
 void WaapiPlaySqlManager::Close()
@@ -151,8 +152,10 @@ void WaapiPlaySqlManager::Close()
 	if (Conn.IsValid())
 	{
 		Conn->Close();
+		FString Error = Conn->GetLastError();
+		UE_LOG(LogTemp, Error, TEXT("WaapiDatabase Error: %s"), *Error);
 	}
-	Conn.Reset();
+	//Conn.Reset();
 }
 
 TArray<FString> TargetObjectUtil::SplitSqlResult(FString SqlResult)
@@ -269,8 +272,8 @@ void TargetObjectUtil::FillRtpcResult(UWaapiTargetObject * TargetObject, SqlResu
 		NewRtpcObject->RtpcName = ResultIter->GetString(TEXT("Name"));
 		NewRtpcObject->UseBuildInParam = ResultIter->GetInt(TEXT("UseBuildInParam"));
 		NewRtpcObject->DefaultValue = ResultIter->GetFloat(TEXT("DefaultValue"));
-		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MAX"));
-		NewRtpcObject->MinValue = ResultIter->GetFloat(TEXT("MIN"));
+		NewRtpcObject->MaxValue = ResultIter->GetFloat(TEXT("MaxValue"));
+		NewRtpcObject->MinValue = ResultIter->GetFloat(TEXT("MinValue"));
 
 		TargetObject->TargetExtraData.RtpcObjects.Add(NewRtpcObject);
 	}

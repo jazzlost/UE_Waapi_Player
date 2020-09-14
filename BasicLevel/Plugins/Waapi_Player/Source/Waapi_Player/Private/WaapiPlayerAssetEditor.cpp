@@ -5,6 +5,7 @@
 #include "PropertyEditorModule.h"
 #include "IDetailsView.h"
 #include "Editor.h"
+#include "Misc/MessageDialog.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "AssetEditorToolkit.h"
 #include "Widgets/Layout/SWrapBox.h"
@@ -31,7 +32,7 @@ const FName FWaapiPlayerAssetEditor::TextItemsTabId(TEXT("WaapiPlayerAssetEditor
 const FName FWaapiPlayerAssetEditor::EditorAppIdentifier(TEXT("WaapiPlayerAssetEditorApp"));
 
 //const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/waapi.db");
-const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/WaapiFormula.db");
+const FString DatabaseRelativePath = TEXT("/Waapi_Player/Content/waapi.db");
 
 
 
@@ -351,5 +352,9 @@ void FWaapiPlayerAssetEditor::QueryCallback(FString EventName)
 
 		RefreshAkEventTab();
 		RefreshPreplayingObject();
+	}
+	else
+	{
+		FMessageDialog::Open(EAppMsgType::Ok, FText::FromString(TEXT("Waapi Database Open Failed!")));
 	}
 }

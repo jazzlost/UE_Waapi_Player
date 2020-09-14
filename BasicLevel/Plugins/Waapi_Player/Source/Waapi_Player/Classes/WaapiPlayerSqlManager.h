@@ -39,7 +39,7 @@ private:
 
 private:
 	FString DatabaseFullPath;
-	TSharedPtr<FSQLiteDatabaseConnection> Conn;
+	TSharedPtr<class FWaapiPlayerSqlDatabaseConnection> Conn;
 };
 
 namespace TargetObjectUtil

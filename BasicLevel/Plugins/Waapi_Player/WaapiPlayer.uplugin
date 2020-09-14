@@ -13,11 +13,25 @@
 	"CanContainContent": false,
 	"IsBetaVersion": false,
 	"Installed": false,
-	"Modules": [
-		{
-			"Name": "WaapiPlayer",
-			"Type": "Editor",
-			"LoadingPhase": "Default"
-		}
-	]
+  "Modules": [
+    {
+      "Name": "WaapiPlayer",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "Wwise",
+      "Enabled": true
+    },
+    {
+      "Name": "SQLiteSupport",
+      "Enabled": true
+    },
+    {
+      "Name": "SQLiteCore",
+      "Enabled": true
+    }
+  ]
 }

@@ -52,7 +52,7 @@
 						<Action Name="" ID="{48332D8D-F73D-42E5-AF53-7517D7B4FF2F}" ShortID="1024256982">
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="Weapon" ID="{46EF1EF0-6C5E-4E43-A9BF-E491E3881EBB}" WorkUnitID="{9CC9CF80-7325-4477-98FE-A817E5F6B843}"/>
+									<ObjectRef Name="Weapon" ID="{5D80D12E-1B6E-4689-9911-726F6B009468}" WorkUnitID="{9CC9CF80-7325-4477-98FE-A817E5F6B843}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
