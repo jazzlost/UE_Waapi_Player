@@ -135,7 +135,7 @@ void SPlayerTreeViewWidget::Construct(const FArguments& InArgs)
 			.VAlign(VAlign_Fill)
 			[
 				SNew(SVerticalBox)
-				.Visibility(this, &SPlayerTreeViewWidget::isPickerAllowed)
+				//.Visibility(this, &SPlayerTreeViewWidget::isPickerAllowed)
 
 				// Search
 				+ SVerticalBox::Slot()
@@ -360,7 +360,10 @@ void SPlayerTreeViewWidget::ConstructTree()
 			//CurrentType = (EWwiseTreeItemType::Type)(((int)CurrentType) + 1);
 
 	WaapiPlayerAssetManager& AssetManager = WaapiPlayerAssetManager::Get();
-	RootItems.Add(AssetManager.RootItem);
+	if(!RootItems.Contains(AssetManager.RootItem))
+	{
+		RootItems.Add(AssetManager.RootItem);
+	}
 		//}		
 	//}
 	RestoreTreeExpansion(RootItems);
